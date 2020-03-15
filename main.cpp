@@ -1,4 +1,5 @@
 #include "userdialog.h"
+#include "mainwindow.h"
 #include "config.h"
 #include <QApplication>
 
@@ -6,13 +7,22 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    config::get_config();
+    config::load_config();
     config::null_users();
     config::get_users();
 
-    UserDialog w;
-    w.show();
-    a.exec();
+    if (config::set_current_user())
+    {
+        MainWindow w;
+        w.show();
+        a.exec();
+    }
+    else
+    {
+        UserDialog w;
+        w.show();
+        a.exec();
+    }
 
     config::save_config();
     return 0;

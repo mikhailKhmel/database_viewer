@@ -1,49 +1,60 @@
 #include "config.h"
-#include <QFile>
-#include <QTextStream>
 #include <QDebug>
 
-QStringList config::config_list;
 QStringList config::users;
-QStringList config::current_user;
+QSqlTableModel config::current_user;
+QSqlDatabase config::db = QSqlDatabase::addDatabase("QSQLITE");
 
-config::config()
+
+void config::set_lastused()
 {
+    QSqlRecord record;
+    record.setValue("LAST_USED",1);
+    current_user.setRecord(0,record);
 }
 
-void config::get_config()
+void config::load_config()
 {
-    QFile file("config.txt");
-    if ((file.exists())&&(file.open(QIODevice::ReadOnly)))
+    db.setDatabaseName("config.db");
+    if (db.open())
     {
-        while (!file.atEnd())
-            config_list << file.readLine();
-        file.close();
-    }
-    else
-    {
-        file.open(QIODevice::WriteOnly);
-        file.close();
+        QSqlQuery check_query("SELECT * FROM 'USERS'");
+        if (!check_query.exec())
+        {
+            QSqlQuery query("CREATE TABLE 'USERS' "
+                            "('USERNAME'	TEXT UNIQUE,"
+                            "'LASTUSED'	INTEGER, "
+                            "'DB_DRIVER'	TEXT NOT NULL)");
+            if (!query.exec())
+                qDebug() << db.lastError().text();
+        }
     }
 }
 
 void config::get_users()
 {
-    for (int i = 0; i < config_list.length(); i++)
-        if (config_list[i].startsWith("["))
-            users.append(config_list[i]);
+    QSqlQueryModel model;
+    model.setQuery("SELECT 'USERNAME' FROM 'USERS'");
+    for (int i = 0; i < model.rowCount(); i++)
+        users.append(model.record(i).value("USERNAME").toString());
 }
 
 void config::save_config()
 {
-    QFile file("config.txt");
-    if ((file.exists()) && (file.open(QIODevice::WriteOnly)))
-    {
-        QTextStream stream(&file);
-        foreach(QString s, config_list)
-            stream<<s;
-    }
-    file.close();
+//    QSqlQuery query;
+//    for (int i = 0; i < current_user.rowCount(); i++)
+//    {
+//        QString username = current_user.record(i).value("USERNAME").toString();
+//        QString lastused = current_user.record(i).value("LAST_USED").toString();
+//        //...
+
+//        QString s = "UPDATE USERS SET LAST_USED = '" + lastused + "' WHERE USERNAME = '" + username + "'";
+//        query.prepare(s);
+//        if (!query.exec())
+//            qDebug() << query.lastError().text();
+//    }
+    set_lastused();
+    current_user.submitAll();
 }
 
 void config::null_users()
@@ -54,7 +65,7 @@ void config::null_users()
 bool config::check_new_user(QString user)
 {
     user = "[" + user + "]";
-    if (users.contains(user)||config_list.contains(user))
+    if (users.contains(user))
         return false;
     else
         return true;
@@ -64,30 +75,38 @@ bool config::set_new_user(QString user)
 {
     if (check_new_user(user))
     {
-        users.append("[" + user + "]");
-        config_list.append("\r\n[" + user + "]");
+        QString username = "[" + user + "]";
+        users.append(username);
+        QSqlQuery qry("INSERT INTO USERS ('USERNAME') VALUES ('" + username + "')");
+        if (!qry.exec())
+            qDebug() << qry.lastError().text();
         return true;
     }
     else return false;
 }
 
+bool config::set_current_user()
+{
+    QSqlQueryModel model;
+    model.setQuery("SELECT USERNAME, LAST_USED FROM USERS");
+    bool last_used = false;
+    for (int i = 0; i < model.rowCount(); i++)
+    {
+        if (model.record(i).value("LAST_USED").toInt() == 1)
+        {
+            last_used = true;
+            QString username = model.record(i).value("USERNAME").toString();
+            current_user.setTable("USERS");
+            current_user.setFilter(username);
+            current_user.select();
+        }
+    }
+    return last_used;
+}
 
 void config::set_current_user(QString user)
 {
-    int user_index=0;
-    for (int i = 0; i < config_list.length(); i++)
-    {
-        if (user == config_list[i])
-        {
-            current_user.append(config_list[i]);
-            user_index = i+1;
-            break;
-        }
-    }
-    for (int i = user_index; i < config_list.length(); i++)
-    {
-        if (config_list[i].contains("[") == false)
-            current_user.append(config_list[i]);
-        else break;
-    }
+    current_user.setTable("USERS");
+    current_user.setFilter(user);
+    current_user.select();
 }
