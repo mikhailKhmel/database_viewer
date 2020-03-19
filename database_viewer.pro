@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     config.cpp \
+    connect_db.cpp \
     main.cpp \
     mainwindow.cpp \
     newprofile.cpp \
@@ -24,11 +25,13 @@ SOURCES += \
 
 HEADERS += \
     config.h \
+    connect_db.h \
     mainwindow.h \
     newprofile.h \
     userdialog.h
 
 FORMS += \
+    connect_db.ui \
     mainwindow.ui \
     newprofile.ui \
     userdialog.ui

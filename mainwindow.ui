@@ -1,9 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <author/>
- <comment/>
- <exportmacro/>
  <class>MainWindow</class>
- <widget name="MainWindow" class="QMainWindow">
+ <widget class="QMainWindow" name="MainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -15,10 +13,57 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget name="menubar" class="QMenuBar"/>
-  <widget name="centralwidget" class="QWidget"/>
-  <widget name="statusbar" class="QStatusBar"/>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>Файл</string>
+    </property>
+    <addaction name="connect_db"/>
+    <addaction name="create_table"/>
+    <addaction name="create_query"/>
+    <addaction name="separator"/>
+    <addaction name="exit_profile"/>
+    <addaction name="separator"/>
+    <addaction name="save_profile"/>
+   </widget>
+   <addaction name="menu"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="connect_db">
+   <property name="text">
+    <string>Подключиться к базе данных</string>
+   </property>
+  </action>
+  <action name="create_table">
+   <property name="text">
+    <string>Создать таблицу</string>
+   </property>
+  </action>
+  <action name="create_query">
+   <property name="text">
+    <string>Создать запрос</string>
+   </property>
+  </action>
+  <action name="exit_profile">
+   <property name="text">
+    <string>Выход из профиля</string>
+   </property>
+  </action>
+  <action name="save_profile">
+   <property name="text">
+    <string>Сохранить настройки профиля</string>
+   </property>
+  </action>
  </widget>
- <pixmapfunction/>
+ <resources/>
  <connections/>
 </ui>

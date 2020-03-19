@@ -24,7 +24,7 @@ void config::load_config()
             QSqlQuery query("CREATE TABLE 'USERS' "
                             "('USERNAME'	TEXT UNIQUE,"
                             "'LASTUSED'	INTEGER, "
-                            "'DB_DRIVER'	TEXT NOT NULL)");
+                            "'DB_DRIVER'	TEXT)");
             if (!query.exec())
                 qDebug() << db.lastError().text();
         }
@@ -34,25 +34,13 @@ void config::load_config()
 void config::get_users()
 {
     QSqlQueryModel model;
-    model.setQuery("SELECT 'USERNAME' FROM 'USERS'");
+    model.setQuery("SELECT USERNAME FROM USERS");
     for (int i = 0; i < model.rowCount(); i++)
         users.append(model.record(i).value("USERNAME").toString());
 }
 
 void config::save_config()
 {
-//    QSqlQuery query;
-//    for (int i = 0; i < current_user.rowCount(); i++)
-//    {
-//        QString username = current_user.record(i).value("USERNAME").toString();
-//        QString lastused = current_user.record(i).value("LAST_USED").toString();
-//        //...
-
-//        QString s = "UPDATE USERS SET LAST_USED = '" + lastused + "' WHERE USERNAME = '" + username + "'";
-//        query.prepare(s);
-//        if (!query.exec())
-//            qDebug() << query.lastError().text();
-//    }
     set_lastused();
     current_user.submitAll();
 }
@@ -77,7 +65,7 @@ bool config::set_new_user(QString user)
     {
         QString username = "[" + user + "]";
         users.append(username);
-        QSqlQuery qry("INSERT INTO USERS ('USERNAME') VALUES ('" + username + "')");
+        QSqlQuery qry("INSERT INTO USERS (USERNAME) VALUES ('" + username + "')");
         if (!qry.exec())
             qDebug() << qry.lastError().text();
         return true;

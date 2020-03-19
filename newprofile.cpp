@@ -20,13 +20,15 @@ newprofile::~newprofile()
 void newprofile::on_pushButton_clicked()
 {
     QString newuser = ui->lineEdit->text();
-    if (config::set_new_user(newuser))
+    if (!newuser.isEmpty())
     {
-        this->close();
-        UserDialog *l = new UserDialog;
-        l->show();
+        if (config::set_new_user(newuser))
+        {
+            this->close();
+            UserDialog *l = new UserDialog;
+            l->show();
+        }
+        else
+            ui->error_label->setVisible(true);
     }
-    else
-        ui->error_label->setVisible(true);
-
 }
