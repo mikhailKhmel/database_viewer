@@ -4,7 +4,8 @@
 QStringList config::users;
 QSqlTableModel config::current_user;
 QSqlDatabase config::db = QSqlDatabase::addDatabase("QSQLITE");
-
+QString config::db_driver;
+QString config::dir_db_sqlite;
 
 void config::set_lastused()
 {
@@ -24,7 +25,7 @@ void config::load_config()
             QSqlQuery query("CREATE TABLE 'USERS' "
                             "('USERNAME'	TEXT UNIQUE,"
                             "'LASTUSED'	INTEGER, "
-                            "'DB_DRIVER'	TEXT)");
+                            "'DB_DRIVER'	TEXT, 'DIR_DB_SQLITE' TEXT)");
             if (!query.exec())
                 qDebug() << db.lastError().text();
         }
@@ -97,4 +98,23 @@ void config::set_current_user(QString user)
     current_user.setTable("USERS");
     current_user.setFilter(user);
     current_user.select();
+}
+
+
+void config::set_db_driver(QString db_driver)
+{
+    config::db_driver = db_driver;
+
+    QSqlRecord record;
+    record.setValue("DB_DRIVER",db_driver);
+    current_user.setRecord(0,record);
+}
+
+void config::set_dir_db_sqlite(QString dir)
+{
+    config::dir_db_sqlite = dir;
+
+    QSqlRecord record;
+    record.setValue("DIR_DB_SQLITE",dir);
+    current_user.setRecord(0,record);
 }

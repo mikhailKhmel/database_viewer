@@ -21,8 +21,13 @@ public:
     static void save_config();                          //сохранения конфига из памяти
     static bool check_new_user(QString user);           //проверка на уникальности имени пользователя
     static void set_lastused();
+    static void set_db_driver(QString db_driver);
+    static void set_dir_db_sqlite(QString dir);
     static QStringList users;                           //контейнер для хранения только имен пользователей
     static QSqlTableModel current_user;                    //имя текущего пользователя
+    static QString db_driver;
+    static QString dir_db_sqlite;
+
 
 private:
     static QSqlDatabase db;
