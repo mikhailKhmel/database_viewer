@@ -27,7 +27,11 @@ void UserDialog::on_pushButton_clicked()
 
 void UserDialog::on_pushButton_2_clicked()
 {
-    config::set_current_user(ui->comboBox->currentText());
+    QString username =ui->comboBox->currentText();
+    if (!username.isEmpty())
+        config::set_current_user();
+    else
+        return;
     this->close();
     MainWindow *l = new MainWindow;
     l->show();

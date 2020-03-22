@@ -27,6 +27,9 @@ private slots:
 
     void on_pushButton_test_clicked();
 
+signals:
+    void close();
+
 private:
     Ui::connect_db *ui;
     void enable_layout(QString dr);

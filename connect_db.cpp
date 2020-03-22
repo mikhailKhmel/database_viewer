@@ -21,7 +21,34 @@ connect_db::~connect_db()
 
 void connect_db::on_pushButton_clicked()
 {
+    QString driver = return_qdriver(ui->comboBox_driver->currentText());
 
+    if (QFile::exists(ui->lineEdit_sqlite->text()))
+    {
+        if (driver == "QSQLITE")
+        {
+            QSqlDatabase db = QSqlDatabase::addDatabase(driver);
+            db.setDatabaseName(ui->lineEdit_sqlite->text());
+            if (db.open())
+            {
+                config::work_db = db;
+                config::dir_db_sqlite = ui->lineEdit_sqlite->text();
+                close();
+                this->destroy();
+            }
+            else
+                ui->connection_result->setText("ОШИБКА");
+        }
+        else
+        {
+
+        }
+    }
+    else
+        ui->connection_result->setText("ОШИБКА");
+
+
+    ui->connection_result->setVisible(true);
 }
 
 void connect_db::enable_layout(QString dr)
@@ -113,19 +140,26 @@ void connect_db::on_pushButton_test_clicked()
 {
     QString driver = return_qdriver(ui->comboBox_driver->currentText());
 
-    if (driver == "QSQLITE")
+    if (QFile::exists(ui->lineEdit_sqlite->text()))
     {
-        QSqlDatabase db = QSqlDatabase::addDatabase(driver);
-        db.setDatabaseName(ui->lineEdit_sqlite->text());
-        if (db.open())
-            ui->connection_result->setText("Подключено!");
+        if (driver == "QSQLITE")
+        {
+            QSqlDatabase db = QSqlDatabase::addDatabase(driver);
+            db.setDatabaseName(ui->lineEdit_sqlite->text());
+            if (db.open())
+                ui->connection_result->setText("Подключено!");
+            else
+                ui->connection_result->setText("ОШИБКА");
+        }
         else
-            ui->connection_result->setText("ОШИБКА");
+        {
+
+        }
     }
     else
-    {
+        ui->connection_result->setText("ОШИБКА");
 
-    }
 
     ui->connection_result->setVisible(true);
 }
+

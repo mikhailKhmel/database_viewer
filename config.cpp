@@ -6,6 +6,11 @@ QSqlTableModel config::current_user;
 QSqlDatabase config::db = QSqlDatabase::addDatabase("QSQLITE");
 QString config::db_driver;
 QString config::dir_db_sqlite;
+QSqlDatabase config::work_db;
+QString config::hostname;
+QString config::username;
+QString config::password;
+QString config::database_name;
 
 void config::set_lastused()
 {
@@ -53,7 +58,6 @@ void config::null_users()
 
 bool config::check_new_user(QString user)
 {
-    user = "[" + user + "]";
     if (users.contains(user))
         return false;
     else
@@ -64,7 +68,7 @@ bool config::set_new_user(QString user)
 {
     if (check_new_user(user))
     {
-        QString username = "[" + user + "]";
+        QString username = user;
         users.append(username);
         QSqlQuery qry("INSERT INTO USERS (USERNAME) VALUES ('" + username + "')");
         if (!qry.exec())

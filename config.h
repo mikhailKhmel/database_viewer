@@ -27,7 +27,12 @@ public:
     static QSqlTableModel current_user;                    //имя текущего пользователя
     static QString db_driver;
     static QString dir_db_sqlite;
+    static QString hostname;
+    static QString username;
+    static QString password;
+    static QString database_name;
 
+    static QSqlDatabase work_db;
 
 private:
     static QSqlDatabase db;
