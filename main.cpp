@@ -8,10 +8,8 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     config::load_config();
-    config::null_users();
-    config::get_users();
 
-    if (config::set_current_user())
+    if (config::user.lastused == 1)
     {
         MainWindow w;
         w.show();
@@ -24,6 +22,7 @@ int main(int argc, char *argv[])
         a.exec();
     }
 
+    config::user.lastused = 1;
     config::save_config();
     return 0;
 }

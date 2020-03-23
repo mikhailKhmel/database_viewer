@@ -24,9 +24,9 @@ public:
     static void set_db_driver(QString db_driver);
     static void set_dir_db_sqlite(QString dir);
     static QStringList users;                           //контейнер для хранения только имен пользователей
-    static QSqlTableModel current_user;                    //имя текущего пользователя
     static QString db_driver;
     static QString dir_db_sqlite;
+    static QStringList tables_list;
     static QString hostname;
     static QString username;
     static QString password;
@@ -34,6 +34,15 @@ public:
 
     static QSqlDatabase work_db;
 
+    struct current_user
+    {
+        QString username;
+        int lastused;
+        QString db_driver;
+        QString dir_db_sqlite;
+    };
+
+    static current_user user;
 private:
     static QSqlDatabase db;
 };

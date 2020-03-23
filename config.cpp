@@ -2,7 +2,6 @@
 #include <QDebug>
 
 QStringList config::users;
-QSqlTableModel config::current_user;
 QSqlDatabase config::db = QSqlDatabase::addDatabase("QSQLITE");
 QString config::db_driver;
 QString config::dir_db_sqlite;
@@ -11,12 +10,17 @@ QString config::hostname;
 QString config::username;
 QString config::password;
 QString config::database_name;
+QStringList config::tables_list;
+
+config::current_user config::user;
+
 
 void config::set_lastused()
 {
-    QSqlRecord record;
-    record.setValue("LAST_USED",1);
-    current_user.setRecord(0,record);
+    QSqlQuery q;
+    q.prepare("UPDATE USERS SET LASTUSED = 0 WHERE USERNAME <> " + user.username);
+    if (q.exec())
+        user.lastused = 1;
 }
 
 void config::load_config()
@@ -34,27 +38,35 @@ void config::load_config()
             if (!query.exec())
                 qDebug() << db.lastError().text();
         }
-    }
-}
+        else
+        {
+            QSqlQueryModel model;
+            model.setQuery("SELECT * FROM 'USERS'");
+            for (int i = 0; i < model.rowCount(); i++)
+            {
+                users.append(model.record(i).value("USERNAME").toString());
+                if (model.record(i).value("LASTUSED").toInt() == 1)
+                {
+                    user.username = model.record(i).value("USERNAME").toString();
+                    user.lastused = 1;
+                    user.db_driver = model.record(i).value("DB_DRIVER").toString();
+                    user.dir_db_sqlite = model.record(i).value("DIR_DB_SQLITE").toString();
+                }
+            }
 
-void config::get_users()
-{
-    QSqlQueryModel model;
-    model.setQuery("SELECT USERNAME FROM USERS");
-    for (int i = 0; i < model.rowCount(); i++)
-        users.append(model.record(i).value("USERNAME").toString());
+        }
+    }
 }
 
 void config::save_config()
 {
-    set_lastused();
-    current_user.submitAll();
+    QSqlQuery q;
+    QString s = "UPDATE USERS SET LASTUSED = " + QString::number(user.lastused) + ", DB_DRIVER = '" + user.db_driver + "', DIR_DB_SQLITE = '" + user.dir_db_sqlite + "' WHERE USERNAME = '" + user.username + "'";
+    q.prepare(s);
+    if (!q.exec())
+        qDebug() << q.lastError().text();
 }
 
-void config::null_users()
-{
-    users.clear();
-}
 
 bool config::check_new_user(QString user)
 {
@@ -78,47 +90,30 @@ bool config::set_new_user(QString user)
     else return false;
 }
 
-bool config::set_current_user()
+void config::set_current_user(QString username)
 {
-    QSqlQueryModel model;
-    model.setQuery("SELECT USERNAME, LAST_USED FROM USERS");
-    bool last_used = false;
-    for (int i = 0; i < model.rowCount(); i++)
+    QSqlQuery q;
+    if (q.exec("SELECT * FROM USERS WHERE USERNAME = '" + username + "'"))
     {
-        if (model.record(i).value("LAST_USED").toInt() == 1)
-        {
-            last_used = true;
-            QString username = model.record(i).value("USERNAME").toString();
-            current_user.setTable("USERS");
-            current_user.setFilter(username);
-            current_user.select();
-        }
+        user.username = username;
+        user.lastused = 1;
+        user.db_driver = q.record().value("DB_DRIVER").toString();
+        user.dir_db_sqlite = q.record().value("DIR_DB_SQLITE").toString();
     }
-    return last_used;
-}
+    else
+        qDebug() << q.lastError().text();
 
-void config::set_current_user(QString user)
-{
-    current_user.setTable("USERS");
-    current_user.setFilter(user);
-    current_user.select();
 }
 
 
 void config::set_db_driver(QString db_driver)
 {
     config::db_driver = db_driver;
-
-    QSqlRecord record;
-    record.setValue("DB_DRIVER",db_driver);
-    current_user.setRecord(0,record);
+    user.db_driver = db_driver;
 }
 
 void config::set_dir_db_sqlite(QString dir)
 {
     config::dir_db_sqlite = dir;
-
-    QSqlRecord record;
-    record.setValue("DIR_DB_SQLITE",dir);
-    current_user.setRecord(0,record);
+    user.dir_db_sqlite=dir;
 }

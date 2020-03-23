@@ -3,11 +3,13 @@
 
 #include "config.h"
 #include "connect_db.h"
+#include "create_table.h"
 #include <QDebug>
 #include <QStringListModel>
 #include <QAbstractItemView>
 #include <QMainWindow>
 #include <QResizeEvent>
+#include <QMessageBox>
 
 namespace Ui {
 class MainWindow;
@@ -33,10 +35,13 @@ private slots:
 
     void on_create_table_triggered();
 
+
+   void on_tableView_doubleClicked(const QModelIndex &index);
+
 private:
     Ui::MainWindow *ui;
-
     connect_db* l;
+    create_table* create_table_window;
 };
 
 #endif // MAINWINDOW_H

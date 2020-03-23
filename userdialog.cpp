@@ -20,19 +20,21 @@ UserDialog::~UserDialog()
 
 void UserDialog::on_pushButton_clicked()
 {
-    this->close();
+
     newprofile *l = new newprofile;
     l->show();
+    this->close();
 }
 
 void UserDialog::on_pushButton_2_clicked()
 {
     QString username =ui->comboBox->currentText();
     if (!username.isEmpty())
-        config::set_current_user();
+        config::set_current_user(username);
     else
         return;
-    this->close();
+
     MainWindow *l = new MainWindow;
     l->show();
+    this->close();
 }
