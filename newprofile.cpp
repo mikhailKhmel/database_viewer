@@ -9,6 +9,7 @@ newprofile::newprofile(QWidget *parent) :
     ui(new Ui::newprofile)
 {
     ui->setupUi(this);
+    this->setAttribute(Qt::WA_DeleteOnClose);
     ui->error_label->setVisible(false);
 }
 
@@ -17,6 +18,7 @@ newprofile::~newprofile()
     delete ui;
 }
 
+
 void newprofile::on_pushButton_clicked()
 {
     QString newuser = ui->lineEdit->text();
@@ -24,11 +26,16 @@ void newprofile::on_pushButton_clicked()
     {
         if (config::set_new_user(newuser))
         {
+            emit closed();
             this->close();
-            UserDialog *l = new UserDialog;
-            l->show();
         }
         else
             ui->error_label->setVisible(true);
     }
+}
+
+void newprofile::on_pushButton_exit_clicked()
+{
+    emit closed();
+    this->destroy();
 }

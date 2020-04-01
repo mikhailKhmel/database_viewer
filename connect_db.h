@@ -28,7 +28,7 @@ private slots:
     void on_pushButton_test_clicked();
 
 signals:
-    void close();
+    void closed();
 
 private:
     Ui::connect_db *ui;

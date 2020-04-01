@@ -8,10 +8,19 @@
 #include <QSqlQueryModel>
 #include <QSqlTableModel>
 #include <QSqlRecord>
+#include <QVector>
 
 class config
 {
 public:
+    struct current_user
+    {
+        QString username;
+        int lastused;
+        QString db_driver;
+        QString dir_db_sqlite;
+    };
+
     static void load_config();                          //загрузка конфига в память
     static void get_users();                            //выделение только имен пользователей из конфига
     static bool set_new_user(QString user);             //создания нового пользователя
@@ -23,24 +32,19 @@ public:
     static void set_lastused();
     static void set_db_driver(QString db_driver);
     static void set_dir_db_sqlite(QString dir);
-    static QStringList users;                           //контейнер для хранения только имен пользователей
-    static QString db_driver;
-    static QString dir_db_sqlite;
-    static QStringList tables_list;
-    static QString hostname;
-    static QString username;
-    static QString password;
-    static QString database_name;
+    //static QStringList users;                           //контейнер для хранения только имен пользователей
+//    static QString db_driver;
+//    static QString dir_db_sqlite;
+//    static QStringList tables_list;
+//    static QString hostname;
+//    static QString username;
+//    static QString password;
+//    static QString database_name;
 
+    static QVector<current_user> users;
     static QSqlDatabase work_db;
 
-    struct current_user
-    {
-        QString username;
-        int lastused;
-        QString db_driver;
-        QString dir_db_sqlite;
-    };
+
 
     static current_user user;
 private:

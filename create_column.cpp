@@ -8,6 +8,8 @@ create_column::create_column(QWidget *parent) :
     ui->setupUi(this);
     create_column::foreign_key_flag = false;
     ui->frame->setVisible(foreign_key_flag);
+
+    ui->columnname->clear();
 }
 
 create_column::~create_column()
@@ -73,7 +75,7 @@ void create_column::on_pushButton_clicked()
         if (create_column::foreign_key_flag)
             query_str.append("FOREIGN KEY(" + foreign_column + ") REFERENCES " + foreign_table + "(" + foreign_column + ") " + foreign_expr);
 
-        query_str.append(", ");
+        //query_str.append(", ");
         emit close(query_str);
         this->destroy();
     }

@@ -18,6 +18,7 @@ class create_table : public QWidget
 public:
     explicit create_table(QWidget *parent = nullptr);
     ~create_table();
+    void prepare_window();
 
 private slots:
     void on_toolButton_clicked();
@@ -27,8 +28,9 @@ private slots:
 
     void on_pushButton_clicked();
 
+
 signals:
-    void close();
+    void closed();
 
 private:
     Ui::create_table *ui;

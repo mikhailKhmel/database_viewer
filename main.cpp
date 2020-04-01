@@ -9,18 +9,10 @@ int main(int argc, char *argv[])
 
     config::load_config();
 
-    if (config::user.lastused == 1)
-    {
-        MainWindow w;
-        w.show();
-        a.exec();
-    }
-    else
-    {
-        UserDialog w;
-        w.show();
-        a.exec();
-    }
+    UserDialog w;
+    w.show();
+    a.exec();
+
 
     config::user.lastused = 1;
     config::save_config();

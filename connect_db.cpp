@@ -34,7 +34,8 @@ void connect_db::on_pushButton_clicked()
                 config::work_db = db;
                 config::user.dir_db_sqlite = ui->lineEdit_sqlite->text();
                 config::user.db_driver = driver;
-                emit close();
+                emit closed();
+                this->close();
             }
             else
                 ui->connection_result->setText("ОШИБКА");

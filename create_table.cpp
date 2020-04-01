@@ -6,11 +6,14 @@ create_table::create_table(QWidget *parent) :
     ui(new Ui::create_table)
 {
     ui->setupUi(this);
-    create_table::create_table_query.append("");
+    //create_table::create_table_query.append("");
     l = new create_column;
 
     connect(l, SIGNAL(close(QString)), this, SLOT(save_new_column(QString)));
 
+    create_table::create_table_query.clear();
+    create_table::create_table_query.append("");
+    create_table::create_table_query.append(");");
 }
 
 create_table::~create_table()
@@ -18,23 +21,28 @@ create_table::~create_table()
     delete ui;
 }
 
+void create_table::prepare_window()
+{
+    ui->textEdit->clear();
+}
+
 void create_table::update_query()
 {
     ui->textEdit->clear();
     foreach(QString s, create_table::create_table_query)
-        ui->textEdit->setText(s);
+        ui->textEdit->append(s);
 }
 
 void create_table::save_new_column(QString str)
 {
-    //create_table::create_table_query[create_table::create_table_query.count() - 1] = create_table::create_table_query[create_table::create_table_query.count() - 1] + ", ";
+    create_table::create_table_query[create_table::create_table_query.size()-2] = create_table::create_table_query[create_table::create_table_query.size()-2] + ", ";
     create_table::create_table_query.append(str);
+    create_table::create_table_query.swap(create_table::create_table_query.size()-1,create_table::create_table_query.size()-2);
     create_table::update_query();
 }
 
 void create_table::on_toolButton_clicked()
 {
-    //create_table::create_table_query[create_table::create_table_query.count() - 1] = create_table::create_table_query[create_table::create_table_query.count() - 1] + ", ";
     l->show();
 }
 
@@ -50,15 +58,16 @@ void create_table::on_pushButton_clicked()
     {
         create_table::create_table_query.append(");");
         QSqlQuery qry;
-        QString q;
-
-        foreach(QString s, create_table::create_table_query)
-            q.append(s);
-        q.remove(" ,");
+        QString q = ui->textEdit->toPlainText();
+//        foreach(QString s, create_table::create_table_query)
+//            q.append(s);
+        //q.remove(" ,");
+        q.remove("\n");
+        q.replace("(,", "(");
         qry.prepare(q);
         if (qry.exec())
         {
-            emit close();
+            emit closed();
             this->destroy();
         }
         else

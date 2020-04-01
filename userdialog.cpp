@@ -1,8 +1,8 @@
 #include "userdialog.h"
-#include "newprofile.h"
+
 #include "ui_userdialog.h"
 #include "config.h"
-#include "mainwindow.h"
+
 #include <QDebug>
 
 UserDialog::UserDialog(QWidget *parent) :
@@ -10,7 +10,18 @@ UserDialog::UserDialog(QWidget *parent) :
     ui(new Ui::UserDialog)
 {
     ui->setupUi(this);
-    ui->comboBox->addItems(config::users);
+    this->setAttribute(Qt::WA_DeleteOnClose);
+
+    QStringList users;
+    foreach(config::current_user s, config::users) {users.append(s.username);}
+    ui->comboBox->addItems(users);
+
+    l = new MainWindow();
+    np = new newprofile();
+
+    connect(l, SIGNAL(closed()), this, SLOT(showd()));
+    connect(np, SIGNAL(closed()), this, SLOT(showd()));
+    connect(np, SIGNAL(close()), this, SLOT(showd()));
 }
 
 UserDialog::~UserDialog()
@@ -18,11 +29,18 @@ UserDialog::~UserDialog()
     delete ui;
 }
 
+void UserDialog::showd()
+{
+    ui->comboBox->clear();
+    QStringList users;
+    foreach(config::current_user s, config::users) {users.append(s.username);}
+    ui->comboBox->addItems(users);
+    UserDialog::show();
+}
+
 void UserDialog::on_pushButton_clicked()
 {
-
-    newprofile *l = new newprofile;
-    l->show();
+    np->show();
     this->close();
 }
 
@@ -34,7 +52,7 @@ void UserDialog::on_pushButton_2_clicked()
     else
         return;
 
-    MainWindow *l = new MainWindow;
+    l->prepare_window();
     l->show();
     this->close();
 }

@@ -2,6 +2,8 @@
 #define USERDIALOG_H
 
 #include <QDialog>
+#include "mainwindow.h"
+#include "newprofile.h"
 
 namespace Ui {
 class UserDialog;
@@ -20,8 +22,12 @@ private slots:
 
     void on_pushButton_2_clicked();
 
+    void showd();
+
 private:
     Ui::UserDialog *ui;
+    MainWindow *l;
+    newprofile *np;
 };
 
 #endif // USERDIALOG_H
