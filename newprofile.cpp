@@ -24,10 +24,11 @@ void newprofile::on_pushButton_clicked()
     QString newuser = ui->lineEdit->text();
     if (!newuser.isEmpty())
     {
-        if (config::set_new_user(newuser))
+        bool result = config::set_new_user(newuser);
+        if (result)
         {
             emit closed();
-            this->close();
+            this->destroy();
         }
         else
             ui->error_label->setVisible(true);

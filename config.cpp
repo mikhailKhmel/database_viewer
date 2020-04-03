@@ -10,10 +10,15 @@ config::current_user config::user;
 
 void config::set_lastused()
 {
-    QSqlQuery q;
-    q.prepare("UPDATE USERS SET LASTUSED = 0 WHERE USERNAME <> " + user.username);
-    if (q.exec())
-        user.lastused = 1;
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("config.db");
+    if (db.open())
+    {
+        QSqlQuery q;
+        q.prepare("UPDATE USERS SET LASTUSED = 0 WHERE USERNAME <> " + user.username);
+        if (q.exec())
+            user.lastused = 1;
+    }
 }
 
 void config::load_config()
@@ -59,11 +64,6 @@ void config::load_config()
 
 void config::save_config()
 {
-//    QSqlQuery q;
-//    QString s = "UPDATE USERS SET LASTUSED = " + QString::number(user.lastused) + ", DB_DRIVER = '" + user.db_driver + "', DIR_DB_SQLITE = '" + user.dir_db_sqlite + "' WHERE USERNAME = '" + user.username + "'";
-//    q.prepare(s);
-//    if (!q.exec())
-//        qDebug() << q.lastError().text();
     for (int i = 0; i < config::users.size(); i++)
     {
         if (config::users.at(i).username == config::user.username)
@@ -97,7 +97,6 @@ void config::save_config()
 }
 
 
-
 bool config::check_new_user(QString user)
 {
     bool ans = true;
@@ -111,33 +110,27 @@ bool config::check_new_user(QString user)
 
 bool config::set_new_user(QString user)
 {
-    if (check_new_user(user))
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("config.db");
+    if (db.open())
     {
-        QString username = user;
-        current_user new_user;
-        new_user.username = user;
-        users.append(new_user);
-        QSqlQuery qry("INSERT INTO USERS (USERNAME) VALUES ('" + username + "')");
-        if (!qry.exec())
-            qDebug() << qry.lastError().text();
-        return true;
-    }
-    else return false;
+        if (check_new_user(user))
+        {
+            QString username = user;
+            current_user new_user;
+            new_user.username = user;
+            users.append(new_user);
+            QSqlQuery qry("INSERT INTO USERS (USERNAME) VALUES ('" + username + "')");
+            if (!qry.exec())
+            {qDebug() << qry.lastError().text();return true;}
+            else return true;
+        }
+        else return false;
+    } else return false;
 }
 
 void config::set_current_user(QString username)
 {
-//    QSqlQuery q;
-//    if (q.exec("SELECT * FROM USERS WHERE USERNAME = '" + username + "'"))
-//    {
-//        user.username = username;
-//        user.lastused = 1;
-//        user.db_driver = q.record().value("DB_DRIVER").toString();
-//        user.dir_db_sqlite = q.record().value("DIR_DB_SQLITE").toString();
-//    }
-//    else
-//        qDebug() << q.lastError().text();
-
     foreach(config::current_user u, config::users)
     {
         if (u.username == username)
@@ -146,7 +139,6 @@ void config::set_current_user(QString username)
             break;
         }
     }
-
 }
 
 

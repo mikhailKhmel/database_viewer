@@ -7,16 +7,18 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    c_db = new connect_db;
-    create_table_window = new create_table;
+
     tables_list_model = new QStringListModel(this);
 
     this->setAttribute(Qt::WA_DeleteOnClose);
-    ui->listView_tables->setContextMenuPolicy(Qt::CustomContextMenu);
-    ui->tableView->setContextMenuPolicy(Qt::CustomContextMenu);
 
+    c_db = new connect_db;
+    create_table_window = new create_table;
     connect(c_db, SIGNAL(closed()), this, SLOT(prepare_window()));
     connect(create_table_window, SIGNAL(closed()), this , SLOT(prepare_window()));
+
+    ui->listView_tables->setContextMenuPolicy(Qt::CustomContextMenu);
+    ui->tableView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->listView_tables, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
     connect(ui->tableView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu_table(QPoint)));
 
@@ -26,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->splitter->setStretchFactor(1,1);
     ui->listView_tables->show();
 
-    ui->listView_tables->addAction(new QAction("Удалить таблицу" ,this));
+    //ui->listView_tables->addAction(new QAction("Удалить таблицу" ,this));
 }
 
 MainWindow::~MainWindow()
@@ -182,7 +184,7 @@ void MainWindow::on_exit_profile_triggered()
     config::user.username = "";
     config::user.db_driver = "";
     config::user.dir_db_sqlite = "";
-    emit closed();
+    emit closedd();
     this->destroy();
 }
 

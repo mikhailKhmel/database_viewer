@@ -53,7 +53,7 @@ private slots:
 
    void deleteTable();
    signals:
-       void closed();
+       void closedd();
 
 private:
     Ui::MainWindow *ui;

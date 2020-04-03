@@ -16,12 +16,13 @@ UserDialog::UserDialog(QWidget *parent) :
     foreach(config::current_user s, config::users) {users.append(s.username);}
     ui->comboBox->addItems(users);
 
-    l = new MainWindow();
-    np = new newprofile();
-
-    connect(l, SIGNAL(closed()), this, SLOT(showd()));
+//    l = new MainWindow();
+//    np = new newprofile();
+    np = new newprofile;
     connect(np, SIGNAL(closed()), this, SLOT(showd()));
-    connect(np, SIGNAL(close()), this, SLOT(showd()));
+    l = new MainWindow;
+    connect(l, SIGNAL(closedd()), this, SLOT(showd()));
+
 }
 
 UserDialog::~UserDialog()
@@ -35,13 +36,16 @@ void UserDialog::showd()
     QStringList users;
     foreach(config::current_user s, config::users) {users.append(s.username);}
     ui->comboBox->addItems(users);
-    UserDialog::show();
+    this->update();
+    this->setVisible(true);
 }
 
 void UserDialog::on_pushButton_clicked()
 {
+
     np->show();
-    this->close();
+    this->setVisible(false);
+    //this->close();
 }
 
 void UserDialog::on_pushButton_2_clicked()
@@ -54,5 +58,5 @@ void UserDialog::on_pushButton_2_clicked()
 
     l->prepare_window();
     l->show();
-    this->close();
+    this->setVisible(false);
 }
