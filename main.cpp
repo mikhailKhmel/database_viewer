@@ -16,6 +16,7 @@ int main(int argc, char *argv[])
 
     config::user.lastused = 1;
     config::save_config();
+    //exit(1);
     return 0;
 }
 

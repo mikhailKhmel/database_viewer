@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     c_db = new connect_db;
     create_table_window = new create_table;
+    d_c = new delete_column;
     connect(c_db, SIGNAL(closed()), this, SLOT(prepare_window()));
     connect(create_table_window, SIGNAL(closed()), this , SLOT(prepare_window()));
 
@@ -21,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tableView->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->listView_tables, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
     connect(ui->tableView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu_table(QPoint)));
-
+    connect(d_c, SIGNAL(closed()), this, SLOT(reset_tableview()));
 
     ui->listView_tables->setViewMode(QListView::ListMode);
     ui->splitter->setStretchFactor(0,0);
@@ -43,6 +44,8 @@ void MainWindow::showContextMenu_table(const QPoint &pos)
     // Create menu and insert some actions
     QMenu myMenu;
     myMenu.addAction("Добавить строку", this, SLOT(addRow()));
+    myMenu.addAction("Удалить строку", this, SLOT(deleteRow()));
+    myMenu.addAction("Удалить столбец", this, SLOT(deleteColumn()));
 
     // Show context menu at handling position
     myMenu.exec(globalPos);
@@ -70,9 +73,61 @@ void MainWindow::addRow()
     QSqlTableModel* model = new QSqlTableModel;
     model->setTable(tablename);
     model->select();
-    model->insertRow(0);
+    if (model->insertRow(model->rowCount()))
+    {
+        model->setData(ui->tableView->currentIndex(),QVariant("NULL"));
+        model->submit();
+        ui->tableView->setModel(model);
+        ui->tableView->show();
+    } else qDebug() << model->lastError().text();
+
+
+}
+
+void MainWindow::deleteRow()
+{
+    QModelIndex index = ui->listView_tables->currentIndex();
+    ui->listView_tables->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    QString tablename = index.data(Qt::DisplayRole).toString();
+    QSqlTableModel* model = new QSqlTableModel;
+    model->setTable(tablename);
+    model->select();
+    QModelIndex rowindex = ui->tableView->currentIndex();
+    model->removeRow(rowindex.row());
+    model->submitAll();
     ui->tableView->setModel(model);
     ui->tableView->show();
+}
+
+void MainWindow::reset_tableview()
+{
+    QModelIndex index = ui->listView_tables->currentIndex();
+    ui->listView_tables->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    QString tablename = index.data(Qt::DisplayRole).toString();
+    QSqlTableModel* model = new QSqlTableModel;
+    model->setTable(tablename);
+    model->select();
+    ui->tableView->setModel(model);
+    ui->tableView->show();
+}
+
+void MainWindow::deleteColumn()
+{
+    QStringList fields;
+    QModelIndex index = ui->listView_tables->currentIndex();
+    QString tablename = index.data(Qt::DisplayRole).toString();
+
+    QSqlDatabase db = QSqlDatabase::addDatabase(config::user.db_driver);
+    db.setDatabaseName(config::user.dir_db_sqlite);
+    if (db.open())
+    {
+        QSqlRecord r = db.record(tablename);
+        for (int i = 0; i < r.count(); i++)
+            fields.append(r.fieldName(i));
+    }
+
+    d_c->prepare_window(fields,tablename);
+    d_c->show();
 }
 
 void MainWindow::deleteTable()

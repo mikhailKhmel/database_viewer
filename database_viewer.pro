@@ -20,6 +20,7 @@ SOURCES += \
     connect_db.cpp \
     create_column.cpp \
     create_table.cpp \
+    delete_column.cpp \
     main.cpp \
     mainwindow.cpp \
     newprofile.cpp \
@@ -30,6 +31,7 @@ HEADERS += \
     connect_db.h \
     create_column.h \
     create_table.h \
+    delete_column.h \
     mainwindow.h \
     newprofile.h \
     userdialog.h
@@ -38,6 +40,7 @@ FORMS += \
     connect_db.ui \
     create_column.ui \
     create_table.ui \
+    delete_column.ui \
     mainwindow.ui \
     newprofile.ui \
     userdialog.ui
