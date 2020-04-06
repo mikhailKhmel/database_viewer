@@ -72,6 +72,9 @@ void create_column::on_pushButton_clicked()
         if (unique)
             query_str.append("UNIQUE ");
 
+        if (!ui->default_value->text().isEmpty())
+            query_str.append("DEFAULT " + ui->default_value->text());
+
         if (create_column::foreign_key_flag)
             query_str.append("FOREIGN KEY(" + foreign_column + ") REFERENCES " + foreign_table + "(" + foreign_column + ") " + foreign_expr);
 

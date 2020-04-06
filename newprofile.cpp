@@ -31,7 +31,10 @@ void newprofile::on_pushButton_clicked()
             this->destroy();
         }
         else
+        {
+            ui->error_label->setText(config::LastError);
             ui->error_label->setVisible(true);
+        }
     }
 }
 

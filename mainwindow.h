@@ -5,6 +5,7 @@
 #include "connect_db.h"
 #include "create_table.h"
 #include "delete_column.h"
+#include "create_column.h"
 #include <QDebug>
 #include <QStringListModel>
 #include <QAbstractItemView>
@@ -45,7 +46,6 @@ private slots:
 
    void on_save_profile_triggered();
 
-   void on_listView_tables_customContextMenuRequested(const QPoint &pos);
 
    void showContextMenu(const QPoint &pos);
    void showContextMenu_table(const QPoint &pos);
@@ -54,7 +54,9 @@ private slots:
 
    void addRow();
    void deleteRow();
+   void addColumn();
    void deleteColumn();
+   void addColumn1(QString column_command);
 
    void deleteTable();
    signals:
@@ -65,6 +67,7 @@ private:
     connect_db* c_db;
     create_table* create_table_window;
     delete_column* d_c;
+    create_column* c_c;
 
     QStringListModel* tables_list_model;
 };

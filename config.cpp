@@ -1,12 +1,13 @@
 #include "config.h"
 #include <QDebug>
+#include <QMessageBox>
 
 QSqlDatabase config::db = QSqlDatabase::addDatabase("QSQLITE");
 QSqlDatabase config::work_db;
 
 QVector<config::current_user> config::users;
 config::current_user config::user;
-
+QString config::LastError;
 
 void config::set_lastused()
 {
@@ -122,7 +123,7 @@ bool config::set_new_user(QString user)
             users.append(new_user);
             QSqlQuery qry("INSERT INTO USERS (USERNAME) VALUES ('" + username + "')");
             if (!qry.exec())
-            {qDebug() << qry.lastError().text();return true;}
+            {LastError = qry.lastError().text(); qDebug() << qry.lastError().text();return true;}
             else return true;
         }
         else return false;

@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     c_db = new connect_db;
     create_table_window = new create_table;
     d_c = new delete_column;
+    c_c = new create_column;
     connect(c_db, SIGNAL(closed()), this, SLOT(prepare_window()));
     connect(create_table_window, SIGNAL(closed()), this , SLOT(prepare_window()));
 
@@ -23,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->listView_tables, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
     connect(ui->tableView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu_table(QPoint)));
     connect(d_c, SIGNAL(closed()), this, SLOT(reset_tableview()));
+    connect(c_c, SIGNAL(close(QString)), this, SLOT(addColumn1(QString)));
 
     ui->listView_tables->setViewMode(QListView::ListMode);
     ui->splitter->setStretchFactor(0,0);
@@ -44,6 +46,7 @@ void MainWindow::showContextMenu_table(const QPoint &pos)
     // Create menu and insert some actions
     QMenu myMenu;
     myMenu.addAction("Добавить строку", this, SLOT(addRow()));
+    myMenu.addAction("Добавить столбец", this, SLOT(addColumn()));
     myMenu.addAction("Удалить строку", this, SLOT(deleteRow()));
     myMenu.addAction("Удалить столбец", this, SLOT(deleteColumn()));
 
@@ -109,6 +112,33 @@ void MainWindow::reset_tableview()
     model->select();
     ui->tableView->setModel(model);
     ui->tableView->show();
+}
+
+void MainWindow::addColumn1(QString column_command)
+{
+    column_command.remove("'");
+    QModelIndex index = ui->listView_tables->currentIndex();
+    ui->listView_tables->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    QString tablename = index.data(Qt::DisplayRole).toString();
+
+    QSqlDatabase db = QSqlDatabase::addDatabase(config::user.db_driver);
+    db.setDatabaseName(config::user.dir_db_sqlite);
+    if (db.open())
+    {
+        QSqlQuery q;
+        QString query_str = "ALTER TABLE "+tablename+" ADD COLUMN " + column_command;
+        q.prepare(query_str);
+        if (!q.exec())
+            QMessageBox::warning(this,"Ошибка команды",q.lastError().text());
+        else
+            reset_tableview();
+    }
+
+}
+
+void MainWindow::addColumn()
+{
+    c_c->show();
 }
 
 void MainWindow::deleteColumn()
@@ -246,9 +276,4 @@ void MainWindow::on_exit_profile_triggered()
 void MainWindow::on_save_profile_triggered()
 {
     config::save_config();
-}
-
-void MainWindow::on_listView_tables_customContextMenuRequested(const QPoint &pos)
-{
-
 }

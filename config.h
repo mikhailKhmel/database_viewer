@@ -44,7 +44,7 @@ public:
     static QVector<current_user> users;
     static QSqlDatabase work_db;
 
-
+    static QString LastError;
 
     static current_user user;
 private:

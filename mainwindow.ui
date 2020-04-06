@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Главное окно</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -91,7 +91,7 @@
      <x>0</x>
      <y>0</y>
      <width>845</width>
-     <height>26</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
@@ -102,9 +102,8 @@
     <addaction name="create_table"/>
     <addaction name="create_query"/>
     <addaction name="separator"/>
-    <addaction name="exit_profile"/>
-    <addaction name="separator"/>
     <addaction name="save_profile"/>
+    <addaction name="exit_profile"/>
    </widget>
    <addaction name="menu"/>
   </widget>
@@ -120,6 +119,9 @@
    </property>
   </action>
   <action name="create_query">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Создать запрос</string>
    </property>

@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Подключение к базе данных</string>
   </property>
   <widget class="QWidget" name="layoutWidget">
    <property name="geometry">

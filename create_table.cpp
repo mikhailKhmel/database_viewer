@@ -23,8 +23,12 @@ create_table::~create_table()
 
 void create_table::prepare_window()
 {
+    ui->tablename->clear();
     ui->textEdit->clear();
+    create_table::create_table_query.clear();
+    this->setWindowTitle("Создать новую таблицу");
 }
+
 
 void create_table::update_query()
 {
@@ -56,21 +60,19 @@ void create_table::on_pushButton_clicked()
 {
     if (!ui->tablename->text().isEmpty())
     {
-        create_table::create_table_query.append(");");
-        QSqlQuery qry;
-        QString q = ui->textEdit->toPlainText();
-//        foreach(QString s, create_table::create_table_query)
-//            q.append(s);
-        //q.remove(" ,");
-        q.remove("\n");
-        q.replace("(,", "(");
-        qry.prepare(q);
-        if (qry.exec())
-        {
-            emit closed();
-            this->destroy();
+            create_table::create_table_query.append(");");
+            QSqlQuery qry;
+            QString q = ui->textEdit->toPlainText();
+            q.remove("\n");
+            q.replace("(,", "(");
+            qry.prepare(q);
+            if (qry.exec())
+            {
+                emit closed();
+                this->destroy();
+            }
+            else
+                QMessageBox::warning(this,"Error",qry.lastError().text());
         }
-        else
-            QMessageBox::warning(this,"Error",qry.lastError().text());
-    }
+
 }
