@@ -19,6 +19,10 @@ public:
         int lastused;
         QString db_driver;
         QString dir_db_sqlite;
+        QString hostname;
+        QString databasename;
+        QString db_username;
+        QString db_password;
     };
 
     static void load_config();                          //загрузка конфига в память
@@ -32,14 +36,7 @@ public:
     static void set_lastused();
     static void set_db_driver(QString db_driver);
     static void set_dir_db_sqlite(QString dir);
-    //static QStringList users;                           //контейнер для хранения только имен пользователей
-//    static QString db_driver;
-//    static QString dir_db_sqlite;
-//    static QStringList tables_list;
-//    static QString hostname;
-//    static QString username;
-//    static QString password;
-//    static QString database_name;
+
 
     static QVector<current_user> users;
     static QSqlDatabase work_db;

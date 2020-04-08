@@ -42,7 +42,24 @@ void connect_db::on_pushButton_clicked()
         }
         else
         {
-
+            QSqlDatabase db = QSqlDatabase::addDatabase(driver);
+            db.setHostName(ui->hostname_edit->text());
+            db.setDatabaseName(ui->db->text());
+            db.setUserName(ui->username->text());
+            db.setPassword(ui->password->text());
+            if (db.open())
+            {
+                config::work_db = db;
+                config::user.hostname = ui->hostname_edit->text();
+                config::user.databasename = ui->db->text();
+                config::user.db_username = ui->username->text();
+                config::user.db_password = ui->password->text();
+                config::user.db_driver = driver;
+                emit closed();
+                this->close();
+            }
+            else
+                ui->connection_result->setText("ОШИБКА");
         }
     }
     else

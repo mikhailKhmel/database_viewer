@@ -34,7 +34,12 @@ void config::load_config()
             QSqlQuery query("CREATE TABLE 'USERS' "
                             "('USERNAME'	TEXT UNIQUE,"
                             "'LASTUSED'	INTEGER, "
-                            "'DB_DRIVER'	TEXT, 'DIR_DB_SQLITE' TEXT)");
+                            "'DB_DRIVER'	TEXT, "
+                            "'DIR_DB_SQLITE' TEXT,"
+                            "'HOSTNAME' TEXT,"
+                            "'DATABASENAME' TEXT,"
+                            "'DB_USERNAME' TEXT,"
+                            "'DB_PASSWORD' TEXT );");
             if (!query.exec())
                 qDebug() << db.lastError().text();
         }
@@ -49,14 +54,11 @@ void config::load_config()
                 new_user.lastused = 1;
                 new_user.db_driver = model.record(i).value("DB_DRIVER").toString();
                 new_user.dir_db_sqlite = model.record(i).value("DIR_DB_SQLITE").toString();
+                new_user.hostname = model.record(i).value("HOSTNAME").toString();
+                new_user.databasename = model.record(i).value("DATABASENAME").toString();
+                new_user.db_username = model.record(i).value("DB_USERNAME").toString();
+                new_user.db_password = model.record(i).value("DB_PASSWORD").toString();
                 users.append(new_user);
-//                if (model.record(i).value("LASTUSED").toInt() == 1)
-//                {
-//                    user.username = model.record(i).value("USERNAME").toString();
-//                    user.lastused = 1;
-//                    user.db_driver = model.record(i).value("DB_DRIVER").toString();
-//                    user.dir_db_sqlite = model.record(i).value("DIR_DB_SQLITE").toString();
-//                }
             }
 
         }
@@ -73,6 +75,10 @@ void config::save_config()
             users[i].lastused = 1;
             users[i].db_driver = config::user.db_driver;
             users[i].dir_db_sqlite = config::user.dir_db_sqlite;
+            users[i].hostname = config::user.hostname;
+            users[i].databasename = config::user.databasename;
+            users[i].db_username = config::user.db_username;
+            users[i].db_password = config::user.db_password;
         }
     }
 
@@ -86,7 +92,8 @@ void config::save_config()
             q.clear();
             foreach(config::current_user u, config::users)
             {
-                if (q.exec("INSERT INTO USERS VALUES('"+u.username+"', "+QString::number(u.lastused)+", '"+u.db_driver+"', '"+u.dir_db_sqlite+"')"))
+                if (q.exec("INSERT INTO USERS VALUES('"+u.username+"', "+QString::number(u.lastused)+", '"+u.db_driver+"', '"+u.dir_db_sqlite+"', "
+                           "'" + u.hostname + "', '" + u.databasename + "', '" + u.db_username + "', '" + u.db_password + "')"))
                     continue;
                 else
                     qDebug() << q.lastError().text();

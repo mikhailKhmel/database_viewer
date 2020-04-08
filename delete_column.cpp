@@ -101,6 +101,19 @@ void delete_column::on_pushButton_submit_clicked()
             else qDebug() << "create table " << q.lastError().text();
         }
     }
-    else {/*для других драйверов*/}
+    else
+    {
+        QSqlDatabase db = QSqlDatabase::addDatabase(config::user.db_driver);
+        db.setHostName(config::user.hostname);
+        db.setDatabaseName(config::user.databasename);
+        db.setUserName(config::user.db_username);
+        db.setPassword(config::user.db_password);
+        if (db.open())
+        {
+            QSqlQuery q;
+            if (!q.exec("ALTER TABLE " + current_table + " DROP COLUMN " + ui->comboBox->currentText()))
+                qDebug() << "another driver " << q.lastError().text();
+        }
+    }
 
 }
