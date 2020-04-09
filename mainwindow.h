@@ -59,6 +59,8 @@ private slots:
    void addColumn1(QString column_command);
 
    void deleteTable();
+
+   void test_change();
    signals:
        void closedd();
 

@@ -45,13 +45,28 @@ void MainWindow::showContextMenu_table(const QPoint &pos)
 
     // Create menu and insert some actions
     QMenu myMenu;
-    myMenu.addAction("Добавить строку", this, SLOT(addRow()));
-    myMenu.addAction("Добавить столбец", this, SLOT(addColumn()));
-    myMenu.addAction("Удалить строку", this, SLOT(deleteRow()));
-    myMenu.addAction("Удалить столбец", this, SLOT(deleteColumn()));
+    QMenu rows;
+    QMenu columns;
+    rows.setTitle("Строки");
+    rows.addAction("Добавить строку", this, SLOT(addRow()));
+    rows.addAction("Удалить строку", this, SLOT(deleteRow()));
+
+    columns.setTitle("Столбцы");
+    columns.addAction("Добавить столбец", this, SLOT(addColumn()));
+    columns.addAction("Удалить столбец", this, SLOT(deleteColumn()));
+    myMenu.addMenu(&rows);
+    myMenu.addMenu(&columns);
+
+    myMenu.addAction("Test action",this ,SLOT(test_change()));
+
 
     // Show context menu at handling position
     myMenu.exec(globalPos);
+}
+
+void MainWindow::test_change()
+{
+    ui->tableView->setStyleSheet("QTableView::column {color: black} ");
 }
 
 void MainWindow::showContextMenu(const QPoint &pos)
