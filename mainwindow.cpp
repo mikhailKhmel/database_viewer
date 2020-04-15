@@ -8,8 +8,11 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+
+
     tables_list_model = new QStringListModel(this);
 
+    //this->setWindowFlag(Qt::FramelessWindowHint);
     this->setAttribute(Qt::WA_DeleteOnClose);
 
     c_db = new connect_db;
@@ -449,10 +452,36 @@ void MainWindow::on_exit_profile_triggered()
     config::user.db_driver = "";
     config::user.dir_db_sqlite = "";
     emit closedd();
-    this->destroy();
+    this->close();
 }
 
 void MainWindow::on_save_profile_triggered()
 {
     config::save_config();
+    QMessageBox::information(this, "Сохранено", "Данные профиля успешно сохранены");
+}
+
+void MainWindow::on_quit_button_triggered()
+{
+    this->close();
+}
+
+void MainWindow::on_toolButton_connect_db_clicked()
+{
+    on_connect_db_triggered();
+}
+
+void MainWindow::on_toolButton_create_table_clicked()
+{
+    on_create_table_triggered();
+}
+
+void MainWindow::on_toolButton_save_profile_clicked()
+{
+    on_save_profile_triggered();
+}
+
+void MainWindow::on_toolButton_exit_clicked()
+{
+    on_quit_button_triggered();
 }

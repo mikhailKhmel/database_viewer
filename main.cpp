@@ -9,6 +9,13 @@ int main(int argc, char *argv[])
     a.addLibraryPath(QString("./plugins/sqldrivers"));
     config::load_config();
 
+    QFile styleF;
+    styleF.setFileName(":/style.css");
+    styleF.open(QFile::ReadOnly);
+    QString qssStr = styleF.readAll();
+    a.setStyleSheet(qssStr);
+    //qApp->setStyleSheet(qssStr);
+
     UserDialog w;
     w.show();
     a.exec();

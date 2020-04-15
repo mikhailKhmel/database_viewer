@@ -6,6 +6,7 @@ rename_column::rename_column(QWidget *parent) :
     ui(new Ui::rename_column)
 {
     ui->setupUi(this);
+    //this->setWindowFlag(Qt::FramelessWindowHint);
 }
 
 rename_column::~rename_column()

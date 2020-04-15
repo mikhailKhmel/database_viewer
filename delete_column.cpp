@@ -6,6 +6,7 @@ delete_column::delete_column(QWidget *parent) :
     ui(new Ui::delete_column)
 {
     ui->setupUi(this);
+    //this->setWindowFlag(Qt::FramelessWindowHint);
 }
 
 delete_column::~delete_column()
@@ -21,7 +22,7 @@ void delete_column::prepare_window(QStringList fields, QString current_table)
 
 void delete_column::on_pushButton_back_clicked()
 {
-    this->destroy();
+    this->close();
 }
 
 void delete_column::on_pushButton_submit_clicked()

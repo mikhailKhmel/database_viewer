@@ -68,7 +68,19 @@ private slots:
    void uncoverColumn1(const QString& column_name);
 
    //void test_change();
-   signals:
+   void on_quit_button_triggered();
+
+   void on_toolButton_clicked();
+
+   void on_toolButton_connect_db_clicked();
+
+   void on_toolButton_create_table_clicked();
+
+   void on_toolButton_save_profile_clicked();
+
+   void on_toolButton_exit_clicked();
+
+signals:
        void closedd();
 
 private:

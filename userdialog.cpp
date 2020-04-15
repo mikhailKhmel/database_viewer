@@ -11,6 +11,13 @@ UserDialog::UserDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);
+    //this->setWindowFlag(Qt::FramelessWindowHint);
+
+    QFile styleF;
+    styleF.setFileName(".//stylesheet.qss");
+    styleF.open(QFile::ReadOnly);
+    QString qssStr = styleF.readAll();
+    this->setStyleSheet(qssStr);
 
     QStringList users;
     foreach(config::current_user s, config::users) {users.append(s.username);}
@@ -40,7 +47,7 @@ void UserDialog::showd()
     this->setVisible(true);
 }
 
-void UserDialog::on_pushButton_clicked()
+void UserDialog::on_toolButton_clicked()
 {
 
     np->show();
@@ -48,7 +55,7 @@ void UserDialog::on_pushButton_clicked()
     //this->close();
 }
 
-void UserDialog::on_pushButton_2_clicked()
+void UserDialog::on_toolButton_2_clicked()
 {
     QString username =ui->comboBox->currentText();
     if (!username.isEmpty())
@@ -59,4 +66,9 @@ void UserDialog::on_pushButton_2_clicked()
     l->prepare_window();
     l->show();
     this->setVisible(false);
+}
+
+void UserDialog::on_toolButton_3_clicked()
+{
+    this->close();
 }

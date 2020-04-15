@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>style.css</file>
+        <file>src/icons8-exit-32.png</file>
+        <file>src/icons8-add-database-32.png</file>
+        <file>src/icons8-save-32.png</file>
+        <file>src/icons8-table-32.png</file>
+        <file>src/icons8-login-32.png</file>
+        <file>src/icons8-sign-out-32.png</file>
+        <file>src/icons8-add-user-male-32.png</file>
+        <file>src/icons8-close-window-32.png</file>
+    </qresource>
+</RCC>

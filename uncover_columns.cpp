@@ -8,6 +8,7 @@ uncover_columns::uncover_columns(QWidget *parent) :
     ui(new Ui::uncover_columns)
 {
     ui->setupUi(this);
+    //this->setWindowFlag(Qt::FramelessWindowHint);
 }
 
 uncover_columns::~uncover_columns()

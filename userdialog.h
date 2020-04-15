@@ -18,11 +18,13 @@ public:
     ~UserDialog();
 
 private slots:
-    void on_pushButton_clicked();
+    void on_toolButton_clicked();
 
-    void on_pushButton_2_clicked();
+    void on_toolButton_2_clicked();
 
     void showd();
+
+    void on_toolButton_3_clicked();
 
 private:
     Ui::UserDialog *ui;
