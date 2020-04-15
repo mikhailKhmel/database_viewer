@@ -23,7 +23,7 @@ public:
 
 private slots:
     void on_toolButton_clicked();
-    void save_new_column(QString str);
+    void save_new_column(const QString&);
 
     void on_tablename_textChanged(const QString &arg1);
 

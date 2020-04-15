@@ -12,3 +12,14 @@ rename_column::~rename_column()
 {
     delete ui;
 }
+
+void rename_column::on_pushButton_back_clicked()
+{
+    this->close();
+}
+
+void rename_column::on_pushButton_continue_clicked()
+{
+    emit closed(ui->lineEdit->text());
+    this->close();
+}

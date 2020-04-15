@@ -39,7 +39,9 @@ void config::load_config()
                             "'HOSTNAME' TEXT,"
                             "'DATABASENAME' TEXT,"
                             "'DB_USERNAME' TEXT,"
-                            "'DB_PASSWORD' TEXT );");
+                            "'DB_PASSWORD' TEXT,"
+                            "'COLUMN_RENAMES' TEXT,"
+                            "'COLUMN_HIDES' TEXT );");
             if (!query.exec())
                 qDebug() << db.lastError().text();
         }
@@ -58,6 +60,8 @@ void config::load_config()
                 new_user.databasename = model.record(i).value("DATABASENAME").toString();
                 new_user.db_username = model.record(i).value("DB_USERNAME").toString();
                 new_user.db_password = model.record(i).value("DB_PASSWORD").toString();
+                new_user.column_renames = model.record(i).value("COLUMN_RENAMES").toString();
+                new_user.column_hides = model.record(i).value("COLUMN_HIDES").toString();
                 users.append(new_user);
             }
 
@@ -71,14 +75,7 @@ void config::save_config()
     {
         if (config::users.at(i).username == config::user.username)
         {
-            users[i].username = config::user.username;
-            users[i].lastused = 1;
-            users[i].db_driver = config::user.db_driver;
-            users[i].dir_db_sqlite = config::user.dir_db_sqlite;
-            users[i].hostname = config::user.hostname;
-            users[i].databasename = config::user.databasename;
-            users[i].db_username = config::user.db_username;
-            users[i].db_password = config::user.db_password;
+            users[i] = config::user;
         }
     }
 
@@ -93,7 +90,7 @@ void config::save_config()
             foreach(config::current_user u, config::users)
             {
                 if (q.exec("INSERT INTO USERS VALUES('"+u.username+"', "+QString::number(u.lastused)+", '"+u.db_driver+"', '"+u.dir_db_sqlite+"', "
-                           "'" + u.hostname + "', '" + u.databasename + "', '" + u.db_username + "', '" + u.db_password + "')"))
+                           "'" + u.hostname + "', '" + u.databasename + "', '" + u.db_username + "', '" + u.db_password + "', '" + u.column_renames + "', '" + u.column_hides + "')"))
                     continue;
                 else
                     qDebug() << q.lastError().text();

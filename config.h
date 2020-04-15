@@ -23,6 +23,10 @@ public:
         QString databasename;
         QString db_username;
         QString db_password;
+        
+        QString column_renames;
+        QString column_hides;
+        
     };
 
     static void load_config();                          //загрузка конфига в память

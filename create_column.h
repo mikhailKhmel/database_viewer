@@ -28,7 +28,7 @@ private slots:
     void on_pushButton_clicked();
 
 signals:
-    void close(QString str);
+    void closed(const QString& str);
 
 private:
     Ui::create_column *ui;

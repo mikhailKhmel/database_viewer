@@ -16,6 +16,9 @@ MainWindow::MainWindow(QWidget *parent) :
     create_table_window = new create_table;
     d_c = new delete_column;
     c_c = new create_column;
+    r_c = new rename_column;
+    u_c = new uncover_columns;
+
     connect(c_db, SIGNAL(closed()), this, SLOT(prepare_window()));
     connect(create_table_window, SIGNAL(closed()), this , SLOT(prepare_window()));
 
@@ -24,7 +27,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->listView_tables, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
     connect(ui->tableView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu_table(QPoint)));
     connect(d_c, SIGNAL(closed()), this, SLOT(reset_tableview()));
-    connect(c_c, SIGNAL(close(QString)), this, SLOT(addColumn1(QString)));
+    connect(c_c, SIGNAL(closed(const QString &)), this, SLOT(addColumn1(QString)));
+    connect(r_c, SIGNAL(closed(const QString &)), this, SLOT(renameColumn1(const QString &)));
+    connect(u_c, SIGNAL(closed(const QString &)), this, SLOT(uncoverColumn1(const QString &)));
 
     ui->listView_tables->setViewMode(QListView::ListMode);
     ui->splitter->setStretchFactor(0,0);
@@ -39,9 +44,10 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
 void MainWindow::showContextMenu_table(const QPoint &pos)
 {
-    QPoint globalPos = ui->listView_tables->mapToGlobal(pos);
+    QPoint globalPos = ui->tableView->mapToGlobal(pos);
 
     // Create menu and insert some actions
     QMenu myMenu;
@@ -56,17 +62,53 @@ void MainWindow::showContextMenu_table(const QPoint &pos)
     columns.addAction("Удалить столбец", this, SLOT(deleteColumn()));
     myMenu.addMenu(&rows);
     myMenu.addMenu(&columns);
+    myMenu.addSeparator();
 
-    myMenu.addAction("Test action",this ,SLOT(test_change()));
+    myMenu.addAction("Переименовать столбец", this, SLOT(renameColumn()));
+    myMenu.addAction("Скрыть столбец", this, SLOT(hideColumn()));
 
+    myMenu.addAction("Раскрыть столбцы", this, SLOT(uncoverColumn()));
 
     // Show context menu at handling position
     myMenu.exec(globalPos);
 }
 
-void MainWindow::test_change()
+void MainWindow::uncoverColumn()
 {
-    ui->tableView->setStyleSheet("QTableView::column {color: black} ");
+    QModelIndex index = ui->listView_tables->currentIndex();
+    ui->listView_tables->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    QString tablename = index.data(Qt::DisplayRole).toString();
+    u_c->prepeare_window(tablename);
+    u_c->show();
+}
+
+void MainWindow::uncoverColumn1(const QString& column_name)
+{
+    QModelIndex index = ui->listView_tables->currentIndex();
+    ui->listView_tables->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    QString tablename = index.data(Qt::DisplayRole).toString();
+    QSqlTableModel* model = new QSqlTableModel;
+    model->setTable(tablename);
+
+    int ind = model->fieldIndex(column_name);
+    ui->tableView->setColumnHidden(ind, false);
+
+    QStringList col_hid = config::user.column_hides.split(";");
+    col_hid.removeLast();
+    for (int i = 0; i < col_hid.count(); i++)
+    {
+        QString test_str = tablename + "," + QString::number(ind);
+        if (col_hid.at(i) == test_str)
+        {
+            col_hid.removeAt(i);
+        }
+    }
+
+    config::user.column_hides.clear();
+    config::user.column_hides.append(col_hid.join(";"));
+    model->select();
+    ui->tableView->setModel(model);
+    ui->tableView->show();
 }
 
 void MainWindow::showContextMenu(const QPoint &pos)
@@ -81,6 +123,32 @@ void MainWindow::showContextMenu(const QPoint &pos)
 
     // Show context menu at handling position
     myMenu.exec(globalPos);
+}
+
+void MainWindow::hideColumn()
+{
+    QModelIndex index = ui->listView_tables->currentIndex();
+    ui->listView_tables->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    QString tablename = index.data(Qt::DisplayRole).toString();
+    QSqlTableModel* model = new QSqlTableModel;
+    model->setTable(tablename);
+
+    int ind = ui->tableView->currentIndex().column();
+    ui->tableView->hideColumn(ind);
+
+    QStringList col_hid = config::user.column_hides.split(";");
+
+    foreach (QString s, col_hid) {
+        if (s.contains(tablename+","+ind))
+            col_hid.removeOne(s);
+    }
+
+    config::user.column_hides = col_hid.join(";");
+    config::user.column_hides.append(tablename+","+QString::number(ind)+";");
+
+    model->select();
+    ui->tableView->setModel(model);
+    ui->tableView->show();
 }
 
 void MainWindow::addRow()
@@ -98,8 +166,6 @@ void MainWindow::addRow()
         ui->tableView->setModel(model);
         ui->tableView->show();
     } else qDebug() << model->lastError().text();
-
-
 }
 
 void MainWindow::deleteRow()
@@ -163,7 +229,15 @@ void MainWindow::deleteColumn()
     QString tablename = index.data(Qt::DisplayRole).toString();
 
     QSqlDatabase db = QSqlDatabase::addDatabase(config::user.db_driver);
-    db.setDatabaseName(config::user.dir_db_sqlite);
+    if (config::user.db_driver == "QSQLITE")
+        db.setDatabaseName(config::user.dir_db_sqlite);
+    else
+    {
+        db.setHostName(config::user.hostname);
+        db.setDatabaseName(config::user.databasename);
+        db.setUserName(config::user.db_username);
+        db.setPassword(config::user.db_password);
+    }
     if (db.open())
     {
         QSqlRecord r = db.record(tablename);
@@ -175,6 +249,37 @@ void MainWindow::deleteColumn()
     d_c->show();
 }
 
+void MainWindow::renameColumn()
+{
+    r_c->show();
+}
+
+void MainWindow::renameColumn1(const QString& new_column)
+{
+    QModelIndex index = ui->listView_tables->currentIndex();
+    ui->listView_tables->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    QString tablename = index.data(Qt::DisplayRole).toString();
+    QSqlTableModel* model = new QSqlTableModel;
+    model->setTable(tablename);
+
+    QString ind = QString::number(ui->tableView->currentIndex().column());
+    QStringList col_ren = config::user.column_renames.split(";");
+
+    foreach (QString s, col_ren) {
+        if (s.contains(tablename+","+ind))
+            col_ren.removeOne(s);
+    }
+
+    config::user.column_renames = col_ren.join(";");
+    config::user.column_renames.append(tablename+","+ind+","+new_column+";");
+
+    model->setHeaderData(ui->tableView->currentIndex().column(), Qt::Horizontal, tr(new_column.toUtf8()));
+    model->select();
+    ui->tableView->setModel(model);
+    ui->tableView->show();
+
+}
+
 void MainWindow::deleteTable()
 {
 
@@ -182,7 +287,15 @@ void MainWindow::deleteTable()
     QString tableName = index.data(Qt::DisplayRole).toString();
 
     QSqlDatabase db = QSqlDatabase::addDatabase(config::user.db_driver);
-    db.setDatabaseName(config::user.dir_db_sqlite);
+    if (config::user.db_driver == "QSQLITE")
+        db.setDatabaseName(config::user.dir_db_sqlite);
+    else
+    {
+        db.setHostName(config::user.hostname);
+        db.setDatabaseName(config::user.databasename);
+        db.setUserName(config::user.db_username);
+        db.setPassword(config::user.db_password);
+    }
     if (db.open())
     {
         QSqlQuery q;
@@ -211,7 +324,15 @@ void MainWindow::deleteTable()
 void MainWindow::prepare_window()
 {
     QSqlDatabase db = QSqlDatabase::addDatabase(config::user.db_driver);
-    db.setDatabaseName(config::user.dir_db_sqlite);
+    if (config::user.db_driver == "QSQLITE")
+        db.setDatabaseName(config::user.dir_db_sqlite);
+    else
+    {
+        db.setHostName(config::user.hostname);
+        db.setDatabaseName(config::user.databasename);
+        db.setUserName(config::user.db_username);
+        db.setPassword(config::user.db_password);
+    }
     if (db.open())
     {
         tables_list_model = new QStringListModel;
@@ -219,8 +340,6 @@ void MainWindow::prepare_window()
         tables_list_model->setStringList(db.tables());
         ui->listView_tables->setModel(tables_list_model);
         ui->listView_tables->show();
-
-        qDebug() << "tables_list";
     }
     else
         qDebug() << db.lastError().text();
@@ -247,16 +366,61 @@ void MainWindow::on_listView_tables_doubleClicked(const QModelIndex &index)
     QString tablename = index.data(Qt::DisplayRole).toString();
     QSqlTableModel* model = new QSqlTableModel;
     model->setTable(tablename);
+
+
+    if (!config::user.column_renames.isEmpty())
+    {
+        QStringList params = config::user.column_renames.split(";");
+        params.removeLast();
+        foreach (QString s, params)
+        {
+            QStringList params1 = s.split(",");
+            QString table = params1[0];
+            int index = params1[1].toInt();
+            QString new_column = params1[2];
+            int columnCount = model->columnCount();
+            if (table == tablename)
+            {
+                model->setHeaderData(index, Qt::Horizontal, tr(new_column.toUtf8()));
+            }
+        }
+    }
+
     model->select();
     ui->tableView->setModel(model);
+
+    if (!config::user.column_hides.isEmpty())
+    {
+        QStringList params = config::user.column_hides.split(";");
+        params.removeLast();
+        foreach (QString s, params)
+        {
+            QStringList params1 = s.split(",");
+            QString table = params1[0];
+            int index = params1[1].toInt();
+            int columnCount = model->columnCount();
+            if (table == tablename)
+            {
+                ui->tableView->setColumnHidden(index,true);
+            }
+        }
+    }
+
     ui->tableView->show();
 }
 
 void MainWindow::on_create_table_triggered()
 {
     QSqlDatabase db = QSqlDatabase::addDatabase(config::user.db_driver);
-
-    db.setDatabaseName(config::user.dir_db_sqlite);
+    if (config::user.db_driver == "QSQLITE")
+        db.setDatabaseName(config::user.dir_db_sqlite);
+    else
+    {
+        db.setHostName(config::user.hostname);
+        db.setDatabaseName(config::user.databasename);
+        db.setUserName(config::user.db_username);
+        db.setPassword(config::user.db_password);
+    }
     if (db.open())
     {
         create_table_window->prepare_window();

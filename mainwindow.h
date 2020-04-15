@@ -6,6 +6,9 @@
 #include "create_table.h"
 #include "delete_column.h"
 #include "create_column.h"
+#include "rename_column.h"
+#include "uncover_columns.h"
+
 #include <QDebug>
 #include <QStringListModel>
 #include <QAbstractItemView>
@@ -55,12 +58,16 @@ private slots:
    void addRow();
    void deleteRow();
    void addColumn();
+   void renameColumn();
+   void renameColumn1(const QString& new_column);
    void deleteColumn();
    void addColumn1(QString column_command);
-
+    void hideColumn();
    void deleteTable();
+   void uncoverColumn();
+   void uncoverColumn1(const QString& column_name);
 
-   void test_change();
+   //void test_change();
    signals:
        void closedd();
 
@@ -70,6 +77,8 @@ private:
     create_table* create_table_window;
     delete_column* d_c;
     create_column* c_c;
+    rename_column* r_c;
+    uncover_columns* u_c;
 
     QStringListModel* tables_list_model;
 };

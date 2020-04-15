@@ -9,7 +9,7 @@ create_table::create_table(QWidget *parent) :
     //create_table::create_table_query.append("");
     l = new create_column;
 
-    connect(l, SIGNAL(close(QString)), this, SLOT(save_new_column(QString)));
+    connect(l, SIGNAL(closed(const QString&)), this, SLOT(save_new_column(const QString&)));
 
     create_table::create_table_query.clear();
     create_table::create_table_query.append("");
@@ -26,6 +26,8 @@ void create_table::prepare_window()
     ui->tablename->clear();
     ui->textEdit->clear();
     create_table::create_table_query.clear();
+    create_table::create_table_query.append("");
+    create_table::create_table_query.append(");");
     this->setWindowTitle("Создать новую таблицу");
 }
 
@@ -33,13 +35,16 @@ void create_table::prepare_window()
 void create_table::update_query()
 {
     ui->textEdit->clear();
-    foreach(QString s, create_table::create_table_query)
-        ui->textEdit->append(s);
+    QString result = create_table_query.join("\n");
+
+    ui->textEdit->setText(result);
+
 }
 
-void create_table::save_new_column(QString str)
+void create_table::save_new_column(const QString& str)
 {
-    create_table::create_table_query[create_table::create_table_query.size()-2] = create_table::create_table_query[create_table::create_table_query.size()-2] + ", ";
+    qDebug() << create_table::create_table_query.size();
+    create_table::create_table_query[create_table::create_table_query.size()-2].append(", ");
     create_table::create_table_query.append(str);
     create_table::create_table_query.swap(create_table::create_table_query.size()-1,create_table::create_table_query.size()-2);
     create_table::update_query();

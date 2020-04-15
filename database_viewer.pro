@@ -3,7 +3,6 @@ QT       += core gui sql
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
-QMAKE_LFLAGS += -static -static-libgcc
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -25,7 +24,9 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     newprofile.cpp \
-    userdialog.cpp
+    userdialog.cpp \
+    rename_column.cpp \
+    uncover_columns.cpp
 
 HEADERS += \
     config.h \
@@ -35,7 +36,9 @@ HEADERS += \
     delete_column.h \
     mainwindow.h \
     newprofile.h \
-    userdialog.h
+    userdialog.h \
+    rename_column.h \
+    uncover_columns.h
 
 FORMS += \
     connect_db.ui \
@@ -44,7 +47,9 @@ FORMS += \
     delete_column.ui \
     mainwindow.ui \
     newprofile.ui \
-    userdialog.ui
+    userdialog.ui \
+    rename_column.ui \
+    uncover_columns.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

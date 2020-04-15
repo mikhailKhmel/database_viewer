@@ -1,5 +1,6 @@
 #include "create_column.h"
 #include "ui_create_column.h"
+#include <QDebug>
 
 create_column::create_column(QWidget *parent) :
     QWidget(parent),
@@ -55,7 +56,8 @@ void create_column::on_pushButton_clicked()
     QString foreign_column = ui->comboBox_2_foreigncolumns->currentText();
     QString foreign_expr = ui->lineEdit_foreignexpr->text();
 
-    QString query_str;
+    QString query_str = "";
+    query_str.clear();
 
     if (!tablename.isEmpty())
     {
@@ -79,7 +81,8 @@ void create_column::on_pushButton_clicked()
             query_str.append("FOREIGN KEY(" + foreign_column + ") REFERENCES " + foreign_table + "(" + foreign_column + ") " + foreign_expr);
 
         //query_str.append(", ");
-        emit close(query_str);
+        qDebug() << query_str.size();
+        emit closed(query_str);
         this->destroy();
     }
     else
