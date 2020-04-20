@@ -43,7 +43,7 @@ void select_window::prepareWindow(QString tablename)
     select_window::curr_table.append(tablename);
     ui->comboBox_selectColumn->clear();
     ui->comboBox_selectColumn->addItems(columns);
-
+    ui->comboBox_select_rovno->setCurrentIndex(0);
     ui->lineEdit->clear();
     ui->lineEdit_2->clear();
     ui->lineEdit_2->setVisible(false);
@@ -75,6 +75,10 @@ void select_window::on_pushButton_select_clicked()
             rovno_str.append(" LIKE '%"  + ui->lineEdit->text() + "%'");
         else if (ui->comboBox_select_rovno->currentText() == "Не содержит")
             rovno_str.append(" NOT LIKE '%"  + ui->lineEdit->text() + "%'");
+        else if ((ui->comboBox_select_rovno->currentText() == "Между") || (ui->lineEdit_2->isVisible()))
+            rovno_str.append(" BETWEEN " + ui->lineEdit->text() + " AND " + ui->lineEdit_2->text());
+        else if ((ui->comboBox_select_rovno->currentText() == "Вне диапазона") || (ui->lineEdit_2->isVisible()))
+            rovno_str.append(" NOT BETWEEN " + ui->lineEdit->text() + " AND " + ui->lineEdit_2->text());
 
         query_str.append(rovno_str);
 
