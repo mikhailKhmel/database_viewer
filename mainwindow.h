@@ -9,6 +9,7 @@
 #include "rename_column.h"
 #include "uncover_columns.h"
 #include "select_window.h"
+#include "script_window.h"
 
 #include <QDebug>
 #include <QStringListModel>
@@ -82,6 +83,8 @@ private slots:
 
    void on_toolButton_filter_clicked();
 
+   void on_toolButton_clicked();
+
 signals:
        void closedd();
 
@@ -94,6 +97,7 @@ private:
     rename_column* r_c;
     uncover_columns* u_c;
     select_window* s_w;
+    script_window* script_w;
 
     QStringListModel* tables_list_model;
 };

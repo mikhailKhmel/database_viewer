@@ -41,9 +41,11 @@ void select_window::prepareWindow(QString tablename)
     }
     db.close();
     select_window::curr_table.append(tablename);
+
     ui->comboBox_selectColumn->clear();
     ui->comboBox_selectColumn->addItems(columns);
     ui->comboBox_select_rovno->setCurrentIndex(0);
+
     ui->lineEdit->clear();
     ui->lineEdit_2->clear();
     ui->lineEdit_2->setVisible(false);

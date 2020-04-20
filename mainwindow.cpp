@@ -7,9 +7,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-
-
     tables_list_model = new QStringListModel(this);
 
     //this->setWindowFlag(Qt::FramelessWindowHint);
@@ -22,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     r_c = new rename_column;
     u_c = new uncover_columns;
     s_w = new select_window;
+    script_w = new script_window;
 
     connect(c_db, SIGNAL(closed()), this, SLOT(prepare_window()));
     connect(create_table_window, SIGNAL(closed()), this , SLOT(prepare_window()));
@@ -35,13 +33,13 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(r_c, SIGNAL(closed(const QString &)), this, SLOT(renameColumn1(const QString &)));
     connect(u_c, SIGNAL(closed(const QString &)), this, SLOT(uncoverColumn1(const QString &)));
     connect(s_w, SIGNAL(closed(const QString &)), this, SLOT(enableFilter(const QString &)));
+    connect(script_w, SIGNAL(closed()), this, SLOT(prepare_window()));
+
 
     ui->listView_tables->setViewMode(QListView::ListMode);
     ui->splitter->setStretchFactor(0,0);
     ui->splitter->setStretchFactor(1,1);
     ui->listView_tables->show();
-
-    //ui->listView_tables->addAction(new QAction("Удалить таблицу" ,this));
 }
 
 MainWindow::~MainWindow()
@@ -341,6 +339,7 @@ void MainWindow::deleteTable()
 
 void MainWindow::prepare_window()
 {
+    this->setDisabled(false);
     QSqlDatabase db = QSqlDatabase::addDatabase(config::user.db_driver);
     if (config::user.db_driver == "QSQLITE")
         db.setDatabaseName(config::user.dir_db_sqlite);
@@ -508,4 +507,11 @@ void MainWindow::on_toolButton_filter_clicked()
     QString tablename = index.data(Qt::DisplayRole).toString();
     s_w->prepareWindow(tablename);
     s_w->show();
+}
+
+void MainWindow::on_toolButton_clicked()
+{
+    this->setDisabled(true);
+    script_w->prepare_window();
+    script_w->show();
 }
