@@ -24,6 +24,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     newprofile.cpp \
+    select_window.cpp \
     userdialog.cpp \
     rename_column.cpp \
     uncover_columns.cpp
@@ -36,6 +37,7 @@ HEADERS += \
     delete_column.h \
     mainwindow.h \
     newprofile.h \
+    select_window.h \
     userdialog.h \
     rename_column.h \
     uncover_columns.h
@@ -47,6 +49,7 @@ FORMS += \
     delete_column.ui \
     mainwindow.ui \
     newprofile.ui \
+    select_window.ui \
     userdialog.ui \
     rename_column.ui \
     uncover_columns.ui

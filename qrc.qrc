@@ -9,5 +9,6 @@
         <file>src/icons8-sign-out-32.png</file>
         <file>src/icons8-add-user-male-32.png</file>
         <file>src/icons8-close-window-32.png</file>
+        <file>src/icons8-filter-32.png</file>
     </qresource>
 </RCC>

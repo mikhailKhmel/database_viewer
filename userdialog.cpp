@@ -11,20 +11,11 @@ UserDialog::UserDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);
-    //this->setWindowFlag(Qt::FramelessWindowHint);
-
-    QFile styleF;
-    styleF.setFileName(".//stylesheet.qss");
-    styleF.open(QFile::ReadOnly);
-    QString qssStr = styleF.readAll();
-    this->setStyleSheet(qssStr);
 
     QStringList users;
     foreach(config::current_user s, config::users) {users.append(s.username);}
     ui->comboBox->addItems(users);
 
-//    l = new MainWindow();
-//    np = new newprofile();
     np = new newprofile;
     connect(np, SIGNAL(closed()), this, SLOT(showd()));
     l = new MainWindow;

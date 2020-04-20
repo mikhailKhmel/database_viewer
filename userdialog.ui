@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>184</width>
+    <width>207</width>
     <height>130</height>
    </rect>
   </property>
@@ -19,6 +19,9 @@
   <layout class="QGridLayout" name="gridLayout">
    <item row="2" column="1">
     <widget class="QToolButton" name="toolButton">
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Создать новый профиль&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
      <property name="styleSheet">
       <string notr="true"/>
      </property>
@@ -39,6 +42,9 @@
    </item>
    <item row="2" column="2">
     <widget class="QToolButton" name="toolButton_2">
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Войти&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
      <property name="whatsThis">
       <string>Выбрать профиль</string>
      </property>
@@ -62,6 +68,9 @@
    </item>
    <item row="2" column="0">
     <widget class="QToolButton" name="toolButton_3">
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Закрыть программу&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
      <property name="text">
       <string>...</string>
      </property>
@@ -79,6 +88,9 @@
    </item>
    <item row="1" column="0" colspan="3">
     <widget class="QComboBox" name="comboBox">
+     <property name="toolTip">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Выбор профиля&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
      <property name="styleSheet">
       <string notr="true"/>
      </property>

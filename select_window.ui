@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>select_window</class>
+ <widget class="QWidget" name="select_window">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>467</width>
+    <height>124</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Установить фильтр</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QComboBox" name="comboBox_selectColumn">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="comboBox_select_rovno">
+         <property name="currentText">
+          <string>Равно</string>
+         </property>
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <item>
+          <property name="text">
+           <string>Равно</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Не равно</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Меньше</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Меньше или равно</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Больше</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Больше или равно</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Содержит</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Не содержит</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Между</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Вне диапозона</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit"/>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="lineEdit_2"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QPushButton" name="pushButton_cancel">
+         <property name="text">
+          <string>Отмена</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton_select">
+         <property name="text">
+          <string>Применить</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>comboBox_select_rovno</tabstop>
+  <tabstop>lineEdit</tabstop>
+  <tabstop>pushButton_select</tabstop>
+  <tabstop>pushButton_cancel</tabstop>
+  <tabstop>comboBox_selectColumn</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

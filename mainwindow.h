@@ -8,6 +8,7 @@
 #include "create_column.h"
 #include "rename_column.h"
 #include "uncover_columns.h"
+#include "select_window.h"
 
 #include <QDebug>
 #include <QStringListModel>
@@ -66,11 +67,10 @@ private slots:
    void deleteTable();
    void uncoverColumn();
    void uncoverColumn1(const QString& column_name);
+   void enableFilter(const QString& filter);
 
    //void test_change();
    void on_quit_button_triggered();
-
-   void on_toolButton_clicked();
 
    void on_toolButton_connect_db_clicked();
 
@@ -79,6 +79,8 @@ private slots:
    void on_toolButton_save_profile_clicked();
 
    void on_toolButton_exit_clicked();
+
+   void on_toolButton_filter_clicked();
 
 signals:
        void closedd();
@@ -91,6 +93,7 @@ private:
     create_column* c_c;
     rename_column* r_c;
     uncover_columns* u_c;
+    select_window* s_w;
 
     QStringListModel* tables_list_model;
 };

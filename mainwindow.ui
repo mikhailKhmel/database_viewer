@@ -18,7 +18,7 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="2" column="0" colspan="6">
+    <item row="2" column="0" colspan="7">
      <widget class="QSplitter" name="splitter">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -89,38 +89,11 @@
       </widget>
      </widget>
     </item>
-    <item row="0" column="0">
-     <widget class="QToolButton" name="toolButton_connect_db">
-      <property name="text">
-       <string>...</string>
-      </property>
-      <property name="icon">
-       <iconset resource="qrc.qrc">
-        <normaloff>:/src/icons8-add-database-32.png</normaloff>:/src/icons8-add-database-32.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>30</width>
-        <height>30</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="3">
-     <spacer name="horizontalSpacer">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>40</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="0" column="5">
+    <item row="0" column="6">
      <widget class="QToolButton" name="toolButton_exit">
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Выйти из профиля&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
       <property name="text">
        <string>...</string>
       </property>
@@ -138,6 +111,9 @@
     </item>
     <item row="0" column="1">
      <widget class="QToolButton" name="toolButton_create_table">
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Создать таблицу&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
       <property name="text">
        <string>...</string>
       </property>
@@ -153,14 +129,67 @@
       </property>
      </widget>
     </item>
+    <item row="0" column="0">
+     <widget class="QToolButton" name="toolButton_connect_db">
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Подключиться к базе данных&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>...</string>
+      </property>
+      <property name="icon">
+       <iconset resource="qrc.qrc">
+        <normaloff>:/src/icons8-add-database-32.png</normaloff>:/src/icons8-add-database-32.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>30</width>
+        <height>30</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="4">
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
     <item row="0" column="2">
      <widget class="QToolButton" name="toolButton_save_profile">
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Сохранить изменения профиля&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
       <property name="text">
        <string>...</string>
       </property>
       <property name="icon">
        <iconset resource="qrc.qrc">
         <normaloff>:/src/icons8-save-32.png</normaloff>:/src/icons8-save-32.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>30</width>
+        <height>30</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QToolButton" name="toolButton_filter">
+      <property name="text">
+       <string>...</string>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>src/icons8-filter-32.png</normaloff>src/icons8-filter-32.png</iconset>
       </property>
       <property name="iconSize">
        <size>

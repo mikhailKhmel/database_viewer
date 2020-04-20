@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     c_c = new create_column;
     r_c = new rename_column;
     u_c = new uncover_columns;
+    s_w = new select_window;
 
     connect(c_db, SIGNAL(closed()), this, SLOT(prepare_window()));
     connect(create_table_window, SIGNAL(closed()), this , SLOT(prepare_window()));
@@ -33,6 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(c_c, SIGNAL(closed(const QString &)), this, SLOT(addColumn1(QString)));
     connect(r_c, SIGNAL(closed(const QString &)), this, SLOT(renameColumn1(const QString &)));
     connect(u_c, SIGNAL(closed(const QString &)), this, SLOT(uncoverColumn1(const QString &)));
+    connect(s_w, SIGNAL(closed(const QString &)), this, SLOT(enableFilter(const QString &)));
 
     ui->listView_tables->setViewMode(QListView::ListMode);
     ui->splitter->setStretchFactor(0,0);
@@ -109,6 +111,19 @@ void MainWindow::uncoverColumn1(const QString& column_name)
 
     config::user.column_hides.clear();
     config::user.column_hides.append(col_hid.join(";"));
+    model->select();
+    ui->tableView->setModel(model);
+    ui->tableView->show();
+}
+
+void MainWindow::enableFilter(const QString &filter)
+{
+    QModelIndex index = ui->listView_tables->currentIndex();
+    ui->listView_tables->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    QString tablename = index.data(Qt::DisplayRole).toString();
+    QSqlTableModel* model = new QSqlTableModel;
+    model->setTable(tablename);
+    model->setFilter(filter);
     model->select();
     ui->tableView->setModel(model);
     ui->tableView->show();
@@ -483,5 +498,14 @@ void MainWindow::on_toolButton_save_profile_clicked()
 
 void MainWindow::on_toolButton_exit_clicked()
 {
-    on_quit_button_triggered();
+    on_exit_profile_triggered();
+}
+
+void MainWindow::on_toolButton_filter_clicked()
+{
+    QModelIndex index = ui->listView_tables->currentIndex();
+    ui->listView_tables->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    QString tablename = index.data(Qt::DisplayRole).toString();
+    s_w->prepareWindow(tablename);
+    s_w->show();
 }
