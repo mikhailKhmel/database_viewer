@@ -131,16 +131,16 @@ void connect_db::on_comboBox_driver_textActivated(const QString &arg1)
 QString connect_db::return_qdriver(QString driver)
 {
     if (driver == "SQLITE")
-        return "QSQLITE";
+        return QString("QSQLITE");
         //config::set_db_driver("QSQLITE");
     else if (driver == "MYSQL")
-        return "QMYSQL";
+        return QString("QMYSQL");
         //config::set_db_driver("QMYSQL");
     else if (driver == "POSTGRESQL")
-        return "QPSQL";
+        return QString("QPSQL");
         //config::set_db_driver("QPSQL");
     else if (driver == "MICROSOFT SQL")
-        return "QODBC";
+        return QString("QODBC");
         //config::set_db_driver("QODBC");
 }
 

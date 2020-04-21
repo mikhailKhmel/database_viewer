@@ -395,7 +395,6 @@ void MainWindow::on_listView_tables_doubleClicked(const QModelIndex &index)
             QString table = params1[0];
             int index = params1[1].toInt();
             QString new_column = params1[2];
-            int columnCount = model->columnCount();
             if (table == tablename)
             {
                 model->setHeaderData(index, Qt::Horizontal, tr(new_column.toUtf8()));
@@ -415,7 +414,6 @@ void MainWindow::on_listView_tables_doubleClicked(const QModelIndex &index)
             QStringList params1 = s.split(",");
             QString table = params1[0];
             int index = params1[1].toInt();
-            int columnCount = model->columnCount();
             if (table == tablename)
             {
                 ui->tableView->setColumnHidden(index,true);

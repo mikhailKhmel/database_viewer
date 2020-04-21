@@ -28,7 +28,7 @@ void script_window::prepare_window()
 
 void script_window::saveFile()
 {
-    dir = QFileDialog::getSaveFileName(0, "Сохранить файл", dir, "*.sql *.txt *.*");
+    dir = QFileDialog::getSaveFileName(0, "Сохранить файл", dir, "*.sql *.txt");
     if (!dir.isEmpty())
     {
         QFile file(dir);
@@ -65,14 +65,25 @@ void script_window::resizeEvent(QResizeEvent *event)
     QSize s = event->size();
     this->resize(s);
     ui->tabWidget->resize(s);
+    if (ui->tabWidget->count() < 1)
+    {}
+    else
+    {
+        for(int i=0;i<ui->tabWidget->count();i++)
+               if(i!=ui->tabWidget->currentIndex())
+                   ui->tabWidget->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
+        ui->tabWidget->widget(ui->tabWidget->currentIndex())->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        ui->tabWidget->currentWidget()->resize(ui->tabWidget->size());
+        ui->tabWidget->widget(ui->tabWidget->currentIndex())->adjustSize();
+    }
 }
 
 void script_window::on_toolButton_open_clicked()
 {
     ui->tabWidget->clear();
     ui->tabWidget->setVisible(false);
-    dir = QFileDialog::getOpenFileName(0, "Открыть файл", dir, "*.sql *.txt *.*");
+    dir = QFileDialog::getOpenFileName(0, "Открыть файл", dir, "*.sql *.txt");
     if (!dir.isEmpty())
     {
         QFile file(dir);
@@ -124,21 +135,18 @@ void script_window::on_toolButton_runscript_clicked()
                 q.clear();
                 if (q.exec(s))
                 {
-                    QVBoxLayout *l = new QVBoxLayout;
                     QWidget* new_widget = new QWidget(ui->tabWidget);
-                    new_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-                    new_widget->setLayout(l);
                     QSqlQueryModel* model = new QSqlQueryModel;
                     model->setQuery(q);
                     QTableView* new_table = new QTableView(new_widget);
                     new_table->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
                     new_table->setModel(model);
-                    new_widget->resize(ui->tabWidget->size());
-                    new_table->resize(new_widget->size());
-                    ui->tabWidget->addTab(new_widget,s.mid(s.indexOf("from ", Qt::CaseInsensitive)));
+
+                    ui->tabWidget->addTab(new_widget,s.mid(s.indexOf("from ", Qt::CaseInsensitive)+QString("from ").count()));
                 }
                 else
                     errors.append(q.lastError().text());
+
                 ui->tabWidget->setVisible(true);
             }
             else
