@@ -2,6 +2,7 @@
 #define USERDIALOG_H
 
 #include <QDialog>
+#include <QApplication>
 #include "mainwindow.h"
 #include "newprofile.h"
 
@@ -25,6 +26,8 @@ private slots:
     void showd();
 
     void on_toolButton_3_clicked();
+
+    void on_comboBox_currentIndexChanged(const QString &arg1);
 
 private:
     Ui::UserDialog *ui;

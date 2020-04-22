@@ -16,16 +16,7 @@ select_window::~select_window()
 
 void select_window::prepareWindow(QString tablename)
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase(config::user.db_driver);
-    if (config::user.db_driver == "QSQLITE")
-        db.setDatabaseName(config::user.dir_db_sqlite);
-    else
-    {
-        db.setHostName(config::user.hostname);
-        db.setDatabaseName(config::user.databasename);
-        db.setUserName(config::user.db_username);
-        db.setPassword(config::user.db_password);
-    }
+    QSqlDatabase db = config::set_current_db();
 
     QStringList columns;
     if (db.open())

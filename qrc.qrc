@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>style.css</file>
+        <file>dark.css</file>
         <file>src/icons8-exit-32.png</file>
         <file>src/icons8-add-database-32.png</file>
         <file>src/icons8-save-32.png</file>
@@ -15,5 +15,7 @@
         <file>src/icons8-открыть-папку-32.png</file>
         <file>src/icons8-сохранить-32.png</file>
         <file>src/icons8-воспроизведение-32.png</file>
+        <file>light.css</file>
+        <file>src/icons8-солнце-32.png</file>
     </qresource>
 </RCC>

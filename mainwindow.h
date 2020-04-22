@@ -17,6 +17,7 @@
 #include <QMainWindow>
 #include <QResizeEvent>
 #include <QMessageBox>
+#include <QApplication>
 
 namespace Ui {
 class MainWindow;
@@ -84,6 +85,8 @@ private slots:
    void on_toolButton_filter_clicked();
 
    void on_toolButton_clicked();
+
+   void on_toolButton_lightmode_clicked();
 
 signals:
        void closedd();

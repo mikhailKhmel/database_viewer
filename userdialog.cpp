@@ -20,7 +20,6 @@ UserDialog::UserDialog(QWidget *parent) :
     connect(np, SIGNAL(closed()), this, SLOT(showd()));
     l = new MainWindow;
     connect(l, SIGNAL(closedd()), this, SLOT(showd()));
-
 }
 
 UserDialog::~UserDialog()
@@ -30,6 +29,23 @@ UserDialog::~UserDialog()
 
 void UserDialog::showd()
 {
+    if (config::user.lightmode == 0)
+    {
+        QFile styleF;
+        styleF.setFileName(":/dark.css");
+        styleF.open(QFile::ReadOnly);
+        QString qssStr = styleF.readAll();
+        qApp->setStyleSheet(qssStr);
+    }
+    else
+    {
+        QFile styleF;
+        styleF.setFileName(":/light.css");
+        styleF.open(QFile::ReadOnly);
+        QString qssStr = styleF.readAll();
+        qApp->setStyleSheet(qssStr);
+    }
+
     ui->comboBox->clear();
     QStringList users;
     foreach(config::current_user s, config::users) {users.append(s.username);}
@@ -62,4 +78,29 @@ void UserDialog::on_toolButton_2_clicked()
 void UserDialog::on_toolButton_3_clicked()
 {
     this->close();
+}
+
+void UserDialog::on_comboBox_currentIndexChanged(const QString &arg1)
+{
+    for (int i = 0; i < config::users.count(); ++i) {
+        if (arg1 == config::users.at(i).username)
+        {
+            if (config::users.at(i).lightmode == 0)
+            {
+                QFile styleF;
+                styleF.setFileName(":/dark.css");
+                styleF.open(QFile::ReadOnly);
+                QString qssStr = styleF.readAll();
+                qApp->setStyleSheet(qssStr);
+            }
+            else
+            {
+                QFile styleF;
+                styleF.setFileName(":/light.css");
+                styleF.open(QFile::ReadOnly);
+                QString qssStr = styleF.readAll();
+                qApp->setStyleSheet(qssStr);
+            }
+        }
+    }
 }

@@ -169,7 +169,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>привет</string>
+    <string/>
    </property>
   </widget>
  </widget>

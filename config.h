@@ -26,6 +26,7 @@ public:
         
         QString column_renames;
         QString column_hides;
+        int lightmode;
         
     };
 
@@ -40,6 +41,7 @@ public:
     static void set_lastused();
     static void set_db_driver(QString db_driver);
     static void set_dir_db_sqlite(QString dir);
+    static QSqlDatabase set_current_db();
 
 
     static QVector<current_user> users;

@@ -218,8 +218,7 @@ void MainWindow::addColumn1(QString column_command)
     ui->listView_tables->setSelectionMode(QAbstractItemView::ExtendedSelection);
     QString tablename = index.data(Qt::DisplayRole).toString();
 
-    QSqlDatabase db = QSqlDatabase::addDatabase(config::user.db_driver);
-    db.setDatabaseName(config::user.dir_db_sqlite);
+    QSqlDatabase db = config::set_current_db();
     if (db.open())
     {
         QSqlQuery q;
@@ -244,16 +243,7 @@ void MainWindow::deleteColumn()
     QModelIndex index = ui->listView_tables->currentIndex();
     QString tablename = index.data(Qt::DisplayRole).toString();
 
-    QSqlDatabase db = QSqlDatabase::addDatabase(config::user.db_driver);
-    if (config::user.db_driver == "QSQLITE")
-        db.setDatabaseName(config::user.dir_db_sqlite);
-    else
-    {
-        db.setHostName(config::user.hostname);
-        db.setDatabaseName(config::user.databasename);
-        db.setUserName(config::user.db_username);
-        db.setPassword(config::user.db_password);
-    }
+    QSqlDatabase db = config::set_current_db();
     if (db.open())
     {
         QSqlRecord r = db.record(tablename);
@@ -302,16 +292,7 @@ void MainWindow::deleteTable()
     QModelIndex index = ui->listView_tables->currentIndex();
     QString tableName = index.data(Qt::DisplayRole).toString();
 
-    QSqlDatabase db = QSqlDatabase::addDatabase(config::user.db_driver);
-    if (config::user.db_driver == "QSQLITE")
-        db.setDatabaseName(config::user.dir_db_sqlite);
-    else
-    {
-        db.setHostName(config::user.hostname);
-        db.setDatabaseName(config::user.databasename);
-        db.setUserName(config::user.db_username);
-        db.setPassword(config::user.db_password);
-    }
+    QSqlDatabase db = config::set_current_db();
     if (db.open())
     {
         QSqlQuery q;
@@ -340,16 +321,7 @@ void MainWindow::deleteTable()
 void MainWindow::prepare_window()
 {
     this->setDisabled(false);
-    QSqlDatabase db = QSqlDatabase::addDatabase(config::user.db_driver);
-    if (config::user.db_driver == "QSQLITE")
-        db.setDatabaseName(config::user.dir_db_sqlite);
-    else
-    {
-        db.setHostName(config::user.hostname);
-        db.setDatabaseName(config::user.databasename);
-        db.setUserName(config::user.db_username);
-        db.setPassword(config::user.db_password);
-    }
+    QSqlDatabase db = config::set_current_db();
     if (db.open())
     {
         tables_list_model = new QStringListModel;
@@ -426,16 +398,7 @@ void MainWindow::on_listView_tables_doubleClicked(const QModelIndex &index)
 
 void MainWindow::on_create_table_triggered()
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase(config::user.db_driver);
-    if (config::user.db_driver == "QSQLITE")
-        db.setDatabaseName(config::user.dir_db_sqlite);
-    else
-    {
-        db.setHostName(config::user.hostname);
-        db.setDatabaseName(config::user.databasename);
-        db.setUserName(config::user.db_username);
-        db.setPassword(config::user.db_password);
-    }
+    QSqlDatabase db = config::set_current_db();
     if (db.open())
     {
         create_table_window->prepare_window();
@@ -475,7 +438,7 @@ void MainWindow::on_save_profile_triggered()
 
 void MainWindow::on_quit_button_triggered()
 {
-    this->close();
+    this->destroy();
 }
 
 void MainWindow::on_toolButton_connect_db_clicked()
@@ -512,4 +475,28 @@ void MainWindow::on_toolButton_clicked()
     this->setDisabled(true);
     script_w->prepare_window();
     script_w->show();
+}
+
+void MainWindow::on_toolButton_lightmode_clicked()
+{
+    //lightmode 0 - темная тема; 1 - светлая
+
+    if (config::user.lightmode == 0)
+    {
+        QFile styleF;
+        styleF.setFileName(":/light.css");
+        styleF.open(QFile::ReadOnly);
+        QString qssStr = styleF.readAll();
+        config::user.lightmode = 1;
+        qApp->setStyleSheet(qssStr);
+    }
+    else
+    {
+        QFile styleF;
+        styleF.setFileName(":/dark.css");
+        styleF.open(QFile::ReadOnly);
+        QString qssStr = styleF.readAll();
+        config::user.lightmode = 0;
+        qApp->setStyleSheet(qssStr);
+    }
 }
