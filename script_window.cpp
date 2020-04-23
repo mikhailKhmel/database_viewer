@@ -6,6 +6,16 @@ script_window::script_window(QWidget *parent) :
     ui(new Ui::script_window)
 {
     ui->setupUi(this);
+    connect(ui->textEdit->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(sliderMoved(int)));
+
+    ui->splitter->setHandleWidth(1);
+    ui->splitter->setStretchFactor(0,1);
+    ui->splitter->setStretchFactor(1,15);
+
+    if (config::user.lightmode == 0)
+    {
+        ui->textEdit->setStyleSheet("color: #111111; background: #736f6f");
+    }
 }
 
 script_window::~script_window()
@@ -24,6 +34,8 @@ void script_window::prepare_window()
 
     errors.clear();
     dir.clear();
+
+    script_window::show_rows();
 }
 
 void script_window::saveFile()
@@ -70,8 +82,8 @@ void script_window::resizeEvent(QResizeEvent *event)
     else
     {
         for(int i=0;i<ui->tabWidget->count();i++)
-               if(i!=ui->tabWidget->currentIndex())
-                   ui->tabWidget->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+            if(i!=ui->tabWidget->currentIndex())
+                ui->tabWidget->widget(i)->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
 
         ui->tabWidget->widget(ui->tabWidget->currentIndex())->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
         ui->tabWidget->currentWidget()->resize(ui->tabWidget->size());
@@ -90,10 +102,13 @@ void script_window::on_toolButton_open_clicked()
         if (file.open(QIODevice::ReadOnly))
         {
             QTextStream stream (&file);
-            ui->textEdit->setText(stream.readAll());
+            ui->textEdit->document()->setPlainText(stream.readAll());
+            //ui->textEdit->setText(stream.readAll());
             this->setWindowTitle(dir);
             file.flush();
             file.close();
+
+            show_rows();
         }
         else
         {
@@ -109,7 +124,9 @@ void script_window::on_toolButton_save_clicked()
 
 void script_window::on_toolButton_runscript_clicked()
 {
-    ui->tabWidget->clear();
+    for (int i = 0; i < ui->tabWidget->count(); ++i) {
+        ui->tabWidget->removeTab(i);
+    }
     QSqlDatabase db = config::set_current_db();
 
     if (db.open())
@@ -119,6 +136,7 @@ void script_window::on_toolButton_runscript_clicked()
         query_str.remove("\n");
         QStringList query_list = query_str.split(";");
         query_list.removeLast();
+        int curr_line = 1;
         foreach (QString s, query_list)
         {
             if (s.contains("select", Qt::CaseInsensitive))
@@ -136,7 +154,7 @@ void script_window::on_toolButton_runscript_clicked()
                     ui->tabWidget->addTab(new_widget,s.mid(s.indexOf("from ", Qt::CaseInsensitive)+QString("from ").count()));
                 }
                 else
-                    errors.append(q.lastError().text());
+                    errors.append("Line " + QString::number(curr_line) + ": " + q.lastError().text());
 
                 ui->tabWidget->setVisible(true);
             }
@@ -148,6 +166,7 @@ void script_window::on_toolButton_runscript_clicked()
             }
 
             ui->label->setVisible(true);
+            curr_line++;
         }
 
         if (!errors.isEmpty())
@@ -169,11 +188,6 @@ void script_window::on_toolButton_runscript_clicked()
     }
 }
 
-void script_window::on_textEdit_textChanged()
-{
-    ui->label->setVisible(false);
-}
-
 void script_window::closeEvent(QCloseEvent *event)
 {
     QFile file(dir);
@@ -187,4 +201,71 @@ void script_window::closeEvent(QCloseEvent *event)
     prepare_window();
     emit closed();
     event->accept();
+}
+
+
+void script_window::show_rows()
+{
+    ui->textEdit_rows->clear();
+    script_window::rows = ui->textEdit->document()->lineCount();
+
+    QStringList list_rows;
+    for (int i = 1; i <= script_window::rows; i++)
+    {
+        list_rows.append(QString::number(i));
+        ui->textEdit_rows->append(QString::number(i));
+    }
+}
+
+void script_window::on_textEdit_textChanged()
+{
+    ui->label->setVisible(false);
+
+    show_rows();
+}
+
+void script_window::sliderMoved(int a)
+{
+    ui->textEdit_rows->verticalScrollBar()->setValue(a);
+}
+
+void script_window::on_textEdit_cursorPositionChanged()
+{
+    QList<QTextEdit::ExtraSelection> extraSelections_rows;
+
+    QTextEdit::ExtraSelection selection;
+
+    QColor lineColor = QColor(Qt::yellow).lighter(160);
+
+    selection.format.setBackground(lineColor);
+    selection.format.setProperty(QTextFormat::FullWidthSelection, true);
+    selection.cursor = ui->textEdit->textCursor();
+    selection.cursor.clearSelection();
+    extraSelections_rows.append(selection);
+
+    ui->textEdit->setExtraSelections(extraSelections_rows);
+}
+
+void script_window::on_toolButton_lightmode_clicked()
+{
+    //lightmode 0 - темная тема; 1 - светлая
+
+    if (config::user.lightmode == 0)
+    {
+        QFile styleF;
+        styleF.setFileName(":/light.css");
+        styleF.open(QFile::ReadOnly);
+        QString qssStr = styleF.readAll();
+        config::user.lightmode = 1;
+        qApp->setStyleSheet(qssStr);
+    }
+    else
+    {
+        QFile styleF;
+        styleF.setFileName(":/dark.css");
+        styleF.open(QFile::ReadOnly);
+        QString qssStr = styleF.readAll();
+        config::user.lightmode = 0;
+        qApp->setStyleSheet(qssStr);
+    }
 }
