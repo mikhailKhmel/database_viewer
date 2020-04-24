@@ -66,3 +66,4 @@ RESOURCES += \
     qrc.qrc
 
 DISTFILES +=
+

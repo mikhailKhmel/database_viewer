@@ -20,6 +20,7 @@ public:
         QString db_driver;
         QString dir_db_sqlite;
         QString hostname;
+        QString port;
         QString databasename;
         QString db_username;
         QString db_password;

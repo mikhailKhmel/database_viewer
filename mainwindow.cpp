@@ -223,8 +223,8 @@ void MainWindow::addColumn1(QString column_command)
     {
         QSqlQuery q;
         QString query_str = "ALTER TABLE "+tablename+" ADD COLUMN " + column_command;
-        q.prepare(query_str);
-        if (!q.exec())
+
+        if (!q.exec(query_str))
             QMessageBox::warning(this,"Ошибка команды",q.lastError().text());
         else
             reset_tableview();
@@ -296,8 +296,7 @@ void MainWindow::deleteTable()
     if (db.open())
     {
         QSqlQuery q;
-        q.prepare("DROP TABLE "+tableName);
-        if (q.exec())
+        if (q.exec("DROP TABLE "+tableName))
         {
             MainWindow::prepare_window();
             QModelIndex index = ui->listView_tables->currentIndex();

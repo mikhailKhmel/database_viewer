@@ -117,17 +117,24 @@
     </rect>
    </property>
    <layout class="QGridLayout" name="mysql_layout">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>Адрес</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QLabel" name="label_6">
+      <property name="text">
+       <string>Порт</string>
+      </property>
+     </widget>
+    </item>
     <item row="2" column="0" colspan="2">
      <widget class="QLabel" name="label_4">
       <property name="text">
        <string>Имя пользователя</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="label_3">
-      <property name="text">
-       <string>База данных</string>
       </property>
      </widget>
     </item>
@@ -141,20 +148,23 @@
     <item row="0" column="1" colspan="2">
      <widget class="QLineEdit" name="hostname_edit"/>
     </item>
-    <item row="2" column="2">
-     <widget class="QLineEdit" name="username"/>
-    </item>
-    <item row="3" column="1" colspan="2">
-     <widget class="QLineEdit" name="password"/>
-    </item>
-    <item row="0" column="0">
-     <widget class="QLabel" name="label_2">
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_3">
       <property name="text">
-       <string>Адрес</string>
+       <string>База данных</string>
       </property>
      </widget>
     </item>
-    <item row="1" column="1" colspan="2">
+    <item row="0" column="4">
+     <widget class="QLineEdit" name="lineEdit_port"/>
+    </item>
+    <item row="2" column="2" colspan="3">
+     <widget class="QLineEdit" name="username"/>
+    </item>
+    <item row="3" column="2" colspan="3">
+     <widget class="QLineEdit" name="password"/>
+    </item>
+    <item row="1" column="2" colspan="3">
      <widget class="QLineEdit" name="db"/>
     </item>
    </layout>

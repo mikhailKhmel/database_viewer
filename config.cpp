@@ -31,18 +31,19 @@ void config::load_config()
         QSqlQuery check_query("SELECT * FROM 'USERS'");
         if (!check_query.exec())
         {
-            QSqlQuery query("CREATE TABLE 'USERS' "
-                            "('USERNAME'	TEXT UNIQUE,"
-                            "'LASTUSED'	INTEGER, "
-                            "'DB_DRIVER'	TEXT, "
-                            "'DIR_DB_SQLITE' TEXT,"
-                            "'HOSTNAME' TEXT,"
-                            "'DATABASENAME' TEXT,"
-                            "'DB_USERNAME' TEXT,"
-                            "'DB_PASSWORD' TEXT,"
-                            "'COLUMN_RENAMES' TEXT,"
-                            "'COLUMN_HIDES' TEXT ,"
-                            "'LIGHTMODE' INTEGER DEFAULT 1);");
+            QSqlQuery query("CREATE TABLE USERS "
+                            "(USERNAME	TEXT UNIQUE,"
+                            "LASTUSED	INTEGER, "
+                            "DB_DRIVER	TEXT, "
+                            "DIR_DB_SQLITE TEXT,"
+                            "HOSTNAME TEXT,"
+                            "PORT TEXT,"
+                            "DATABASENAME TEXT,"
+                            "DB_USERNAME TEXT,"
+                            "DB_PASSWORD TEXT,"
+                            "COLUMN_RENAMES TEXT,"
+                            "COLUMN_HIDES TEXT ,"
+                            "LIGHTMODE INTEGER DEFAULT 1);");
             if (!query.exec())
                 qDebug() << db.lastError().text();
         }
@@ -58,6 +59,7 @@ void config::load_config()
                 new_user.db_driver = model.record(i).value("DB_DRIVER").toString();
                 new_user.dir_db_sqlite = model.record(i).value("DIR_DB_SQLITE").toString();
                 new_user.hostname = model.record(i).value("HOSTNAME").toString();
+                new_user.port = model.record(i).value("PORT").toString();
                 new_user.databasename = model.record(i).value("DATABASENAME").toString();
                 new_user.db_username = model.record(i).value("DB_USERNAME").toString();
                 new_user.db_password = model.record(i).value("DB_PASSWORD").toString();
@@ -92,7 +94,7 @@ void config::save_config()
             foreach(config::current_user u, config::users)
             {
                 if (q.exec("INSERT INTO USERS VALUES('"+u.username+"', "+QString::number(u.lastused)+", '"+u.db_driver+"', '"+u.dir_db_sqlite+"', "
-                           "'" + u.hostname + "', '" + u.databasename + "', '" + u.db_username + "', '" + u.db_password + "', '" + u.column_renames + "', '" + u.column_hides + "', '" + QString::number(u.lightmode) + "')"))
+                           "'" + u.hostname + "', '" + u.port + "', '" + u.databasename + "', '" + u.db_username + "', '" + u.db_password + "', '" + u.column_renames + "', '" + u.column_hides + "', '" + QString::number(u.lightmode) + "')"))
                     continue;
                 else
                     qDebug() << q.lastError().text();
@@ -148,17 +150,6 @@ void config::set_current_user(QString username)
     }
 }
 
-
-void config::set_db_driver(QString db_driver)
-{
-    user.db_driver = db_driver;
-}
-
-void config::set_dir_db_sqlite(QString dir)
-{
-    user.dir_db_sqlite=dir;
-}
-
 QSqlDatabase config::set_current_db()
 {
     QSqlDatabase db = QSqlDatabase::addDatabase(config::user.db_driver);
@@ -167,9 +158,12 @@ QSqlDatabase config::set_current_db()
     else
     {
         db.setHostName(config::user.hostname);
+        db.setPort(config::user.port.toInt());
         db.setDatabaseName(config::user.databasename);
         db.setUserName(config::user.db_username);
         db.setPassword(config::user.db_password);
     }
+//    if (config::user.db_driver == "QPSQL")
+//        db.setConnectOptions("requiressl=1");
     return db;
 }

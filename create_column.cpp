@@ -61,7 +61,7 @@ void create_column::on_pushButton_clicked()
 
     if (!tablename.isEmpty())
     {
-        query_str.append("'" + tablename + "' " + type_column + " ");
+        query_str.append(tablename + " " + type_column + " ");
         if (pk)
             query_str.append("PRIMARY KEY ");
 

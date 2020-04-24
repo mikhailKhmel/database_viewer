@@ -57,7 +57,7 @@ void create_table::on_toolButton_clicked()
 
 void create_table::on_tablename_textChanged(const QString &arg1)
 {
-    create_table::create_table_query[0] = "CREATE TABLE '" + arg1 + "' (";
+    create_table::create_table_query[0] = "CREATE TABLE " + arg1 + " (";
     create_table::update_query();
 }
 
@@ -70,8 +70,8 @@ void create_table::on_pushButton_clicked()
             QString q = ui->textEdit->toPlainText();
             q.remove("\n");
             q.replace("(,", "(");
-            qry.prepare(q);
-            if (qry.exec())
+            //qry.prepare(q);
+            if (qry.exec(q))
             {
                 emit closed();
                 this->destroy();
