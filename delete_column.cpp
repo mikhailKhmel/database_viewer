@@ -12,14 +12,14 @@ delete_column::delete_column(QWidget *parent) :
 delete_column::~delete_column() {
     delete ui;
 }
-void delete_column::mousePressEvent(QMouseEvent *event) {
-    m_nMouseClick_X_Coordinate = event->x();
-    m_nMouseClick_Y_Coordinate = event->y();
-}
+//void delete_column::mousePressEvent(QMouseEvent *event) {
+//    m_nMouseClick_X_Coordinate = event->x();
+//    m_nMouseClick_Y_Coordinate = event->y();
+//}
 
-void delete_column::mouseMoveEvent(QMouseEvent *event) {
-    move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
-}
+//void delete_column::mouseMoveEvent(QMouseEvent *event) {
+//    move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
+//}
 void delete_column::prepare_window(QStringList fields, QString current_table) {
     ui->comboBox->addItems(fields);
     delete_column::current_table = current_table;

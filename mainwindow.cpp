@@ -92,6 +92,7 @@ void MainWindow::uncoverColumn() {
     ui->listView_tables->setSelectionMode(QAbstractItemView::ExtendedSelection);
     QString tablename = index.data(Qt::DisplayRole).toString();
     u_c->prepeare_window(tablename);
+    clearTable();
     u_c->show();
 }
 
@@ -236,10 +237,12 @@ void MainWindow::addColumn1(QString column_command) {
 }
 
 void MainWindow::addColumn() {
+    clearTable();
     c_c->show();
 }
 
 void MainWindow::deleteColumn() {
+    clearTable();
     QStringList fields;
     QModelIndex index = ui->listView_tables->currentIndex();
     QString tablename = index.data(Qt::DisplayRole).toString();
@@ -334,6 +337,7 @@ void MainWindow::resizeEvent(QResizeEvent *event) {
 }
 
 void MainWindow::on_connect_db_triggered() {
+
     c_db->show();
 }
 
@@ -385,14 +389,25 @@ void MainWindow::on_listView_tables_doubleClicked(const QModelIndex &index) {
         ui->tableView->show();
     }
     QSqlDatabase::removeDatabase(config::curr_database_name);
+}
 
-
-
+void MainWindow::clearTable()
+{
+    QModelIndex index = ui->listView_tables->currentIndex();
+    ui->listView_tables->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    QString tablename = index.data(Qt::DisplayRole).toString();
+    QSqlTableModel *model = new QSqlTableModel;
+    model->setTable(tablename);
+    model->select();
+    model->insertRow(0, index);
+    ui->tableView->setModel(model);
+    model->clear();
 }
 
 void MainWindow::on_create_table_triggered() {
     QSqlDatabase db = config::set_current_db();
     if (db.open()) {
+        clearTable();
         create_table_window->prepare_window();
         create_table_window->show();
     } else
@@ -449,11 +464,13 @@ void MainWindow::on_toolButton_filter_clicked() {
     QModelIndex index = ui->listView_tables->currentIndex();
     ui->listView_tables->setSelectionMode(QAbstractItemView::ExtendedSelection);
     QString tablename = index.data(Qt::DisplayRole).toString();
+    clearTable();
     s_w->prepareWindow(tablename);
     s_w->show();
 }
 
 void MainWindow::on_toolButton_clicked() {
+    clearTable();
     this->setDisabled(true);
     script_w->prepare_window();
     script_w->show();
