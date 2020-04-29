@@ -6,6 +6,7 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QMouseEvent>
 
 namespace Ui {
     class connect_db;
@@ -31,7 +32,11 @@ private
 
     void on_pushButton_test_clicked();
 
-    signals:
+    void on_pushButton_2_clicked();
+
+
+
+signals:
             void
 
     closed();
@@ -42,6 +47,10 @@ private:
     void enable_layout(QString dr);
 
     void set_connection_data();
+    void mousePressEvent(QMouseEvent *event);
+        void mouseMoveEvent(QMouseEvent *event);
+        int m_nMouseClick_X_Coordinate;
+        int m_nMouseClick_Y_Coordinate;
 };
 
 #endif // CONNECT_DB_H

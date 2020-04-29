@@ -18,6 +18,7 @@
 #include <QResizeEvent>
 #include <QMessageBox>
 #include <QApplication>
+#include <QMouseEvent>
 
 namespace Ui {
     class MainWindow;
@@ -122,7 +123,10 @@ private:
     select_window *s_w;
     script_window *script_w;
 
-    QStringListModel *tables_list_model;
+    QStringListModel *tables_list_model;void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    int m_nMouseClick_X_Coordinate;
+    int m_nMouseClick_Y_Coordinate;
 };
 
 #endif // MAINWINDOW_H

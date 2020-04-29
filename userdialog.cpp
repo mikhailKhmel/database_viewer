@@ -10,6 +10,7 @@ UserDialog::UserDialog(QWidget *parent) :
         ui(new Ui::UserDialog) {
     ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);
+    this->setWindowFlag(Qt::FramelessWindowHint);
 
     QStringList users;
     foreach(config::current_user
@@ -25,7 +26,14 @@ UserDialog::UserDialog(QWidget *parent) :
 UserDialog::~UserDialog() {
     delete ui;
 }
+void UserDialog::mousePressEvent(QMouseEvent *event) {
+    m_nMouseClick_X_Coordinate = event->x();
+    m_nMouseClick_Y_Coordinate = event->y();
+}
 
+void UserDialog::mouseMoveEvent(QMouseEvent *event) {
+    move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
+}
 void UserDialog::showd() {
     if (config::user.lightmode == 0) {
         QFile styleF;

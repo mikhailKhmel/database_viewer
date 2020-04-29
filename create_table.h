@@ -7,6 +7,7 @@
 #include <QSqlError>
 #include <QMessageBox>
 #include <QDebug>
+#include <QMouseEvent>
 
 namespace Ui {
     class create_table;
@@ -35,7 +36,9 @@ private
     void on_pushButton_clicked();
 
 
-    signals:
+    void on_pushButton_2_clicked();
+
+signals:
             void
 
     closed();
@@ -47,6 +50,10 @@ private:
     QStringList create_table_query;
 
     void update_query();
+    void mousePressEvent(QMouseEvent *event);
+        void mouseMoveEvent(QMouseEvent *event);
+        int m_nMouseClick_X_Coordinate;
+        int m_nMouseClick_Y_Coordinate;
 };
 
 #endif // CREATE_TABLE_H

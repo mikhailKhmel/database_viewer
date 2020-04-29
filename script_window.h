@@ -17,6 +17,7 @@
 #include <QListView>
 #include <QScrollBar>
 #include <QApplication>
+#include <QMouseEvent>
 
 namespace Ui {
     class script_window;
@@ -60,6 +61,8 @@ private
 
     void sliderMoved(int a);
 
+    void on_pushButton_clicked();
+
 private:
     Ui::script_window *ui;
 
@@ -73,6 +76,10 @@ private:
     void show_rows();
 
     int rows;
+    void mousePressEvent(QMouseEvent *event);
+        void mouseMoveEvent(QMouseEvent *event);
+        int m_nMouseClick_X_Coordinate;
+        int m_nMouseClick_Y_Coordinate;
 };
 
 #endif // SCRIPT_WINDOW_H

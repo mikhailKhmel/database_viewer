@@ -5,13 +5,21 @@ delete_column::delete_column(QWidget *parent) :
         QWidget(parent),
         ui(new Ui::delete_column) {
     ui->setupUi(this);
+    this->setWindowFlag(Qt::FramelessWindowHint);
     //this->setWindowFlag(Qt::FramelessWindowHint);
 }
 
 delete_column::~delete_column() {
     delete ui;
 }
+void delete_column::mousePressEvent(QMouseEvent *event) {
+    m_nMouseClick_X_Coordinate = event->x();
+    m_nMouseClick_Y_Coordinate = event->y();
+}
 
+void delete_column::mouseMoveEvent(QMouseEvent *event) {
+    move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
+}
 void delete_column::prepare_window(QStringList fields, QString current_table) {
     ui->comboBox->addItems(fields);
     delete_column::current_table = current_table;
@@ -90,6 +98,7 @@ void delete_column::on_pushButton_submit_clicked() {
                 } else qDebug() << "insert into " << q.lastError().text();
             } else qDebug() << "create table " << q.lastError().text();
         }
+        QSqlDatabase::removeDatabase(config::curr_database_name);
     } else {
         QSqlDatabase db = config::set_current_db();
         if (db.open()) {
@@ -97,6 +106,7 @@ void delete_column::on_pushButton_submit_clicked() {
             if (!q.exec("ALTER TABLE " + current_table + " DROP COLUMN " + ui->comboBox->currentText()))
                 qDebug() << "another driver " << q.lastError().text();
         }
+        QSqlDatabase::removeDatabase(config::curr_database_name);
     }
 
 }

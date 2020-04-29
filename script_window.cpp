@@ -5,6 +5,7 @@ script_window::script_window(QWidget *parent) :
         QWidget(parent),
         ui(new Ui::script_window) {
     ui->setupUi(this);
+    this->setWindowFlag(Qt::FramelessWindowHint);
     connect(ui->textEdit->verticalScrollBar(), SIGNAL(valueChanged(int)), this, SLOT(sliderMoved(int)));
 
     ui->splitter->setHandleWidth(1);
@@ -19,7 +20,14 @@ script_window::script_window(QWidget *parent) :
 script_window::~script_window() {
     delete ui;
 }
+void script_window::mousePressEvent(QMouseEvent *event) {
+    m_nMouseClick_X_Coordinate = event->x();
+    m_nMouseClick_Y_Coordinate = event->y();
+}
 
+void script_window::mouseMoveEvent(QMouseEvent *event) {
+    move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
+}
 void script_window::prepare_window() {
     ui->textEdit->clear();
     ui->tabWidget->setVisible(false);
@@ -161,6 +169,7 @@ void script_window::on_toolButton_runscript_clicked() {
             ui->tabWidget->addTab(err_widget, "Ошибки");
         }
     }
+    QSqlDatabase::removeDatabase(config::curr_database_name);
 }
 
 void script_window::closeEvent(QCloseEvent *event) {
@@ -232,4 +241,9 @@ void script_window::on_toolButton_lightmode_clicked() {
         config::user.lightmode = 0;
         qApp->setStyleSheet(qssStr);
     }
+}
+
+void script_window::on_pushButton_clicked()
+{
+    this->close();
 }

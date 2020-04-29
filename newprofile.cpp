@@ -10,13 +10,20 @@ newprofile::newprofile(QWidget *parent) :
     ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);
     ui->error_label->setVisible(false);
-    //this->setWindowFlag(Qt::FramelessWindowHint);
+    this->setWindowFlag(Qt::FramelessWindowHint);
 }
 
 newprofile::~newprofile() {
     delete ui;
 }
+void newprofile::mousePressEvent(QMouseEvent *event) {
+    m_nMouseClick_X_Coordinate = event->x();
+    m_nMouseClick_Y_Coordinate = event->y();
+}
 
+void newprofile::mouseMoveEvent(QMouseEvent *event) {
+    move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
+}
 
 void newprofile::on_pushButton_clicked() {
     QString newuser = ui->lineEdit->text();

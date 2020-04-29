@@ -6,6 +6,7 @@ create_column::create_column(QWidget *parent) :
         QWidget(parent),
         ui(new Ui::create_column) {
     ui->setupUi(this);
+    this->setWindowFlag(Qt::FramelessWindowHint);
     create_column::foreign_key_flag = false;
     ui->frame->setVisible(foreign_key_flag);
 
@@ -15,7 +16,14 @@ create_column::create_column(QWidget *parent) :
 create_column::~create_column() {
     delete ui;
 }
+void create_column::mousePressEvent(QMouseEvent *event) {
+    m_nMouseClick_X_Coordinate = event->x();
+    m_nMouseClick_Y_Coordinate = event->y();
+}
 
+void create_column::mouseMoveEvent(QMouseEvent *event) {
+    move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
+}
 void create_column::on_pushButton_2_clicked() {
     if (create_column::foreign_key_flag)
         create_column::foreign_key_flag = false;
@@ -82,4 +90,9 @@ void create_column::on_pushButton_clicked() {
         this->destroy();
     } else
         QMessageBox::warning(this, "Ошибка", "Задайте имя поля");
+}
+
+void create_column::on_pushButton_3_clicked()
+{
+    this->close();
 }

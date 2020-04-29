@@ -3,12 +3,12 @@
 
 
 MainWindow::MainWindow(QWidget *parent) :
-        QMainWindow(parent),
-        ui(new Ui::MainWindow) {
+    QMainWindow(parent),
+    ui(new Ui::MainWindow) {
     ui->setupUi(this);
     tables_list_model = new QStringListModel(this);
 
-    //this->setWindowFlag(Qt::FramelessWindowHint);
+    this->setWindowFlag(Qt::FramelessWindowHint);
     this->setAttribute(Qt::WA_DeleteOnClose);
 
     c_db = new connect_db;
@@ -29,16 +29,16 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->tableView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu_table(QPoint)));
     connect(d_c, SIGNAL(closed()), this, SLOT(reset_tableview()));
     connect(c_c, SIGNAL(closed(
-    const QString &)), this, SLOT(addColumn1(QString)));
+                            const QString &)), this, SLOT(addColumn1(QString)));
     connect(r_c, SIGNAL(closed(
-    const QString &)), this, SLOT(renameColumn1(
-    const QString &)));
+                            const QString &)), this, SLOT(renameColumn1(
+                                                              const QString &)));
     connect(u_c, SIGNAL(closed(
-    const QString &)), this, SLOT(uncoverColumn1(
-    const QString &)));
+                            const QString &)), this, SLOT(uncoverColumn1(
+                                                              const QString &)));
     connect(s_w, SIGNAL(closed(
-    const QString &)), this, SLOT(enableFilter(
-    const QString &)));
+                            const QString &)), this, SLOT(enableFilter(
+                                                              const QString &)));
     connect(script_w, SIGNAL(closed()), this, SLOT(prepare_window()));
 
 
@@ -51,7 +51,14 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow() {
     delete ui;
 }
+void MainWindow::mousePressEvent(QMouseEvent *event) {
+    m_nMouseClick_X_Coordinate = event->x();
+    m_nMouseClick_Y_Coordinate = event->y();
+}
 
+void MainWindow::mouseMoveEvent(QMouseEvent *event) {
+    move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
+}
 
 void MainWindow::showContextMenu_table(const QPoint &pos) {
     QPoint globalPos = ui->tableView->mapToGlobal(pos);
@@ -152,7 +159,7 @@ void MainWindow::hideColumn() {
     QStringList col_hid = config::user.column_hides.split(";");
 
     foreach(QString
-    s, col_hid) {
+            s, col_hid) {
         if (s.contains(tablename + "," + ind))
             col_hid.removeOne(s);
     }
@@ -225,7 +232,7 @@ void MainWindow::addColumn1(QString column_command) {
         else
             reset_tableview();
     }
-
+    QSqlDatabase::removeDatabase(config::curr_database_name);
 }
 
 void MainWindow::addColumn() {
@@ -243,6 +250,7 @@ void MainWindow::deleteColumn() {
         for (int i = 0; i < r.count(); i++)
             fields.append(r.fieldName(i));
     }
+    QSqlDatabase::removeDatabase(config::curr_database_name);
 
     d_c->prepare_window(fields, tablename);
     d_c->show();
@@ -263,7 +271,7 @@ void MainWindow::renameColumn1(const QString &new_column) {
     QStringList col_ren = config::user.column_renames.split(";");
 
     foreach(QString
-    s, col_ren) {
+            s, col_ren) {
         if (s.contains(tablename + "," + ind))
             col_ren.removeOne(s);
     }
@@ -300,7 +308,7 @@ void MainWindow::deleteTable() {
             qDebug() << q.lastError().text();
     } else
         qDebug() << db.lastError().text();
-
+    QSqlDatabase::removeDatabase(config::curr_database_name);
     ui->tableView->reset();
 }
 
@@ -315,7 +323,7 @@ void MainWindow::prepare_window() {
         ui->listView_tables->show();
     } else
         qDebug() << db.lastError().text();
-
+    QSqlDatabase::removeDatabase(config::curr_database_name);
     this->setWindowTitle("Текущий пользователь: " + config::user.username);
 }
 
@@ -333,45 +341,53 @@ void MainWindow::on_connect_db_triggered() {
 void MainWindow::on_listView_tables_doubleClicked(const QModelIndex &index) {
     ui->listView_tables->setSelectionMode(QAbstractItemView::ExtendedSelection);
     QString tablename = index.data(Qt::DisplayRole).toString();
-    QSqlTableModel *model = new QSqlTableModel;
-    model->setTable(tablename);
+
+    QSqlDatabase db = config::set_current_db();
+    if (db.open())
+    {
+        QSqlTableModel *model = new QSqlTableModel;
+        model->setTable(tablename);
 
 
-    if (!config::user.column_renames.isEmpty()) {
-        QStringList params = config::user.column_renames.split(";");
-        params.removeLast();
-        foreach(QString
-        s, params)
-        {
-            QStringList params1 = s.split(",");
-            QString table = params1[0];
-            int index = params1[1].toInt();
-            QString new_column = params1[2];
-            if (table == tablename) {
-                model->setHeaderData(index, Qt::Horizontal, tr(new_column.toUtf8()));
+        if (!config::user.column_renames.isEmpty()) {
+            QStringList params = config::user.column_renames.split(";");
+            params.removeLast();
+            foreach(QString
+                    s, params)
+            {
+                QStringList params1 = s.split(",");
+                QString table = params1[0];
+                int index = params1[1].toInt();
+                QString new_column = params1[2];
+                if (table == tablename) {
+                    model->setHeaderData(index, Qt::Horizontal, tr(new_column.toUtf8()));
+                }
             }
         }
-    }
 
-    model->select();
-    ui->tableView->setModel(model);
+        model->select();
+        ui->tableView->setModel(model);
 
-    if (!config::user.column_hides.isEmpty()) {
-        QStringList params = config::user.column_hides.split(";");
-        params.removeLast();
-        foreach(QString
-        s, params)
-        {
-            QStringList params1 = s.split(",");
-            QString table = params1[0];
-            int index = params1[1].toInt();
-            if (table == tablename) {
-                ui->tableView->setColumnHidden(index, true);
+        if (!config::user.column_hides.isEmpty()) {
+            QStringList params = config::user.column_hides.split(";");
+            params.removeLast();
+            foreach(QString
+                    s, params)
+            {
+                QStringList params1 = s.split(",");
+                QString table = params1[0];
+                int index = params1[1].toInt();
+                if (table == tablename) {
+                    ui->tableView->setColumnHidden(index, true);
+                }
             }
         }
+        ui->tableView->show();
     }
+    QSqlDatabase::removeDatabase(config::curr_database_name);
 
-    ui->tableView->show();
+
+
 }
 
 void MainWindow::on_create_table_triggered() {
@@ -381,6 +397,7 @@ void MainWindow::on_create_table_triggered() {
         create_table_window->show();
     } else
         QMessageBox::warning(this, "Ошибка", "Сначала подключитесь к базе данных");
+    QSqlDatabase::removeDatabase(config::curr_database_name);
 }
 
 void MainWindow::on_tableView_doubleClicked(const QModelIndex &index) {
@@ -409,7 +426,7 @@ void MainWindow::on_save_profile_triggered() {
 }
 
 void MainWindow::on_quit_button_triggered() {
-    this->destroy();
+    qApp->closeAllWindows();
 }
 
 void MainWindow::on_toolButton_connect_db_clicked() {

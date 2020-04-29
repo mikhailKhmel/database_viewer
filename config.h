@@ -53,6 +53,9 @@ public:
     static QString LastError;
 
     static current_user user;
+
+    static QString curr_database_name;
+    static const QString local_db;
 private:
     static QSqlDatabase db;
 };

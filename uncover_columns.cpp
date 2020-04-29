@@ -7,13 +7,20 @@ uncover_columns::uncover_columns(QWidget *parent) :
         QWidget(parent),
         ui(new Ui::uncover_columns) {
     ui->setupUi(this);
-    //this->setWindowFlag(Qt::FramelessWindowHint);
+    this->setWindowFlag(Qt::FramelessWindowHint);
 }
 
 uncover_columns::~uncover_columns() {
     delete ui;
 }
+void uncover_columns::mousePressEvent(QMouseEvent *event) {
+    m_nMouseClick_X_Coordinate = event->x();
+    m_nMouseClick_Y_Coordinate = event->y();
+}
 
+void uncover_columns::mouseMoveEvent(QMouseEvent *event) {
+    move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
+}
 void uncover_columns::prepeare_window(QString tablename) {
     this->setWindowTitle("Раскрыть столбцы " + tablename);
     QStringList columns_in_curr_tablename;
@@ -23,6 +30,7 @@ void uncover_columns::prepeare_window(QString tablename) {
         for (int i = 0; i < rec.count(); i++)
             columns_in_curr_tablename.append(rec.fieldName(i));
     }
+    QSqlDatabase::removeDatabase(config::curr_database_name);
 
     QStringList col_hid = config::user.column_hides.split(";");
     col_hid.removeLast();

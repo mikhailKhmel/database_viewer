@@ -5,13 +5,20 @@ select_window::select_window(QWidget *parent) :
         QWidget(parent),
         ui(new Ui::select_window) {
     ui->setupUi(this);
-
+this->setWindowFlag(Qt::FramelessWindowHint);
 }
 
 select_window::~select_window() {
     delete ui;
 }
+void select_window::mousePressEvent(QMouseEvent *event) {
+    m_nMouseClick_X_Coordinate = event->x();
+    m_nMouseClick_Y_Coordinate = event->y();
+}
 
+void select_window::mouseMoveEvent(QMouseEvent *event) {
+    move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
+}
 void select_window::prepareWindow(QString tablename) {
     QSqlDatabase db = config::set_current_db();
 
@@ -24,7 +31,7 @@ void select_window::prepareWindow(QString tablename) {
             }
         }
     }
-    db.close();
+    QSqlDatabase::removeDatabase(config::curr_database_name);
     select_window::curr_table.append(tablename);
 
     ui->comboBox_selectColumn->clear();

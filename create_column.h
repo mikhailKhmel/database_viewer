@@ -7,6 +7,7 @@
 #include <QSqlRecord>
 #include <QStringList>
 #include <QMessageBox>
+#include <QMouseEvent>
 
 namespace Ui {
     class create_column;
@@ -30,7 +31,10 @@ private
 
     void on_pushButton_clicked();
 
-    signals:
+    void on_pushButton_3_clicked();
+
+
+signals:
             void
 
     closed(const QString &str);
@@ -38,6 +42,10 @@ private
 private:
     Ui::create_column *ui;
     bool foreign_key_flag; //false-выкл. true-вкл
+    void mousePressEvent(QMouseEvent *event);
+        void mouseMoveEvent(QMouseEvent *event);
+        int m_nMouseClick_X_Coordinate;
+        int m_nMouseClick_Y_Coordinate;
 
 };
 

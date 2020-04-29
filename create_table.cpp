@@ -5,6 +5,7 @@ create_table::create_table(QWidget *parent) :
         QWidget(parent),
         ui(new Ui::create_table) {
     ui->setupUi(this);
+    this->setWindowFlag(Qt::FramelessWindowHint);
     //create_table::create_table_query.append("");
     l = new create_column;
 
@@ -20,14 +21,20 @@ create_table::create_table(QWidget *parent) :
 create_table::~create_table() {
     delete ui;
 }
+void create_table::mousePressEvent(QMouseEvent *event) {
+    m_nMouseClick_X_Coordinate = event->x();
+    m_nMouseClick_Y_Coordinate = event->y();
+}
 
+void create_table::mouseMoveEvent(QMouseEvent *event) {
+    move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
+}
 void create_table::prepare_window() {
     ui->tablename->clear();
     ui->textEdit->clear();
     create_table::create_table_query.clear();
     create_table::create_table_query.append("");
     create_table::create_table_query.append(");");
-    this->setWindowTitle("Создать новую таблицу");
 }
 
 
@@ -72,4 +79,9 @@ void create_table::on_pushButton_clicked() {
             QMessageBox::warning(this, "Error", qry.lastError().text());
     }
 
+}
+
+void create_table::on_pushButton_2_clicked()
+{
+    this->close();
 }

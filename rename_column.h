@@ -2,6 +2,7 @@
 #define RENAME_COLUMN_H
 
 #include <QWidget>
+#include <QMouseEvent>
 
 namespace Ui {
     class rename_column;
@@ -30,6 +31,10 @@ private
 
 private:
     Ui::rename_column *ui;
+    void mousePressEvent(QMouseEvent *event);
+        void mouseMoveEvent(QMouseEvent *event);
+        int m_nMouseClick_X_Coordinate;
+        int m_nMouseClick_Y_Coordinate;
 };
 
 #endif // RENAME_COLUMN_H

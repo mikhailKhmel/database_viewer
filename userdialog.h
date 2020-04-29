@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QApplication>
+#include <QMouseEvent>
 #include "mainwindow.h"
 #include "newprofile.h"
 
@@ -36,6 +37,10 @@ private:
     Ui::UserDialog *ui;
     MainWindow *l;
     newprofile *np;
+    void mousePressEvent(QMouseEvent *event);
+        void mouseMoveEvent(QMouseEvent *event);
+        int m_nMouseClick_X_Coordinate;
+        int m_nMouseClick_Y_Coordinate;
 };
 
 #endif // USERDIALOG_H

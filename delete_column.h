@@ -5,6 +5,7 @@
 #include <QSqlQuery>
 #include <QSqlDatabase>
 #include <QDebug>
+#include <QMouseEvent>
 #include "config.h"
 
 namespace Ui {
@@ -34,10 +35,15 @@ private
 
     void on_pushButton_submit_clicked();
 
+
 private:
     Ui::delete_column *ui;
 
     QString current_table;
+    void mousePressEvent(QMouseEvent *event);
+        void mouseMoveEvent(QMouseEvent *event);
+        int m_nMouseClick_X_Coordinate;
+        int m_nMouseClick_Y_Coordinate;
 };
 
 #endif // DELETE_COLUMN_H

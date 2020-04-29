@@ -5,6 +5,7 @@
 #include <QSqlDatabase>
 #include <QStringListModel>
 #include <QWidget>
+#include <QMouseEvent>
 
 namespace Ui {
     class uncover_columns;
@@ -37,6 +38,10 @@ private:
     Ui::uncover_columns *ui;
 
     QStringListModel *tables_list_model;
+    void mousePressEvent(QMouseEvent *event);
+        void mouseMoveEvent(QMouseEvent *event);
+        int m_nMouseClick_X_Coordinate;
+        int m_nMouseClick_Y_Coordinate;
 };
 
 #endif // UNCOVER_COLUMNS_H

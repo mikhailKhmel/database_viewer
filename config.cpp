@@ -8,16 +8,20 @@ QSqlDatabase config::work_db;
 QVector <config::current_user> config::users;
 config::current_user config::user;
 QString config::LastError;
+QString config::curr_database_name;
+const QString config::local_db = QString("config.db");
 
 void config::set_lastused() {
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("config.db");
+    db.setDatabaseName(local_db);
     if (db.open()) {
         QSqlQuery q;
         q.prepare("UPDATE USERS SET LASTUSED = 0 WHERE USERNAME <> " + user.username);
         if (q.exec())
             user.lastused = 1;
     }
+    QSqlDatabase::removeDatabase(local_db);
+
 }
 
 void config::load_config() {
@@ -63,6 +67,7 @@ void config::load_config() {
 
         }
     }
+    QSqlDatabase::removeDatabase(local_db);
 }
 
 void config::save_config() {
@@ -79,11 +84,11 @@ void config::save_config() {
         if (q.exec("DELETE FROM USERS")) {
             q.clear();
             foreach(config::current_user
-            u, config::users)
+                    u, config::users)
             {
                 if (q.exec("INSERT INTO USERS VALUES('" + u.username + "', " + QString::number(u.lastused) + ", '" +
                            u.db_driver + "', '" + u.dir_db_sqlite + "', "
-                                                                    "'" + u.hostname + "', '" + u.port + "', '" +
+                           "'" + u.hostname + "', '" + u.port + "', '" +
                            u.databasename + "', '" + u.db_username + "', '" + u.db_password + "', '" +
                            u.column_renames + "', '" + u.column_hides + "', '" + QString::number(u.lightmode) + "')"))
                     continue;
@@ -94,6 +99,7 @@ void config::save_config() {
         }
 
     }
+    QSqlDatabase::removeDatabase(local_db);
 }
 
 
@@ -121,16 +127,17 @@ bool config::set_new_user(QString user) {
             if (!qry.exec()) {
                 LastError = qry.lastError().text();
                 qDebug() << qry.lastError().text();
+                QSqlDatabase::removeDatabase(local_db);
                 return true;
             }
-            else return true;
-        } else return false;
-    } else return false;
+            else {QSqlDatabase::removeDatabase(local_db);return true;}
+        } else {QSqlDatabase::removeDatabase(local_db);return false;}
+    } else {QSqlDatabase::removeDatabase(local_db);return false;}
 }
 
 void config::set_current_user(QString username) {
     foreach(config::current_user
-    u, config::users)
+            u, config::users)
     {
         if (u.username == username) {
             config::user = u;
@@ -142,14 +149,25 @@ void config::set_current_user(QString username) {
 QSqlDatabase config::set_current_db() {
     QSqlDatabase db = QSqlDatabase::addDatabase(config::user.db_driver);
     if (config::user.db_driver == "QSQLITE")
+    {
         db.setDatabaseName(config::user.dir_db_sqlite);
+        config::curr_database_name = config::user.dir_db_sqlite;
+    }
     else if (config::user.db_driver == "QODBC3") {
         if (config::user.port.isEmpty())
+        {
             db.setDatabaseName(QString("DRIVER={SQL Server};SERVER=%1;DATABASE=%2;Trusted_Connection=yes;").arg(
-                    config::user.hostname, config::user.databasename));
+                                config::user.hostname, config::user.databasename));
+            config::curr_database_name = QString("DRIVER={SQL Server};SERVER=%1;DATABASE=%2;Trusted_Connection=yes;").arg(
+                        config::user.hostname, config::user.databasename);
+        }
         else
+        {
             db.setDatabaseName(QString("DRIVER={SQL Server};SERVER=%1;DATABASE=%2;Trusted_Connection=yes;").arg(
-                    config::user.hostname + "," + config::user.port, config::user.databasename));
+                                   config::user.hostname + "," + config::user.port, config::user.databasename));
+            config::curr_database_name =QString("DRIVER={SQL Server};SERVER=%1;DATABASE=%2;Trusted_Connection=yes;").arg(
+                        config::user.hostname + "," + config::user.port, config::user.databasename);
+        }
 
         db.setUserName(config::user.db_username);
         db.setPassword(config::user.db_password);
@@ -159,6 +177,7 @@ QSqlDatabase config::set_current_db() {
         db.setDatabaseName(config::user.databasename);
         db.setUserName(config::user.db_username);
         db.setPassword(config::user.db_password);
+        config::curr_database_name = config::user.databasename;
     }
     return db;
 }
