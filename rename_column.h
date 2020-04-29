@@ -31,10 +31,13 @@ private
 
 private:
     Ui::rename_column *ui;
+
     void mousePressEvent(QMouseEvent *event);
-        void mouseMoveEvent(QMouseEvent *event);
-        int m_nMouseClick_X_Coordinate;
-        int m_nMouseClick_Y_Coordinate;
+
+    void mouseMoveEvent(QMouseEvent *event);
+
+    int m_nMouseClick_X_Coordinate;
+    int m_nMouseClick_Y_Coordinate;
 };
 
 #endif // RENAME_COLUMN_H

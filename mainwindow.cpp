@@ -3,8 +3,8 @@
 
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow) {
+        QMainWindow(parent),
+        ui(new Ui::MainWindow) {
     ui->setupUi(this);
     tables_list_model = new QStringListModel(this);
 
@@ -29,16 +29,16 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->tableView, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu_table(QPoint)));
     connect(d_c, SIGNAL(closed()), this, SLOT(reset_tableview()));
     connect(c_c, SIGNAL(closed(
-                            const QString &)), this, SLOT(addColumn1(QString)));
+    const QString &)), this, SLOT(addColumn1(QString)));
     connect(r_c, SIGNAL(closed(
-                            const QString &)), this, SLOT(renameColumn1(
-                                                              const QString &)));
+    const QString &)), this, SLOT(renameColumn1(
+    const QString &)));
     connect(u_c, SIGNAL(closed(
-                            const QString &)), this, SLOT(uncoverColumn1(
-                                                              const QString &)));
+    const QString &)), this, SLOT(uncoverColumn1(
+    const QString &)));
     connect(s_w, SIGNAL(closed(
-                            const QString &)), this, SLOT(enableFilter(
-                                                              const QString &)));
+    const QString &)), this, SLOT(enableFilter(
+    const QString &)));
     connect(script_w, SIGNAL(closed()), this, SLOT(prepare_window()));
 
 
@@ -51,13 +51,14 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow() {
     delete ui;
 }
+
 void MainWindow::mousePressEvent(QMouseEvent *event) {
     m_nMouseClick_X_Coordinate = event->x();
     m_nMouseClick_Y_Coordinate = event->y();
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event) {
-    move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
+    move(event->globalX() - m_nMouseClick_X_Coordinate, event->globalY() - m_nMouseClick_Y_Coordinate);
 }
 
 void MainWindow::showContextMenu_table(const QPoint &pos) {
@@ -160,7 +161,7 @@ void MainWindow::hideColumn() {
     QStringList col_hid = config::user.column_hides.split(";");
 
     foreach(QString
-            s, col_hid) {
+    s, col_hid) {
         if (s.contains(tablename + "," + ind))
             col_hid.removeOne(s);
     }
@@ -274,7 +275,7 @@ void MainWindow::renameColumn1(const QString &new_column) {
     QStringList col_ren = config::user.column_renames.split(";");
 
     foreach(QString
-            s, col_ren) {
+    s, col_ren) {
         if (s.contains(tablename + "," + ind))
             col_ren.removeOne(s);
     }
@@ -347,8 +348,7 @@ void MainWindow::on_listView_tables_doubleClicked(const QModelIndex &index) {
     QString tablename = index.data(Qt::DisplayRole).toString();
 
     QSqlDatabase db = config::set_current_db();
-    if (db.open())
-    {
+    if (db.open()) {
         QSqlTableModel *model = new QSqlTableModel;
         model->setTable(tablename);
 
@@ -357,7 +357,7 @@ void MainWindow::on_listView_tables_doubleClicked(const QModelIndex &index) {
             QStringList params = config::user.column_renames.split(";");
             params.removeLast();
             foreach(QString
-                    s, params)
+            s, params)
             {
                 QStringList params1 = s.split(",");
                 QString table = params1[0];
@@ -376,7 +376,7 @@ void MainWindow::on_listView_tables_doubleClicked(const QModelIndex &index) {
             QStringList params = config::user.column_hides.split(";");
             params.removeLast();
             foreach(QString
-                    s, params)
+            s, params)
             {
                 QStringList params1 = s.split(",");
                 QString table = params1[0];
@@ -391,8 +391,7 @@ void MainWindow::on_listView_tables_doubleClicked(const QModelIndex &index) {
     QSqlDatabase::removeDatabase(config::curr_database_name);
 }
 
-void MainWindow::clearTable()
-{
+void MainWindow::clearTable() {
     QModelIndex index = ui->listView_tables->currentIndex();
     ui->listView_tables->setSelectionMode(QAbstractItemView::ExtendedSelection);
     QString tablename = index.data(Qt::DisplayRole).toString();

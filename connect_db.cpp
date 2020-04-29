@@ -18,14 +18,7 @@ connect_db::connect_db(QWidget *parent) :
 connect_db::~connect_db() {
     delete ui;
 }
-void connect_db::mousePressEvent(QMouseEvent *event) {
-    m_nMouseClick_X_Coordinate = event->x();
-    m_nMouseClick_Y_Coordinate = event->y();
-}
 
-void connect_db::mouseMoveEvent(QMouseEvent *event) {
-    move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
-}
 void connect_db::set_connection_data() {
     if (ui->comboBox_driver->currentText() == "SQLITE")
         config::user.db_driver = "QSQLITE";
@@ -52,7 +45,7 @@ void connect_db::on_pushButton_clicked() {
         this->close();
     } else
         ui->connection_result->setText("ОШИБКА");
-QSqlDatabase::removeDatabase(config::curr_database_name);
+    QSqlDatabase::removeDatabase(config::curr_database_name);
 
     ui->connection_result->setVisible(true);
 }
@@ -136,7 +129,6 @@ void connect_db::on_pushButton_test_clicked() {
 }
 
 
-void connect_db::on_pushButton_2_clicked()
-{
+void connect_db::on_pushButton_2_clicked() {
     this->close();
 }

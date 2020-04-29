@@ -16,14 +16,16 @@ create_column::create_column(QWidget *parent) :
 create_column::~create_column() {
     delete ui;
 }
+
 void create_column::mousePressEvent(QMouseEvent *event) {
     m_nMouseClick_X_Coordinate = event->x();
     m_nMouseClick_Y_Coordinate = event->y();
 }
 
 void create_column::mouseMoveEvent(QMouseEvent *event) {
-    move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
+    move(event->globalX() - m_nMouseClick_X_Coordinate, event->globalY() - m_nMouseClick_Y_Coordinate);
 }
+
 void create_column::on_pushButton_2_clicked() {
     if (create_column::foreign_key_flag)
         create_column::foreign_key_flag = false;
@@ -78,6 +80,8 @@ void create_column::on_pushButton_clicked() {
 
         if (!ui->default_value->text().isEmpty())
             query_str.append("DEFAULT " + ui->default_value->text());
+        else
+            query_str.append("DEFAULT NULL");
 
         if (create_column::foreign_key_flag)
             query_str.append(
@@ -86,13 +90,18 @@ void create_column::on_pushButton_clicked() {
 
         //query_str.append(", ");
         qDebug() << query_str.size();
+        clear_w();
         emit closed(query_str);
         this->destroy();
     } else
         QMessageBox::warning(this, "Ошибка", "Задайте имя поля");
 }
 
-void create_column::on_pushButton_3_clicked()
-{
+void create_column::on_pushButton_3_clicked() {
     this->close();
+}
+
+void create_column::clear_w() {
+    ui->lineEdit_type->clear();
+    ui->columnname->clear();
 }

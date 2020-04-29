@@ -43,10 +43,13 @@ private:
     Ui::select_window *ui;
 
     QString curr_table;
+
     void mousePressEvent(QMouseEvent *event);
-        void mouseMoveEvent(QMouseEvent *event);
-        int m_nMouseClick_X_Coordinate;
-        int m_nMouseClick_Y_Coordinate;
+
+    void mouseMoveEvent(QMouseEvent *event);
+
+    int m_nMouseClick_X_Coordinate;
+    int m_nMouseClick_Y_Coordinate;
 };
 
 #endif // SELECT_WINDOW_H

@@ -16,13 +16,14 @@ newprofile::newprofile(QWidget *parent) :
 newprofile::~newprofile() {
     delete ui;
 }
+
 void newprofile::mousePressEvent(QMouseEvent *event) {
     m_nMouseClick_X_Coordinate = event->x();
     m_nMouseClick_Y_Coordinate = event->y();
 }
 
 void newprofile::mouseMoveEvent(QMouseEvent *event) {
-    move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
+    move(event->globalX() - m_nMouseClick_X_Coordinate, event->globalY() - m_nMouseClick_Y_Coordinate);
 }
 
 void newprofile::on_pushButton_clicked() {

@@ -21,14 +21,16 @@ create_table::create_table(QWidget *parent) :
 create_table::~create_table() {
     delete ui;
 }
+
 void create_table::mousePressEvent(QMouseEvent *event) {
     m_nMouseClick_X_Coordinate = event->x();
     m_nMouseClick_Y_Coordinate = event->y();
 }
 
 void create_table::mouseMoveEvent(QMouseEvent *event) {
-    move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
+    move(event->globalX() - m_nMouseClick_X_Coordinate, event->globalY() - m_nMouseClick_Y_Coordinate);
 }
+
 void create_table::prepare_window() {
     ui->tablename->clear();
     ui->textEdit->clear();
@@ -81,7 +83,6 @@ void create_table::on_pushButton_clicked() {
 
 }
 
-void create_table::on_pushButton_2_clicked()
-{
+void create_table::on_pushButton_2_clicked() {
     this->close();
 }

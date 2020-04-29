@@ -13,14 +13,16 @@ uncover_columns::uncover_columns(QWidget *parent) :
 uncover_columns::~uncover_columns() {
     delete ui;
 }
+
 void uncover_columns::mousePressEvent(QMouseEvent *event) {
     m_nMouseClick_X_Coordinate = event->x();
     m_nMouseClick_Y_Coordinate = event->y();
 }
 
 void uncover_columns::mouseMoveEvent(QMouseEvent *event) {
-    move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
+    move(event->globalX() - m_nMouseClick_X_Coordinate, event->globalY() - m_nMouseClick_Y_Coordinate);
 }
+
 void uncover_columns::prepeare_window(QString tablename) {
     this->setWindowTitle("Раскрыть столбцы " + tablename);
     QStringList columns_in_curr_tablename;

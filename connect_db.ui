@@ -1,195 +1,195 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>connect_db</class>
- <widget class="QDialog" name="connect_db">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>525</width>
-    <height>295</height>
-   </rect>
-  </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
-  <property name="windowTitle">
-   <string>Подключение к базе данных</string>
-  </property>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>70</y>
-     <width>511</width>
-     <height>30</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="sqlite_layout">
-    <item>
-     <widget class="QLineEdit" name="lineEdit_sqlite"/>
-    </item>
-    <item>
-     <widget class="QPushButton" name="select_file_sqlite">
-      <property name="text">
-       <string>Выберите файл</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QPushButton" name="pushButton_test">
-   <property name="geometry">
-    <rect>
-     <x>340</x>
-     <y>110</y>
-     <width>171</width>
-     <height>141</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Тестовое подключение</string>
-   </property>
-  </widget>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>521</width>
-     <height>64</height>
-    </rect>
-   </property>
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="1">
-     <widget class="QComboBox" name="comboBox_driver">
-      <item>
-       <property name="text">
-        <string>SQLITE</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>MYSQL</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>MICROSOFT SQL</string>
-       </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>POSTGRESQL</string>
-       </property>
-      </item>
-     </widget>
-    </item>
-    <item row="0" column="3">
-     <widget class="QPushButton" name="pushButton">
-      <property name="text">
-       <string>Подключиться и сохранить</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="0">
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>Выберите драйвер</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="2">
-     <widget class="QPushButton" name="pushButton_2">
-      <property name="text">
-       <string>Назад</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>110</y>
-     <width>331</width>
-     <height>150</height>
-    </rect>
-   </property>
-   <layout class="QGridLayout" name="mysql_layout">
-    <item row="4" column="2" colspan="2">
-     <widget class="QLineEdit" name="db"/>
-    </item>
-    <item row="6" column="2" colspan="2">
-     <widget class="QLineEdit" name="password"/>
-    </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="label_6">
-      <property name="text">
-       <string>Порт</string>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="0" colspan="2">
-     <widget class="QLabel" name="label_4">
-      <property name="text">
-       <string>Имя пользователя</string>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="2" colspan="2">
-     <widget class="QLineEdit" name="username"/>
-    </item>
-    <item row="4" column="0">
-     <widget class="QLabel" name="label_3">
-      <property name="text">
-       <string>База данных</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="label_2">
-      <property name="text">
-       <string>Адрес</string>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="0">
-     <widget class="QLabel" name="label_5">
-      <property name="text">
-       <string>Пароль</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="2">
-     <widget class="QLineEdit" name="hostname_edit"/>
-    </item>
-    <item row="2" column="2">
-     <widget class="QLineEdit" name="lineEdit_port"/>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QLabel" name="connection_result">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>270</y>
-     <width>501</width>
-     <height>16</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string/>
-   </property>
-  </widget>
- </widget>
- <resources/>
- <connections/>
+    <class>connect_db</class>
+    <widget class="QDialog" name="connect_db">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>525</width>
+                <height>295</height>
+            </rect>
+        </property>
+        <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+            </sizepolicy>
+        </property>
+        <property name="windowTitle">
+            <string>Подключение к базе данных</string>
+        </property>
+        <widget class="QWidget" name="layoutWidget">
+            <property name="geometry">
+                <rect>
+                    <x>0</x>
+                    <y>70</y>
+                    <width>511</width>
+                    <height>30</height>
+                </rect>
+            </property>
+            <layout class="QHBoxLayout" name="sqlite_layout">
+                <item>
+                    <widget class="QLineEdit" name="lineEdit_sqlite"/>
+                </item>
+                <item>
+                    <widget class="QPushButton" name="select_file_sqlite">
+                        <property name="text">
+                            <string>Выберите файл</string>
+                        </property>
+                    </widget>
+                </item>
+            </layout>
+        </widget>
+        <widget class="QPushButton" name="pushButton_test">
+            <property name="geometry">
+                <rect>
+                    <x>340</x>
+                    <y>110</y>
+                    <width>171</width>
+                    <height>141</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string>Тестовое подключение</string>
+            </property>
+        </widget>
+        <widget class="QWidget" name="layoutWidget">
+            <property name="geometry">
+                <rect>
+                    <x>0</x>
+                    <y>0</y>
+                    <width>521</width>
+                    <height>64</height>
+                </rect>
+            </property>
+            <layout class="QGridLayout" name="gridLayout">
+                <item row="0" column="1">
+                    <widget class="QComboBox" name="comboBox_driver">
+                        <item>
+                            <property name="text">
+                                <string>SQLITE</string>
+                            </property>
+                        </item>
+                        <item>
+                            <property name="text">
+                                <string>MYSQL</string>
+                            </property>
+                        </item>
+                        <item>
+                            <property name="text">
+                                <string>MICROSOFT SQL</string>
+                            </property>
+                        </item>
+                        <item>
+                            <property name="text">
+                                <string>POSTGRESQL</string>
+                            </property>
+                        </item>
+                    </widget>
+                </item>
+                <item row="0" column="3">
+                    <widget class="QPushButton" name="pushButton">
+                        <property name="text">
+                            <string>Подключиться и сохранить</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="0" column="0">
+                    <widget class="QLabel" name="label">
+                        <property name="text">
+                            <string>Выберите драйвер</string>
+                        </property>
+                        <property name="alignment">
+                            <set>Qt::AlignCenter</set>
+                        </property>
+                    </widget>
+                </item>
+                <item row="0" column="2">
+                    <widget class="QPushButton" name="pushButton_2">
+                        <property name="text">
+                            <string>Назад</string>
+                        </property>
+                    </widget>
+                </item>
+            </layout>
+        </widget>
+        <widget class="QWidget" name="layoutWidget">
+            <property name="geometry">
+                <rect>
+                    <x>0</x>
+                    <y>110</y>
+                    <width>331</width>
+                    <height>150</height>
+                </rect>
+            </property>
+            <layout class="QGridLayout" name="mysql_layout">
+                <item row="4" column="2" colspan="2">
+                    <widget class="QLineEdit" name="db"/>
+                </item>
+                <item row="6" column="2" colspan="2">
+                    <widget class="QLineEdit" name="password"/>
+                </item>
+                <item row="2" column="0">
+                    <widget class="QLabel" name="label_6">
+                        <property name="text">
+                            <string>Порт</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="5" column="0" colspan="2">
+                    <widget class="QLabel" name="label_4">
+                        <property name="text">
+                            <string>Имя пользователя</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="5" column="2" colspan="2">
+                    <widget class="QLineEdit" name="username"/>
+                </item>
+                <item row="4" column="0">
+                    <widget class="QLabel" name="label_3">
+                        <property name="text">
+                            <string>База данных</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="1" column="0">
+                    <widget class="QLabel" name="label_2">
+                        <property name="text">
+                            <string>Адрес</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="6" column="0">
+                    <widget class="QLabel" name="label_5">
+                        <property name="text">
+                            <string>Пароль</string>
+                        </property>
+                    </widget>
+                </item>
+                <item row="1" column="2">
+                    <widget class="QLineEdit" name="hostname_edit"/>
+                </item>
+                <item row="2" column="2">
+                    <widget class="QLineEdit" name="lineEdit_port"/>
+                </item>
+            </layout>
+        </widget>
+        <widget class="QLabel" name="connection_result">
+            <property name="geometry">
+                <rect>
+                    <x>10</x>
+                    <y>270</y>
+                    <width>501</width>
+                    <height>16</height>
+                </rect>
+            </property>
+            <property name="text">
+                <string/>
+            </property>
+        </widget>
+    </widget>
+    <resources/>
+    <connections/>
 </ui>

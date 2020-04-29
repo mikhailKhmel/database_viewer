@@ -76,10 +76,13 @@ private:
     void show_rows();
 
     int rows;
+
     void mousePressEvent(QMouseEvent *event);
-        void mouseMoveEvent(QMouseEvent *event);
-        int m_nMouseClick_X_Coordinate;
-        int m_nMouseClick_Y_Coordinate;
+
+    void mouseMoveEvent(QMouseEvent *event);
+
+    int m_nMouseClick_X_Coordinate;
+    int m_nMouseClick_Y_Coordinate;
 };
 
 #endif // SCRIPT_WINDOW_H

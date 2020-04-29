@@ -34,7 +34,7 @@ private
     void on_pushButton_3_clicked();
 
 
-signals:
+    signals:
             void
 
     closed(const QString &str);
@@ -43,10 +43,13 @@ private:
     Ui::create_column *ui;
     bool foreign_key_flag; //false-выкл. true-вкл
     void mousePressEvent(QMouseEvent *event);
-        void mouseMoveEvent(QMouseEvent *event);
-        int m_nMouseClick_X_Coordinate;
-        int m_nMouseClick_Y_Coordinate;
 
+    void mouseMoveEvent(QMouseEvent *event);
+
+    int m_nMouseClick_X_Coordinate;
+    int m_nMouseClick_Y_Coordinate;
+
+    void clear_w();
 };
 
 #endif // CREATE_COLUMN_H

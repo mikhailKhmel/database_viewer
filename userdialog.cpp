@@ -26,14 +26,16 @@ UserDialog::UserDialog(QWidget *parent) :
 UserDialog::~UserDialog() {
     delete ui;
 }
+
 void UserDialog::mousePressEvent(QMouseEvent *event) {
     m_nMouseClick_X_Coordinate = event->x();
     m_nMouseClick_Y_Coordinate = event->y();
 }
 
 void UserDialog::mouseMoveEvent(QMouseEvent *event) {
-    move(event->globalX()-m_nMouseClick_X_Coordinate,event->globalY()-m_nMouseClick_Y_Coordinate);
+    move(event->globalX() - m_nMouseClick_X_Coordinate, event->globalY() - m_nMouseClick_Y_Coordinate);
 }
+
 void UserDialog::showd() {
     if (config::user.lightmode == 0) {
         QFile styleF;
@@ -78,7 +80,7 @@ void UserDialog::on_toolButton_2_clicked() {
 }
 
 void UserDialog::on_toolButton_3_clicked() {
-    this->close();
+    qApp->closeAllWindows();
 }
 
 void UserDialog::on_comboBox_currentIndexChanged(const QString &arg1) {
