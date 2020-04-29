@@ -5,42 +5,34 @@
 #include <QDebug>
 
 newprofile::newprofile(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::newprofile)
-{
+        QDialog(parent),
+        ui(new Ui::newprofile) {
     ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);
     ui->error_label->setVisible(false);
     //this->setWindowFlag(Qt::FramelessWindowHint);
 }
 
-newprofile::~newprofile()
-{
+newprofile::~newprofile() {
     delete ui;
 }
 
 
-void newprofile::on_pushButton_clicked()
-{
+void newprofile::on_pushButton_clicked() {
     QString newuser = ui->lineEdit->text();
-    if (!newuser.isEmpty())
-    {
+    if (!newuser.isEmpty()) {
         bool result = config::set_new_user(newuser);
-        if (result)
-        {
+        if (result) {
             emit closed();
             this->destroy();
-        }
-        else
-        {
+        } else {
             ui->error_label->setText(config::LastError);
             ui->error_label->setVisible(true);
         }
     }
 }
 
-void newprofile::on_pushButton_exit_clicked()
-{
+void newprofile::on_pushButton_exit_clicked() {
     emit closed();
     this->destroy();
 }

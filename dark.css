@@ -1,72 +1,60 @@
-*
-{
-color: #bababa;
-font: bold;
+* {
+    color: #bababa;
+    font: bold;
 }
 
-QMainWindow, QUserDialog, QWidget
-{
-border: 1px;
-background: #292929;
+QMainWindow, QUserDialog, QWidget {
+    border: 1px;
+    background: #292929;
 }
 
 
-QTableView, QListView
-{
-border: 1px solid;
-background: #292929;
-border-radius: 5px;
-gridline-color: #bababa;
+QTableView, QListView {
+    border: 1px solid;
+    background: #292929;
+    border-radius: 5px;
+    gridline-color: #bababa;
 }
 
-QListView::item::selected
-{
-background-color: #002633;
+QListView::item::selected {
+    background-color: #002633;
 }
 
-QTableView::item:selected
-{
-background-color: #de8e37;
+QTableView::item:selected {
+    background-color: #de8e37;
 }
 
-QScrollBar
-{
-border: 2px solid grey;
-background: #de8e37;
-height: 15px;
-width: 15px;
+QScrollBar {
+    border: 2px solid grey;
+    background: #de8e37;
+    height: 15px;
+    width: 15px;
 }
 
-QSplitter
-{
-border: 1px solid #bababa;
-border-radius: 4px;
+QSplitter {
+    border: 1px solid #bababa;
+    border-radius: 4px;
 }
 
-QHeaderView::section
-{
-background-color: #002633;
+QHeaderView::section {
+    background-color: #002633;
 
 }
 
-QLabel
-{
-border: None;
+QLabel {
+    border: None;
 }
 
-QComboBox, QPushButton, QLineEdit, QToolButton
-{
-border: 1px solid;
-border-radius: 5px;
+QComboBox, QPushButton, QLineEdit, QToolButton {
+    border: 1px solid;
+    border-radius: 5px;
 }
 
-QLineEdit::hover, QComboBox::hover, QPushButton::hover, QMenu::item::selected,QMenuBar::hover,QToolButton::hover
-{
-background-color: #002633;
+QLineEdit::hover, QComboBox::hover, QPushButton::hover, QMenu::item::selected, QMenuBar::hover, QToolButton::hover {
+    background-color: #002633;
 }
 
-QComboBox, QPushButton, QLineEdit, QToolButton
-{
-border: 1px solid;
-border-radius: 5px;
+QComboBox, QPushButton, QLineEdit, QToolButton {
+    border: 1px solid;
+    border-radius: 5px;
 }

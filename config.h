@@ -1,5 +1,6 @@
 #ifndef CONFIG_H
 #define CONFIG_H
+
 #include <QStringList>
 #include <QSql>
 #include <QSqlDatabase>
@@ -10,11 +11,9 @@
 #include <QSqlRecord>
 #include <QVector>
 
-class config
-{
+class config {
 public:
-    struct current_user
-    {
+    struct current_user {
         QString username;
         int lastused;
         QString db_driver;
@@ -24,11 +23,11 @@ public:
         QString databasename;
         QString db_username;
         QString db_password;
-        
+
         QString column_renames;
         QString column_hides;
         int lightmode;
-        
+
     };
 
     static void load_config();                          //загрузка конфига в память
@@ -40,12 +39,15 @@ public:
     static void save_config();                          //сохранения конфига из памяти
     static bool check_new_user(QString user);           //проверка на уникальности имени пользователя
     static void set_lastused();
+
     static void set_db_driver(QString db_driver);
+
     static void set_dir_db_sqlite(QString dir);
+
     static QSqlDatabase set_current_db();
 
 
-    static QVector<current_user> users;
+    static QVector <current_user> users;
     static QSqlDatabase work_db;
 
     static QString LastError;

@@ -9,29 +9,34 @@
 
 
 namespace Ui {
-class select_window;
+    class select_window;
 }
 
-class select_window : public QWidget
-{
+class select_window : public QWidget {
     Q_OBJECT
 
 public:
     explicit select_window(QWidget *parent = nullptr);
+
     ~select_window();
 
     void prepareWindow(QString tablename);
 
 
-private slots:
-    void on_pushButton_cancel_clicked();
+private
+    slots:
+            void
+
+    on_pushButton_cancel_clicked();
 
     void on_pushButton_select_clicked();
 
     void on_comboBox_select_rovno_activated(const QString &arg1);
 
-signals:
-    void closed(const QString& query);
+    signals:
+            void
+
+    closed(const QString &query);
 
 private:
     Ui::select_window *ui;

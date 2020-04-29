@@ -19,27 +19,32 @@
 #include <QApplication>
 
 namespace Ui {
-class script_window;
+    class script_window;
 }
 
-class script_window : public QWidget
-{
+class script_window : public QWidget {
     Q_OBJECT
 
 public:
     explicit script_window(QWidget *parent = nullptr);
+
     ~script_window();
 
     void prepare_window();
 
 protected:
-    void resizeEvent(QResizeEvent* event);
+    void resizeEvent(QResizeEvent *event);
 
-signals:
-    void closed();
+    signals:
+            void
 
-private slots:
-    void on_toolButton_create_clicked();
+    closed();
+
+private
+    slots:
+            void
+
+    on_toolButton_create_clicked();
 
     void on_toolButton_open_clicked();
 
@@ -59,11 +64,14 @@ private:
     Ui::script_window *ui;
 
     void saveFile();
+
     QString dir;
     QStringList errors;
+
     void closeEvent(QCloseEvent *event);
 
     void show_rows();
+
     int rows;
 };
 

@@ -9,26 +9,31 @@
 #include <QMessageBox>
 
 namespace Ui {
-class create_column;
+    class create_column;
 }
 
-class create_column : public QWidget
-{
+class create_column : public QWidget {
     Q_OBJECT
 
 public:
     explicit create_column(QWidget *parent = nullptr);
+
     ~create_column();
 
-private slots:
-    void on_pushButton_2_clicked();
+private
+    slots:
+            void
+
+    on_pushButton_2_clicked();
 
     void on_comboBox_foreigntables_currentIndexChanged(const QString &arg1);
 
     void on_pushButton_clicked();
 
-signals:
-    void closed(const QString& str);
+    signals:
+            void
+
+    closed(const QString &str);
 
 private:
     Ui::create_column *ui;

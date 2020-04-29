@@ -4,21 +4,27 @@
 #include <QWidget>
 
 namespace Ui {
-class rename_column;
+    class rename_column;
 }
 
-class rename_column : public QWidget
-{
+class rename_column : public QWidget {
     Q_OBJECT
 
 public:
     explicit rename_column(QWidget *parent = 0);
+
     ~rename_column();
 
-signals:
-    void closed(const QString& col);
-private slots:
-    void on_pushButton_back_clicked();
+    signals:
+            void
+
+    closed(const QString &col);
+
+private
+    slots:
+            void
+
+    on_pushButton_back_clicked();
 
     void on_pushButton_continue_clicked();
 

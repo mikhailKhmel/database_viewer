@@ -1,41 +1,34 @@
-*
-{
-font: bold;
+* {
+    font: bold;
 }
 
-QMainWindow, QUserDialog, QWidget
-{
-border: 1px;
+QMainWindow, QUserDialog, QWidget {
+    border: 1px;
 }
 
 
-QTableView, QListView
-{
-border: 1px solid;
-border-radius: 5px;
+QTableView, QListView {
+    border: 1px solid;
+    border-radius: 5px;
 }
 
-QScrollBar
-{
-border: 2px solid grey;
-background: #de8e37;
-height: 15px;
-width: 15px;
+QScrollBar {
+    border: 2px solid grey;
+    background: #de8e37;
+    height: 15px;
+    width: 15px;
 }
 
-QSplitter
-{
-border: 1px solid #bababa;
-border-radius: 4px;
+QSplitter {
+    border: 1px solid #bababa;
+    border-radius: 4px;
 }
 
-QLabel
-{
-border: None;
+QLabel {
+    border: None;
 }
 
-QComboBox, QPushButton, QLineEdit, QToolButton
-{
-border: 1px solid;
-border-radius: 5px;
+QComboBox, QPushButton, QLineEdit, QToolButton {
+    border: 1px solid;
+    border-radius: 5px;
 }

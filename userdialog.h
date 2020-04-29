@@ -7,19 +7,22 @@
 #include "newprofile.h"
 
 namespace Ui {
-class UserDialog;
+    class UserDialog;
 }
 
-class UserDialog : public QDialog
-{
+class UserDialog : public QDialog {
     Q_OBJECT
 
 public:
     explicit UserDialog(QWidget *parent = nullptr);
+
     ~UserDialog();
 
-private slots:
-    void on_toolButton_clicked();
+private
+    slots:
+            void
+
+    on_toolButton_clicked();
 
     void on_toolButton_2_clicked();
 

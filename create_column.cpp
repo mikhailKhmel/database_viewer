@@ -3,9 +3,8 @@
 #include <QDebug>
 
 create_column::create_column(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::create_column)
-{
+        QWidget(parent),
+        ui(new Ui::create_column) {
     ui->setupUi(this);
     create_column::foreign_key_flag = false;
     ui->frame->setVisible(foreign_key_flag);
@@ -13,13 +12,11 @@ create_column::create_column(QWidget *parent) :
     ui->columnname->clear();
 }
 
-create_column::~create_column()
-{
+create_column::~create_column() {
     delete ui;
 }
 
-void create_column::on_pushButton_2_clicked()
-{
+void create_column::on_pushButton_2_clicked() {
     if (create_column::foreign_key_flag)
         create_column::foreign_key_flag = false;
     else
@@ -30,8 +27,7 @@ void create_column::on_pushButton_2_clicked()
     ui->comboBox_foreigntables->addItems(config::work_db.tables());
 }
 
-void create_column::on_comboBox_foreigntables_currentIndexChanged(const QString &arg1)
-{
+void create_column::on_comboBox_foreigntables_currentIndexChanged(const QString &arg1) {
     QSqlQuery q("SELECT * FROM " + arg1);
     q.exec();
     QSqlRecord rec = q.record();
@@ -42,10 +38,9 @@ void create_column::on_comboBox_foreigntables_currentIndexChanged(const QString 
     ui->comboBox_2_foreigncolumns->addItems(columns);
 }
 
-void create_column::on_pushButton_clicked()
-{
+void create_column::on_pushButton_clicked() {
     QString tablename = ui->columnname->text();
-    QString type_column = ui->comboBox_type->currentText();
+    QString type_column = ui->lineEdit_type->text();
     bool notnull = ui->checkBox_notnull->isChecked();
     bool pk = ui->checkBox_2_pk->isChecked();
     bool ai = ui->checkBox_3_ai->isChecked();
@@ -59,8 +54,7 @@ void create_column::on_pushButton_clicked()
     QString query_str = "";
     query_str.clear();
 
-    if (!tablename.isEmpty())
-    {
+    if (!tablename.isEmpty()) {
         query_str.append(tablename + " " + type_column + " ");
         if (pk)
             query_str.append("PRIMARY KEY ");
@@ -78,13 +72,14 @@ void create_column::on_pushButton_clicked()
             query_str.append("DEFAULT " + ui->default_value->text());
 
         if (create_column::foreign_key_flag)
-            query_str.append("FOREIGN KEY(" + foreign_column + ") REFERENCES " + foreign_table + "(" + foreign_column + ") " + foreign_expr);
+            query_str.append(
+                    "FOREIGN KEY(" + foreign_column + ") REFERENCES " + foreign_table + "(" + foreign_column + ") " +
+                    foreign_expr);
 
         //query_str.append(", ");
         qDebug() << query_str.size();
         emit closed(query_str);
         this->destroy();
-    }
-    else
-        QMessageBox::warning(this,"Ошибка", "Задайте имя поля");
+    } else
+        QMessageBox::warning(this, "Ошибка", "Задайте имя поля");
 }

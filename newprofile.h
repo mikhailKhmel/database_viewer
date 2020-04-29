@@ -4,24 +4,32 @@
 #include <QDialog>
 
 namespace Ui {
-class newprofile;
+    class newprofile;
 }
 
-class newprofile : public QDialog
-{
+class newprofile : public QDialog {
     Q_OBJECT
 
 public:
     explicit newprofile(QWidget *parent = nullptr);
+
     ~newprofile();
 
-private slots:
-    void on_pushButton_clicked();
+private
+    slots:
+            void
+
+    on_pushButton_clicked();
+
     void on_pushButton_exit_clicked();
 
-signals:
-    void closed();
+    signals:
+            void
+
+    closed();
+
     void close();
+
 private:
     Ui::newprofile *ui;
 };
