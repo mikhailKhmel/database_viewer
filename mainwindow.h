@@ -4,11 +4,9 @@
 #include "config.h"
 #include "connect_db.h"
 #include "create_table.h"
-#include "delete_column.h"
 #include "create_column.h"
 #include "rename_column.h"
 #include "uncover_columns.h"
-#include "select_window.h"
 #include "script_window.h"
 
 #include <QDebug>
@@ -19,6 +17,8 @@
 #include <QMessageBox>
 #include <QApplication>
 #include <QMouseEvent>
+#include <QTextEdit>
+#include <QFileDialog>
 
 namespace Ui {
     class MainWindow;
@@ -44,21 +44,15 @@ protected:
 
 private
     slots:
-            void
-
-    on_connect_db_triggered();
+    void on_connect_db_triggered();
 
     void on_listView_tables_doubleClicked(const QModelIndex &index);
 
     void on_create_table_triggered();
 
-
-    void on_tableView_doubleClicked(const QModelIndex &index);
-
     void on_exit_profile_triggered();
 
     void on_save_profile_triggered();
-
 
     void showContextMenu(const QPoint &pos);
 
@@ -66,19 +60,9 @@ private
 
     void reset_tableview();
 
-    void addRow();
-
-    void deleteRow();
-
-    void addColumn();
-
     void renameColumn();
 
     void renameColumn1(const QString &new_column);
-
-    void deleteColumn();
-
-    void addColumn1(QString column_command);
 
     void hideColumn();
 
@@ -88,39 +72,31 @@ private
 
     void uncoverColumn1(const QString &column_name);
 
-    void enableFilter(const QString &filter);
-
-    //void test_change();
     void on_quit_button_triggered();
-
-    void on_toolButton_connect_db_clicked();
-
-    void on_toolButton_create_table_clicked();
-
-    void on_toolButton_save_profile_clicked();
-
-    void on_toolButton_exit_clicked();
-
-    void on_toolButton_filter_clicked();
-
-    void on_toolButton_clicked();
 
     void on_toolButton_lightmode_clicked();
 
-    signals:
-            void
+    void on_toolButton_create_clicked();
 
-    closedd();
+    void on_toolButton_open_clicked();
+
+    void on_toolButton_save_clicked();
+
+    void on_toolButton_run_clicked();
+
+    void on_tabWidget_tabCloseRequested(int index);
+
+    void textEdited();
+
+signals:
+    void closedd();
 
 private:
     Ui::MainWindow *ui;
     connect_db *c_db;
     create_table *create_table_window;
-    delete_column *d_c;
-    create_column *c_c;
     rename_column *r_c;
     uncover_columns *u_c;
-    select_window *s_w;
     script_window *script_w;
 
     QStringListModel *tables_list_model;
@@ -133,6 +109,16 @@ private:
     int m_nMouseClick_Y_Coordinate;
 
     void clearTable();
+    void get_column_info(QString tablename);
+    void saveFile();
+    void show_rows();
+
+    int rows;
+
+    QStringList column_types;
+    QStringList column_names;
+
+    QString dir;
 };
 
 #endif // MAINWINDOW_H

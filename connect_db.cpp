@@ -4,9 +4,9 @@
 #include <QFileDialog>
 #include <QDebug>
 
-connect_db::connect_db(QWidget *parent) :
-        QDialog(parent),
-        ui(new Ui::connect_db) {
+connect_db::connect_db(QWidget *parent) : QDialog(parent),
+                                          ui(new Ui::connect_db)
+{
     ui->setupUi(this);
 
     this->setWindowFlag(Qt::FramelessWindowHint);
@@ -15,18 +15,21 @@ connect_db::connect_db(QWidget *parent) :
     ui->connection_result->setVisible(false);
 }
 
-connect_db::~connect_db() {
+connect_db::~connect_db()
+{
     delete ui;
 }
 
-void connect_db::set_connection_data() {
+void connect_db::set_connection_data()
+{
     if (ui->comboBox_driver->currentText() == "SQLITE")
         config::user.db_driver = "QSQLITE";
     else if (ui->comboBox_driver->currentText() == "MYSQL")
         config::user.db_driver = "QMYSQL";
     else if (ui->comboBox_driver->currentText() == "POSTGRESQL")
         config::user.db_driver = "QPSQL";
-    else if (ui->comboBox_driver->currentText() == "MICROSOFT SQL") {
+    else if (ui->comboBox_driver->currentText() == "MICROSOFT SQL")
+    {
         config::user.db_driver = "QODBC3";
     }
     config::user.hostname = ui->hostname_edit->text();
@@ -37,21 +40,26 @@ void connect_db::set_connection_data() {
     config::user.databasename = ui->db->text();
 }
 
-void connect_db::on_pushButton_clicked() {
+void connect_db::on_pushButton_clicked()
+{
     set_connection_data();
     QSqlDatabase db = config::set_current_db();
-    if (db.open()) {
+    if (db.open())
+    {
         emit closed();
         this->close();
-    } else
+    }
+    else
         ui->connection_result->setText("ОШИБКА");
     QSqlDatabase::removeDatabase(config::curr_database_name);
 
     ui->connection_result->setVisible(true);
 }
 
-void connect_db::enable_layout(QString dr) {
-    if (dr == "SQLITE") {
+void connect_db::enable_layout(QString dr)
+{
+    if (dr == "SQLITE")
+    {
         ui->select_file_sqlite->setVisible(true);
         ui->lineEdit_sqlite->setVisible(true);
 
@@ -70,7 +78,9 @@ void connect_db::enable_layout(QString dr) {
 
         ui->pushButton_test->setFixedSize(QSize(171, 31));
         ui->connection_result->setGeometry(10, 110, 201, 16);
-    } else {
+    }
+    else
+    {
         ui->select_file_sqlite->setVisible(false);
         ui->lineEdit_sqlite->setVisible(false);
 
@@ -92,8 +102,8 @@ void connect_db::enable_layout(QString dr) {
     }
 }
 
-
-void connect_db::on_comboBox_driver_textActivated(const QString &arg1) {
+void connect_db::on_comboBox_driver_textActivated(const QString &arg1)
+{
     enable_layout(arg1);
     ui->connection_result->clear();
 
@@ -103,32 +113,35 @@ void connect_db::on_comboBox_driver_textActivated(const QString &arg1) {
         config::user.db_driver = "QMYSQL";
     else if (arg1 == "POSTGRESQL")
         config::user.db_driver = "QPSQL";
-    else if (arg1 == "MICROSOFT SQL") {
+    else if (arg1 == "MICROSOFT SQL")
+    {
         config::user.db_driver = "QODBC3";
         ui->connection_result->setText("Поддерживается только аутентификация Microsoft SQL Server");
     }
 }
 
-
-void connect_db::on_select_file_sqlite_clicked() {
+void connect_db::on_select_file_sqlite_clicked()
+{
     QString dir = QFileDialog::getOpenFileName(0, "Выберите базу данных", "C:\\", "*.db *.sqlite *.sqlite3 *.dll");
     ui->lineEdit_sqlite->setText(dir);
 }
 
-void connect_db::on_pushButton_test_clicked() {
+void connect_db::on_pushButton_test_clicked()
+{
     set_connection_data();
     QSqlDatabase db = config::set_current_db();
-    if (db.open()) {
+    if (db.open())
+    {
         ui->connection_result->setText("Подключенно!");
-    } else
+    }
+    else
         ui->connection_result->setText("ОШИБКА");
     QSqlDatabase::removeDatabase(config::curr_database_name);
-
 
     ui->connection_result->setVisible(true);
 }
 
-
-void connect_db::on_pushButton_2_clicked() {
+void connect_db::on_pushButton_2_clicked()
+{
     this->close();
 }

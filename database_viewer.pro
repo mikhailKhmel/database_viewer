@@ -20,12 +20,10 @@ SOURCES += \
     connect_db.cpp \
     create_column.cpp \
     create_table.cpp \
-    delete_column.cpp \
     main.cpp \
     mainwindow.cpp \
     newprofile.cpp \
     script_window.cpp \
-    select_window.cpp \
     userdialog.cpp \
     rename_column.cpp \
     uncover_columns.cpp
@@ -35,11 +33,9 @@ HEADERS += \
     connect_db.h \
     create_column.h \
     create_table.h \
-    delete_column.h \
     mainwindow.h \
     newprofile.h \
     script_window.h \
-    select_window.h \
     userdialog.h \
     rename_column.h \
     uncover_columns.h
@@ -48,11 +44,9 @@ FORMS += \
     connect_db.ui \
     create_column.ui \
     create_table.ui \
-    delete_column.ui \
     mainwindow.ui \
     newprofile.ui \
     script_window.ui \
-    select_window.ui \
     userdialog.ui \
     rename_column.ui \
     uncover_columns.ui
