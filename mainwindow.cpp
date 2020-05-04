@@ -16,12 +16,12 @@ MainWindow::MainWindow(QWidget *parent) :
     r_c = new rename_column;
     u_c = new uncover_columns;
 
-    connect(c_db, SIGNAL(closed()), this, SLOT(prepare_window()));
-    connect(create_table_window, SIGNAL(closed()), this, SLOT(prepare_window()));
+    connect(c_db, SIGNAL(closed()), this, SLOT(listview_refresh()));
+    connect(create_table_window, SIGNAL(closed()), this, SLOT(listview_refresh()));
 
-    ui->listView_tables->setContextMenuPolicy(Qt::CustomContextMenu);
+    ui->listWidget_tables->setContextMenuPolicy(Qt::CustomContextMenu);
     ui->tableWidget->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(ui->listView_tables, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
+    connect(ui->listWidget_tables, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
     connect(ui->tableWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu_table(QPoint)));
     connect(r_c, SIGNAL(closed(
     const QString &)), this, SLOT(renameColumn1(
@@ -30,14 +30,13 @@ MainWindow::MainWindow(QWidget *parent) :
     const QString &)), this, SLOT(uncoverColumn1(
     const QString &)));
     /*перенос функций редактора скрипта в основное окно*/
-    ui->listView_tables->setViewMode(QListView::ListMode);
+    ui->listWidget_tables->setViewMode(QListView::ListMode);
     ui->splitter->setStretchFactor(0, 1);
     ui->splitter->setStretchFactor(1, 4);
 
     ui->splitter_2->setStretchFactor(0, 2);
     ui->splitter_2->setStretchFactor(1, 1);
 
-    ui->listView_tables->show();
 
     ui->tabWidget->addTab(new script_window, "Tab_1");
 }
@@ -105,8 +104,8 @@ void MainWindow::showContextMenu_table(const QPoint &pos) {
 }
 
 void MainWindow::uncoverColumn() {
-    QModelIndex index = ui->listView_tables->currentIndex();
-    ui->listView_tables->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    QModelIndex index = ui->listWidget_tables->currentIndex();
+    ui->listWidget_tables->setSelectionMode(QAbstractItemView::ExtendedSelection);
     QString tablename = index.data(Qt::DisplayRole).toString();
     u_c->prepeare_window(tablename);
     clearTable();
@@ -114,8 +113,8 @@ void MainWindow::uncoverColumn() {
 }
 
 void MainWindow::uncoverColumn1(const QString &column_name) {
-    QModelIndex index = ui->listView_tables->currentIndex();
-    ui->listView_tables->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    QModelIndex index = ui->listWidget_tables->currentIndex();
+    ui->listWidget_tables->setSelectionMode(QAbstractItemView::ExtendedSelection);
     QString tablename = index.data(Qt::DisplayRole).toString();
     QSqlTableModel *model = new QSqlTableModel;
     model->setTable(tablename);
@@ -140,7 +139,7 @@ void MainWindow::uncoverColumn1(const QString &column_name) {
 
 void MainWindow::showContextMenu(const QPoint &pos) {
     // Handle global position
-    QPoint globalPos = ui->listView_tables->mapToGlobal(pos);
+    QPoint globalPos = ui->listWidget_tables->mapToGlobal(pos);
 
     // Create menu and insert some actions
     QMenu myMenu;
@@ -152,8 +151,8 @@ void MainWindow::showContextMenu(const QPoint &pos) {
 }
 
 void MainWindow::hideColumn() {
-    QModelIndex index = ui->listView_tables->currentIndex();
-    ui->listView_tables->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    QModelIndex index = ui->listWidget_tables->currentIndex();
+    ui->listWidget_tables->setSelectionMode(QAbstractItemView::ExtendedSelection);
     QString tablename = index.data(Qt::DisplayRole).toString();
 
 
@@ -178,8 +177,8 @@ void MainWindow::renameColumn() {
 }
 
 void MainWindow::renameColumn1(const QString &new_column) {
-    QModelIndex index = ui->listView_tables->currentIndex();
-    ui->listView_tables->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    QModelIndex index = ui->listWidget_tables->currentIndex();
+    ui->listWidget_tables->setSelectionMode(QAbstractItemView::ExtendedSelection);
     QString tablename = index.data(Qt::DisplayRole).toString();
 
     QString ind = QString::number(ui->tableWidget->currentIndex().column());
@@ -199,7 +198,7 @@ void MainWindow::renameColumn1(const QString &new_column) {
 
 void MainWindow::deleteTable() {
 
-    QModelIndex index = ui->listView_tables->currentIndex();
+    QModelIndex index = ui->listWidget_tables->currentIndex();
     QString tableName = index.data(Qt::DisplayRole).toString();
 
     QSqlDatabase db = config::set_current_db();
@@ -233,11 +232,7 @@ void MainWindow::prepare_window() {
             }
         }
         table_list.append(db.tables());
-        tables_list_model = new QStringListModel;
-        tables_list_model->setStringList(QStringList{});
-        tables_list_model->setStringList(table_list);
-        ui->listView_tables->setModel(tables_list_model);
-        ui->listView_tables->show();
+        ui->listWidget_tables->addItems(table_list);
     } else
         qDebug() << db.lastError().text();
     QSqlDatabase::removeDatabase(config::curr_database_name);
@@ -256,9 +251,9 @@ void MainWindow::on_connect_db_triggered() {
 }
 
 
-void MainWindow::on_listView_tables_doubleClicked(const QModelIndex &index) {
+void MainWindow::on_listWidget_tables_doubleClicked(const QModelIndex &index) {
     clearTable();
-    ui->listView_tables->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    ui->listWidget_tables->setSelectionMode(QAbstractItemView::ExtendedSelection);
     QString tablename = index.data(Qt::DisplayRole).toString();
     show_table(index.row());
 }
@@ -432,6 +427,7 @@ void MainWindow::append_table(QSqlQuery q) {
 
 void MainWindow::listview_refresh() {
     table_list.clear();
+    ui->listWidget_tables->clear();
     QSqlDatabase db = config::set_current_db();
     if (db.open()) {
         foreach(QString
@@ -442,11 +438,7 @@ void MainWindow::listview_refresh() {
             }
         }
         table_list.append(db.tables());
-        tables_list_model = new QStringListModel;
-        tables_list_model->setStringList(QStringList{});
-        tables_list_model->setStringList(table_list);
-        ui->listView_tables->setModel(tables_list_model);
-        ui->listView_tables->show();
+        ui->listWidget_tables->addItems(table_list);
     }
     QSqlDatabase::removeDatabase(config::curr_database_name);
 

@@ -48,7 +48,7 @@ private
 
     on_connect_db_triggered();
 
-    void on_listView_tables_doubleClicked(const QModelIndex &index);
+    void on_listWidget_tables_doubleClicked(const QModelIndex &index);
 
     void on_create_table_triggered();
 
@@ -86,7 +86,7 @@ private
 
     void on_tabWidget_tabCloseRequested(int index);
 
-
+    void listview_refresh();
     signals:
             void
 
@@ -130,7 +130,7 @@ private:
 
     void append_table(QSqlQuery q);
 
-    void listview_refresh();
+
 
 };
 
