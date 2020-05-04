@@ -1,262 +1,270 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>794</width>
-    <height>549</height>
-   </rect>
-  </property>
-  <property name="windowTitle">
-   <string>Главное окно</string>
-  </property>
-  <property name="styleSheet">
-   <string notr="true"/>
-  </property>
-  <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QToolButton" name="toolButton_create">
-      <property name="text">
-       <string>...</string>
-      </property>
-      <property name="icon">
-       <iconset resource="qrc.qrc">
-        <normaloff>:/src/icons8-file-32.png</normaloff>:/src/icons8-file-32.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>30</width>
-        <height>30</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QToolButton" name="toolButton_open">
-      <property name="text">
-       <string>...</string>
-      </property>
-      <property name="icon">
-       <iconset resource="qrc.qrc">
-        <normaloff>:/src/icons8-открыть-папку-32.png</normaloff>:/src/icons8-открыть-папку-32.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>30</width>
-        <height>30</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="2">
-     <widget class="QToolButton" name="toolButton_save">
-      <property name="text">
-       <string>...</string>
-      </property>
-      <property name="icon">
-       <iconset resource="qrc.qrc">
-        <normaloff>:/src/icons8-сохранить-32.png</normaloff>:/src/icons8-сохранить-32.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>30</width>
-        <height>30</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="3">
-     <widget class="QToolButton" name="toolButton_run">
-      <property name="text">
-       <string>...</string>
-      </property>
-      <property name="icon">
-       <iconset resource="qrc.qrc">
-        <normaloff>:/src/icons8-воспроизведение-32.png</normaloff>:/src/icons8-воспроизведение-32.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>30</width>
-        <height>30</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="4">
-     <spacer name="horizontalSpacer">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>40</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="0" column="5">
-     <widget class="QToolButton" name="toolButton_lightmode">
-      <property name="text">
-       <string>...</string>
-      </property>
-      <property name="icon">
-       <iconset resource="qrc.qrc">
-        <normaloff>:/src/icons8-солнце-32.png</normaloff>:/src/icons8-солнце-32.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>30</width>
-        <height>30</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="6">
-     <widget class="QToolButton" name="toolButton_exit">
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Выйти из профиля&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string>...</string>
-      </property>
-      <property name="icon">
-       <iconset resource="qrc.qrc">
-        <normaloff>:/src/icons8-exit-32.png</normaloff>:/src/icons8-exit-32.png</iconset>
-      </property>
-      <property name="iconSize">
-       <size>
-        <width>30</width>
-        <height>30</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0" colspan="7">
-     <widget class="QSplitter" name="splitter_2">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <widget class="QTabWidget" name="tabWidget">
-       <property name="tabShape">
-        <enum>QTabWidget::Triangular</enum>
-       </property>
-       <property name="tabsClosable">
-        <bool>true</bool>
-       </property>
-       <property name="movable">
-        <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QSplitter" name="splitter">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::Panel</enum>
-       </property>
-       <property name="frameShadow">
-        <enum>QFrame::Plain</enum>
-       </property>
-       <property name="lineWidth">
-        <number>1</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="handleWidth">
-        <number>5</number>
-       </property>
-       <widget class="QListView" name="listView_tables">
-        <property name="contextMenuPolicy">
-         <enum>Qt::ActionsContextMenu</enum>
+    <class>MainWindow</class>
+    <widget class="QMainWindow" name="MainWindow">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>794</width>
+                <height>549</height>
+            </rect>
         </property>
-        <property name="editTriggers">
-         <set>QAbstractItemView::EditKeyPressed</set>
+        <property name="windowTitle">
+            <string>Главное окно</string>
         </property>
-       </widget>
-       <widget class="QTableWidget" name="tableWidget">
-        <property name="editTriggers">
-         <set>QAbstractItemView::NoEditTriggers</set>
+        <property name="styleSheet">
+            <string notr="true"/>
         </property>
-       </widget>
-      </widget>
-     </widget>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>794</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true"/>
-   </property>
-   <widget class="QMenu" name="menu">
-    <property name="styleSheet">
-     <string notr="true"/>
-    </property>
-    <property name="title">
-     <string>Файл</string>
-    </property>
-    <addaction name="connect_db"/>
-    <addaction name="create_table"/>
-    <addaction name="separator"/>
-    <addaction name="save_profile"/>
-    <addaction name="exit_profile"/>
-    <addaction name="separator"/>
-    <addaction name="quit_button"/>
-   </widget>
-   <addaction name="menu"/>
-  </widget>
-  <action name="connect_db">
-   <property name="text">
-    <string>Подключиться к базе данных</string>
-   </property>
-  </action>
-  <action name="create_table">
-   <property name="text">
-    <string>Создать таблицу</string>
-   </property>
-  </action>
-  <action name="create_query">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Создать запрос</string>
-   </property>
-  </action>
-  <action name="exit_profile">
-   <property name="text">
-    <string>Выход из профиля</string>
-   </property>
-  </action>
-  <action name="save_profile">
-   <property name="text">
-    <string>Сохранить настройки профиля</string>
-   </property>
-  </action>
-  <action name="quit_button">
-   <property name="text">
-    <string>Закрыть программу</string>
-   </property>
-  </action>
- </widget>
- <resources>
-  <include location="qrc.qrc"/>
- </resources>
- <connections/>
+        <widget class="QWidget" name="centralwidget">
+            <layout class="QGridLayout" name="gridLayout">
+                <item row="0" column="0">
+                    <widget class="QToolButton" name="toolButton_create">
+                        <property name="text">
+                            <string>...</string>
+                        </property>
+                        <property name="icon">
+                            <iconset resource="qrc.qrc">
+                                <normaloff>:/src/icons8-file-32.png</normaloff>:/src/icons8-file-32.png
+                            </iconset>
+                        </property>
+                        <property name="iconSize">
+                            <size>
+                                <width>30</width>
+                                <height>30</height>
+                            </size>
+                        </property>
+                    </widget>
+                </item>
+                <item row="0" column="1">
+                    <widget class="QToolButton" name="toolButton_open">
+                        <property name="text">
+                            <string>...</string>
+                        </property>
+                        <property name="icon">
+                            <iconset resource="qrc.qrc">
+                                <normaloff>:/src/icons8-открыть-папку-32.png</normaloff>
+                                :/src/icons8-открыть-папку-32.png
+                            </iconset>
+                        </property>
+                        <property name="iconSize">
+                            <size>
+                                <width>30</width>
+                                <height>30</height>
+                            </size>
+                        </property>
+                    </widget>
+                </item>
+                <item row="0" column="2">
+                    <widget class="QToolButton" name="toolButton_save">
+                        <property name="text">
+                            <string>...</string>
+                        </property>
+                        <property name="icon">
+                            <iconset resource="qrc.qrc">
+                                <normaloff>:/src/icons8-сохранить-32.png</normaloff>:/src/icons8-сохранить-32.png
+                            </iconset>
+                        </property>
+                        <property name="iconSize">
+                            <size>
+                                <width>30</width>
+                                <height>30</height>
+                            </size>
+                        </property>
+                    </widget>
+                </item>
+                <item row="0" column="3">
+                    <widget class="QToolButton" name="toolButton_run">
+                        <property name="text">
+                            <string>...</string>
+                        </property>
+                        <property name="icon">
+                            <iconset resource="qrc.qrc">
+                                <normaloff>:/src/icons8-воспроизведение-32.png</normaloff>
+                                :/src/icons8-воспроизведение-32.png
+                            </iconset>
+                        </property>
+                        <property name="iconSize">
+                            <size>
+                                <width>30</width>
+                                <height>30</height>
+                            </size>
+                        </property>
+                    </widget>
+                </item>
+                <item row="0" column="4">
+                    <spacer name="horizontalSpacer">
+                        <property name="orientation">
+                            <enum>Qt::Horizontal</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
+                            <size>
+                                <width>40</width>
+                                <height>20</height>
+                            </size>
+                        </property>
+                    </spacer>
+                </item>
+                <item row="0" column="5">
+                    <widget class="QToolButton" name="toolButton_lightmode">
+                        <property name="text">
+                            <string>...</string>
+                        </property>
+                        <property name="icon">
+                            <iconset resource="qrc.qrc">
+                                <normaloff>:/src/icons8-солнце-32.png</normaloff>:/src/icons8-солнце-32.png
+                            </iconset>
+                        </property>
+                        <property name="iconSize">
+                            <size>
+                                <width>30</width>
+                                <height>30</height>
+                            </size>
+                        </property>
+                    </widget>
+                </item>
+                <item row="0" column="6">
+                    <widget class="QToolButton" name="toolButton_exit">
+                        <property name="toolTip">
+                            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Выйти из профиля&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                        </property>
+                        <property name="text">
+                            <string>...</string>
+                        </property>
+                        <property name="icon">
+                            <iconset resource="qrc.qrc">
+                                <normaloff>:/src/icons8-exit-32.png</normaloff>:/src/icons8-exit-32.png
+                            </iconset>
+                        </property>
+                        <property name="iconSize">
+                            <size>
+                                <width>30</width>
+                                <height>30</height>
+                            </size>
+                        </property>
+                    </widget>
+                </item>
+                <item row="1" column="0" colspan="7">
+                    <widget class="QSplitter" name="splitter_2">
+                        <property name="orientation">
+                            <enum>Qt::Vertical</enum>
+                        </property>
+                        <widget class="QTabWidget" name="tabWidget">
+                            <property name="tabShape">
+                                <enum>QTabWidget::Triangular</enum>
+                            </property>
+                            <property name="tabsClosable">
+                                <bool>true</bool>
+                            </property>
+                            <property name="movable">
+                                <bool>true</bool>
+                            </property>
+                        </widget>
+                        <widget class="QSplitter" name="splitter">
+                            <property name="sizePolicy">
+                                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                                    <horstretch>0</horstretch>
+                                    <verstretch>0</verstretch>
+                                </sizepolicy>
+                            </property>
+                            <property name="frameShape">
+                                <enum>QFrame::Panel</enum>
+                            </property>
+                            <property name="frameShadow">
+                                <enum>QFrame::Plain</enum>
+                            </property>
+                            <property name="lineWidth">
+                                <number>1</number>
+                            </property>
+                            <property name="orientation">
+                                <enum>Qt::Horizontal</enum>
+                            </property>
+                            <property name="handleWidth">
+                                <number>5</number>
+                            </property>
+                            <widget class="QListView" name="listView_tables">
+                                <property name="contextMenuPolicy">
+                                    <enum>Qt::ActionsContextMenu</enum>
+                                </property>
+                                <property name="editTriggers">
+                                    <set>QAbstractItemView::EditKeyPressed</set>
+                                </property>
+                            </widget>
+                            <widget class="QTableWidget" name="tableWidget">
+                                <property name="editTriggers">
+                                    <set>QAbstractItemView::NoEditTriggers</set>
+                                </property>
+                            </widget>
+                        </widget>
+                    </widget>
+                </item>
+            </layout>
+        </widget>
+        <widget class="QMenuBar" name="menubar">
+            <property name="geometry">
+                <rect>
+                    <x>0</x>
+                    <y>0</y>
+                    <width>794</width>
+                    <height>25</height>
+                </rect>
+            </property>
+            <property name="styleSheet">
+                <string notr="true"/>
+            </property>
+            <widget class="QMenu" name="menu">
+                <property name="styleSheet">
+                    <string notr="true"/>
+                </property>
+                <property name="title">
+                    <string>Файл</string>
+                </property>
+                <addaction name="connect_db"/>
+                <addaction name="create_table"/>
+                <addaction name="separator"/>
+                <addaction name="save_profile"/>
+                <addaction name="exit_profile"/>
+                <addaction name="separator"/>
+                <addaction name="quit_button"/>
+            </widget>
+            <addaction name="menu"/>
+        </widget>
+        <action name="connect_db">
+            <property name="text">
+                <string>Подключиться к базе данных</string>
+            </property>
+        </action>
+        <action name="create_table">
+            <property name="text">
+                <string>Создать таблицу</string>
+            </property>
+        </action>
+        <action name="create_query">
+            <property name="enabled">
+                <bool>false</bool>
+            </property>
+            <property name="text">
+                <string>Создать запрос</string>
+            </property>
+        </action>
+        <action name="exit_profile">
+            <property name="text">
+                <string>Выход из профиля</string>
+            </property>
+        </action>
+        <action name="save_profile">
+            <property name="text">
+                <string>Сохранить настройки профиля</string>
+            </property>
+        </action>
+        <action name="quit_button">
+            <property name="text">
+                <string>Закрыть программу</string>
+            </property>
+        </action>
+    </widget>
+    <resources>
+        <include location="qrc.qrc"/>
+    </resources>
+    <connections/>
 </ui>

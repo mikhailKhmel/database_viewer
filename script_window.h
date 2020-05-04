@@ -23,7 +23,8 @@ private
             void
 
     on_textEdit_cursorPositionChanged();
-            void setV();
+
+    void setV();
 
 
 private:

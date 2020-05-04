@@ -87,7 +87,6 @@ private
     void on_tabWidget_tabCloseRequested(int index);
 
 
-
     signals:
             void
 
@@ -123,13 +122,14 @@ private:
 
     QStringList table_list;
 
-    QList<QStringList> run_tables;
+    QList <QStringList> run_tables;
 
     QString dir;
 
     void show_table(int index);
 
     void append_table(QSqlQuery q);
+
     void listview_refresh();
 
 };

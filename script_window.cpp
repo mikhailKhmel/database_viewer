@@ -49,8 +49,7 @@ void script_window::on_textEdit_cursorPositionChanged() {
     show_rows();
 }
 
-void script_window::setV()
-{
+void script_window::setV() {
     ui->textEdit_rows->verticalScrollBar()->setValue(ui->textEdit->verticalScrollBar()->value());
 
 }
