@@ -44,7 +44,9 @@ protected:
 
 private
     slots:
-    void on_connect_db_triggered();
+            void
+
+    on_connect_db_triggered();
 
     void on_listView_tables_doubleClicked(const QModelIndex &index);
 
@@ -57,8 +59,6 @@ private
     void showContextMenu(const QPoint &pos);
 
     void showContextMenu_table(const QPoint &pos);
-
-    void reset_tableview();
 
     void renameColumn();
 
@@ -86,10 +86,12 @@ private
 
     void on_tabWidget_tabCloseRequested(int index);
 
-    void textEdited();
 
-signals:
-    void closedd();
+
+    signals:
+            void
+
+    closedd();
 
 private:
     Ui::MainWindow *ui;
@@ -109,8 +111,9 @@ private:
     int m_nMouseClick_Y_Coordinate;
 
     void clearTable();
-    void get_column_info(QString tablename);
+
     void saveFile();
+
     void show_rows();
 
     int rows;
@@ -118,7 +121,17 @@ private:
     QStringList column_types;
     QStringList column_names;
 
+    QStringList table_list;
+
+    QList<QStringList> run_tables;
+
     QString dir;
+
+    void show_table(int index);
+
+    void append_table(QSqlQuery q);
+    void listview_refresh();
+
 };
 
 #endif // MAINWINDOW_H

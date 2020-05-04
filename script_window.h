@@ -3,6 +3,7 @@
 
 #include "config.h"
 #include <QWidget>
+#include <QScrollBar>
 
 namespace Ui {
     class script_window;
@@ -19,14 +20,18 @@ public:
 
 private
     slots:
-    void on_textEdit_cursorPositionChanged();
+            void
+
+    on_textEdit_cursorPositionChanged();
+            void setV();
 
 
 private:
-       Ui::script_window *ui;
+    Ui::script_window *ui;
 
-        int rows;
-        void show_rows();
+    int rows;
+
+    void show_rows();
 };
 
 #endif // SCRIPT_WINDOW_H

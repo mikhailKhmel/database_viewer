@@ -11,11 +11,9 @@
 #include <QSqlRecord>
 #include <QVector>
 
-class config
-{
+class config {
 public:
-    struct current_user
-    {
+    struct current_user {
         QString username;
         int lastused;
         QString db_driver;
@@ -47,7 +45,7 @@ public:
 
     static QSqlDatabase set_current_db();
 
-    static QVector<current_user> users;
+    static QVector <current_user> users;
     static QSqlDatabase work_db;
 
     static QString LastError;
