@@ -7,8 +7,8 @@
 connect_db::connect_db(QWidget *parent) : QDialog(parent),
                                           ui(new Ui::connect_db) {
     ui->setupUi(this);
-
-    this->setWindowFlag(Qt::FramelessWindowHint);
+    this->setAttribute(Qt::WA_DeleteOnClose);
+    //this->setWindowFlag(Qt::FramelessWindowHint);
 
     enable_layout(ui->comboBox_driver->currentText());
     ui->connection_result->setVisible(false);

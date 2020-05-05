@@ -6,7 +6,12 @@ script_window::script_window(QWidget *parent) :
         ui(new Ui::script_window) {
     ui->setupUi(this);
     this->setWindowFlag(Qt::FramelessWindowHint);
-    ui->textEdit_rows->setStyleSheet("background: #404040");
+
+    if (config::user.lightmode == 1)
+        ui->textEdit_rows->setStyleSheet("background: #404040");
+    else
+        ui->textEdit_rows->setStyleSheet("background: white");
+
     ui->splitter->setHandleWidth(1);
     ui->splitter->setStretchFactor(0, 1);
     ui->splitter->setStretchFactor(1, 15);

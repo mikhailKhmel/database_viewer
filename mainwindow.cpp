@@ -296,6 +296,7 @@ void MainWindow::on_quit_button_triggered() {
 
 void MainWindow::on_toolButton_lightmode_clicked() {
     //lightmode 0 - темная тема; 1 - светлая
+    QTextEdit *textEdit_rows = ui->tabWidget->currentWidget()->findChild<QTextEdit *>("textEdit_rows");
 
     if (config::user.lightmode == 0) {
         QFile styleF;
@@ -304,6 +305,7 @@ void MainWindow::on_toolButton_lightmode_clicked() {
         QString qssStr = styleF.readAll();
         config::user.lightmode = 1;
         qApp->setStyleSheet(qssStr);
+        textEdit_rows->setStyleSheet("background: white");
     } else {
         QFile styleF;
         styleF.setFileName(":/dark.css");
@@ -311,6 +313,7 @@ void MainWindow::on_toolButton_lightmode_clicked() {
         QString qssStr = styleF.readAll();
         config::user.lightmode = 0;
         qApp->setStyleSheet(qssStr);
+        textEdit_rows->setStyleSheet("background: #404040");
     }
 }
 

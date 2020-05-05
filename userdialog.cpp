@@ -10,7 +10,7 @@ UserDialog::UserDialog(QWidget *parent) :
         ui(new Ui::UserDialog) {
     ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);
-    this->setWindowFlag(Qt::FramelessWindowHint);
+    //this->setWindowFlag(Qt::FramelessWindowHint);
 
     QStringList users;
     foreach(config::current_user

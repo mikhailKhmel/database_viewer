@@ -10,7 +10,7 @@ newprofile::newprofile(QWidget *parent) :
     ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);
     ui->error_label->setVisible(false);
-    this->setWindowFlag(Qt::FramelessWindowHint);
+    //this->setWindowFlag(Qt::FramelessWindowHint);
 }
 
 newprofile::~newprofile() {

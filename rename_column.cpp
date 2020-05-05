@@ -5,7 +5,8 @@ rename_column::rename_column(QWidget *parent) :
         QWidget(parent),
         ui(new Ui::rename_column) {
     ui->setupUi(this);
-    this->setWindowFlag(Qt::FramelessWindowHint);
+    this->setAttribute(Qt::WA_DeleteOnClose);
+    //this->setWindowFlag(Qt::FramelessWindowHint);
 }
 
 rename_column::~rename_column() {

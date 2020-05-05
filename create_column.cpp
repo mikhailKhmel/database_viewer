@@ -6,7 +6,9 @@ create_column::create_column(QWidget *parent) :
         QWidget(parent),
         ui(new Ui::create_column) {
     ui->setupUi(this);
-    this->setWindowFlag(Qt::FramelessWindowHint);
+    this->setAttribute(Qt::WA_DeleteOnClose);
+    //this->setWindowFlag(Qt::FramelessWindowHint);
+
     create_column::foreign_key_flag = false;
     ui->frame->setVisible(foreign_key_flag);
 

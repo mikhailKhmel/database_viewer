@@ -5,7 +5,8 @@ create_table::create_table(QWidget *parent) :
         QWidget(parent),
         ui(new Ui::create_table) {
     ui->setupUi(this);
-    this->setWindowFlag(Qt::FramelessWindowHint);
+    this->setAttribute(Qt::WA_DeleteOnClose);
+    //this->setWindowFlag(Qt::FramelessWindowHint);
     //create_table::create_table_query.append("");
     l = new create_column;
 
