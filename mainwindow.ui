@@ -143,7 +143,7 @@
       </property>
       <widget class="QTabWidget" name="tabWidget">
        <property name="tabShape">
-        <enum>QTabWidget::Triangular</enum>
+        <enum>QTabWidget::Rounded</enum>
        </property>
        <property name="tabsClosable">
         <bool>true</bool>

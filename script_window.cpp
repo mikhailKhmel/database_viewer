@@ -8,9 +8,9 @@ script_window::script_window(QWidget *parent) :
     this->setWindowFlag(Qt::FramelessWindowHint);
 
     if (config::user.lightmode == 1)
-        ui->textEdit_rows->setStyleSheet("background: #404040");
+        ui->textEdit_rows->setStyleSheet("QTextEdit: {background: white;}");
     else
-        ui->textEdit_rows->setStyleSheet("background: white");
+        ui->textEdit_rows->setStyleSheet("QTextEdit: {background: #404040;}");
 
     ui->splitter->setHandleWidth(1);
     ui->splitter->setStretchFactor(0, 1);

@@ -7,7 +7,7 @@ QMainWindow, QUserDialog, QWidget {
 }
 
 
-QTableView, QListView {
+QTableWidget, QListWidget {
     border: 1px solid;
     border-radius: 5px;
 }
@@ -32,3 +32,4 @@ QComboBox, QPushButton, QLineEdit, QToolButton {
     border: 1px solid;
     border-radius: 5px;
 }
+

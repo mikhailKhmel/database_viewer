@@ -3,10 +3,9 @@
 
 
 MainWindow::MainWindow(QWidget *parent) :
-        QMainWindow(parent),
-        ui(new Ui::MainWindow) {
+    QMainWindow(parent),
+    ui(new Ui::MainWindow) {
     ui->setupUi(this);
-    tables_list_model = new QStringListModel(this);
 
     //this->setWindowFlag(Qt::FramelessWindowHint);
     this->setAttribute(Qt::WA_DeleteOnClose);
@@ -24,11 +23,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->listWidget_tables, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu(QPoint)));
     connect(ui->tableWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showContextMenu_table(QPoint)));
     connect(r_c, SIGNAL(closed(
-    const QString &)), this, SLOT(renameColumn1(
-    const QString &)));
+                            const QString &)), this, SLOT(renameColumn1(
+                                                              const QString &)));
     connect(u_c, SIGNAL(closed(
-    const QString &)), this, SLOT(uncoverColumn1(
-    const QString &)));
+                            const QString &)), this, SLOT(uncoverColumn1(
+                                                              const QString &)));
     /*перенос функций редактора скрипта в основное окно*/
     ui->listWidget_tables->setViewMode(QListView::ListMode);
     ui->splitter->setStretchFactor(0, 1);
@@ -70,7 +69,7 @@ void MainWindow::show_table(int index) {
     qDebug() << config::user.column_renames;
     QStringList renames = config::user.column_renames.split(";");
     foreach(QString
-    s, renames){
+            s, renames){
         QStringList params = s.split(",");
         if (table_list.at(index) == params.at(0)) {
             ui->tableWidget->setHorizontalHeaderItem(params.at(1).toInt(), new QTableWidgetItem(params.at(2)));
@@ -162,7 +161,7 @@ void MainWindow::hideColumn() {
     QStringList col_hid = config::user.column_hides.split(";");
 
     foreach(QString
-    s, col_hid) {
+            s, col_hid) {
         if (s.contains(tablename + "," + ind))
             col_hid.removeOne(s);
     }
@@ -185,7 +184,7 @@ void MainWindow::renameColumn1(const QString &new_column) {
     QStringList col_ren = config::user.column_renames.split(";");
 
     foreach(QString
-    s, col_ren) {
+            s, col_ren) {
         if (s.contains(tablename + "," + ind))
             col_ren.removeOne(s);
     }
@@ -225,7 +224,7 @@ void MainWindow::prepare_window() {
     QSqlDatabase db = config::set_current_db();
     if (db.open()) {
         foreach(QString
-        curr_table, db.tables()){
+                curr_table, db.tables()){
             QSqlQuery q;
             if (q.exec(QString("SELECT * FROM %1").arg(curr_table))) {
                 append_table(q);
@@ -296,7 +295,7 @@ void MainWindow::on_quit_button_triggered() {
 
 void MainWindow::on_toolButton_lightmode_clicked() {
     //lightmode 0 - темная тема; 1 - светлая
-    QTextEdit *textEdit_rows = ui->tabWidget->currentWidget()->findChild<QTextEdit *>("textEdit_rows");
+
 
     if (config::user.lightmode == 0) {
         QFile styleF;
@@ -305,7 +304,15 @@ void MainWindow::on_toolButton_lightmode_clicked() {
         QString qssStr = styleF.readAll();
         config::user.lightmode = 1;
         qApp->setStyleSheet(qssStr);
-        textEdit_rows->setStyleSheet("background: white");
+        ui->tabWidget->currentWidget()->setStyleSheet(qssStr);
+        for (int i = 0; i < ui->tabWidget->count(); ++i)
+        {
+            ui->tabWidget->widget(i)->setStyleSheet(qssStr);
+            QTextEdit *textEdit_rows = ui->tabWidget->widget(i)->findChild<QTextEdit *>("textEdit_rows");
+            textEdit_rows->setStyleSheet("QTextEdit: {background: #404040;}");
+
+        }
+
     } else {
         QFile styleF;
         styleF.setFileName(":/dark.css");
@@ -313,7 +320,13 @@ void MainWindow::on_toolButton_lightmode_clicked() {
         QString qssStr = styleF.readAll();
         config::user.lightmode = 0;
         qApp->setStyleSheet(qssStr);
-        textEdit_rows->setStyleSheet("background: #404040");
+        ui->tabWidget->currentWidget()->setStyleSheet(qssStr);
+        for (int i = 0; i < ui->tabWidget->count(); ++i)
+        {
+            ui->tabWidget->widget(i)->setStyleSheet(qssStr);
+            QTextEdit *textEdit_rows = ui->tabWidget->widget(i)->findChild<QTextEdit *>("textEdit_rows");
+            textEdit_rows->setStyleSheet("QTextEdit: {background: white;}");
+        }
     }
 }
 
@@ -334,8 +347,9 @@ void MainWindow::saveFile() {
 }
 
 void MainWindow::on_toolButton_create_clicked() {
-    ui->tabWidget->addTab(new script_window, QString("Tab %1").arg(ui->tabWidget->count() + 1));
+    ui->tabWidget->addTab(new script_window, QString("Tab %1").arg(count_tabs));
     ui->tabWidget->setCurrentIndex(ui->tabWidget->count() - 1);
+    count_tabs++:
 }
 
 void MainWindow::on_toolButton_open_clicked() {
@@ -385,7 +399,7 @@ void MainWindow::on_toolButton_run_clicked() {
         QStringList errors_list;
         int curr_line = 1;
         foreach(QString
-        s, query_list){
+                s, query_list){
             q.clear();
             if (s.startsWith("select", Qt::CaseInsensitive)) {
                 if (q.exec(s)) {
@@ -434,7 +448,7 @@ void MainWindow::listview_refresh() {
     QSqlDatabase db = config::set_current_db();
     if (db.open()) {
         foreach(QString
-        curr_table, db.tables()){
+                curr_table, db.tables()){
             QSqlQuery q;
             if (q.exec(QString("SELECT * FROM %1").arg(curr_table))) {
                 append_table(q);
