@@ -87,7 +87,9 @@ private
     void on_tabWidget_tabCloseRequested(int index);
 
     void listview_refresh();
-    signals:
+    void on_lineEdit_search_textChanged(const QString &arg1);
+
+signals:
             void
 
     closedd();
@@ -116,6 +118,7 @@ private:
     void show_rows();
 
     int rows;
+    int count_tabs = 1;
 
     QStringList column_types;
     QStringList column_names;

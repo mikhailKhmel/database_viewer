@@ -31,10 +31,13 @@ MainWindow::MainWindow(QWidget *parent) :
     /*перенос функций редактора скрипта в основное окно*/
     ui->listWidget_tables->setViewMode(QListView::ListMode);
     ui->splitter->setStretchFactor(0, 1);
-    ui->splitter->setStretchFactor(1, 4);
+    ui->splitter->setStretchFactor(1, 6);
 
-    ui->splitter_2->setStretchFactor(0, 2);
-    ui->splitter_2->setStretchFactor(1, 1);
+    ui->splitter_2->setStretchFactor(0, 1);
+    ui->splitter_2->setStretchFactor(1, 4);
+
+    ui->splitter_3->setStretchFactor(0, 2);
+    ui->splitter_3->setStretchFactor(1, 1);
 
 
     ui->tabWidget->addTab(new script_window, "Tab_1");
@@ -349,7 +352,7 @@ void MainWindow::saveFile() {
 void MainWindow::on_toolButton_create_clicked() {
     ui->tabWidget->addTab(new script_window, QString("Tab %1").arg(count_tabs));
     ui->tabWidget->setCurrentIndex(ui->tabWidget->count() - 1);
-    count_tabs++:
+    count_tabs++;
 }
 
 void MainWindow::on_toolButton_open_clicked() {
@@ -459,4 +462,13 @@ void MainWindow::listview_refresh() {
     }
     QSqlDatabase::removeDatabase(config::curr_database_name);
 
+}
+
+void MainWindow::on_lineEdit_search_textChanged(const QString &arg1)
+{
+    ui->listWidget_tables->clear();
+    for (int i = 0; i < table_list.count(); ++i) {
+        if (table_list.at(i).contains(arg1, Qt::CaseInsensitive))
+            ui->listWidget_tables->addItem(table_list.at(i));
+    }
 }
