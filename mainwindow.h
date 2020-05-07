@@ -89,6 +89,8 @@ private
     void listview_refresh();
     void on_lineEdit_search_textChanged(const QString &arg1);
 
+    void on_toolButton_refresh_clicked();
+
 signals:
             void
 
@@ -123,18 +125,19 @@ private:
     QStringList column_types;
     QStringList column_names;
 
-    QStringList table_list;
+    QStringList table_list_db;
+    QStringList table_list_local;
 
-    QList <QStringList> run_tables;
+    QList <QStringList> run_tables_from_db;
+    QList <QStringList> run_table_local;
 
     QString dir;
 
     void show_table(int index);
 
-    void append_table(QSqlQuery q);
+    void append_table(QSqlQuery q, bool local);
 
-
-
+    void show_table(QStringList curr_table, bool local);
 };
 
 #endif // MAINWINDOW_H

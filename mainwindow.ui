@@ -136,7 +136,7 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="0" colspan="7">
+    <item row="1" column="0" colspan="5">
      <widget class="QSplitter" name="splitter_3">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -160,19 +160,36 @@
         <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>
-        <widget class="QLineEdit" name="lineEdit_search">
-         <property name="accessibleName">
-          <string>Поиск</string>
-         </property>
-         <property name="inputMask">
-          <string/>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="placeholderText">
-          <string>Поиск</string>
-         </property>
+        <widget class="QWidget" name="">
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QLineEdit" name="lineEdit_search">
+            <property name="accessibleName">
+             <string>Поиск</string>
+            </property>
+            <property name="inputMask">
+             <string/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="placeholderText">
+             <string>Поиск</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QToolButton" name="toolButton_refresh">
+            <property name="text">
+             <string>...</string>
+            </property>
+            <property name="icon">
+             <iconset resource="qrc.qrc">
+              <normaloff>:/src/icons8-обновить-32.png</normaloff>:/src/icons8-обновить-32.png</iconset>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
         <widget class="QListWidget" name="listWidget_tables">
          <property name="contextMenuPolicy">

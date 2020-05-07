@@ -47,10 +47,10 @@ MainWindow::~MainWindow() {
     delete ui;
 }
 
-void MainWindow::show_table(int index) {
+void MainWindow::show_table(QStringList curr_table, bool local) {
     clearTable();
 
-    QStringList curr_table = run_tables.at(index);
+    //QStringList curr_table = run_tables_from_db.at(index);
 
     for (int i = 0; i < curr_table.count(); ++i) {
         QStringList elements = curr_table.at(i).split(",");
@@ -68,18 +68,22 @@ void MainWindow::show_table(int index) {
         }
         elements.clear();
     }
+    if (local)
+        return;
 
     qDebug() << config::user.column_renames;
     QStringList renames = config::user.column_renames.split(";");
     foreach(QString
             s, renames){
         QStringList params = s.split(",");
-        if (table_list.at(index) == params.at(0)) {
+        int ind = run_tables_from_db.indexOf(curr_table);
+        if (table_list_db.at(ind) == params.at(0)) {
             ui->tableWidget->setHorizontalHeaderItem(params.at(1).toInt(), new QTableWidgetItem(params.at(2)));
         }
     }
 
     qDebug() << config::user.column_hides;
+    //TODO COLUMN_HIDES
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event) {
@@ -198,7 +202,7 @@ void MainWindow::renameColumn1(const QString &new_column) {
     ui->tableWidget->setHorizontalHeaderItem(ind.toInt(), new QTableWidgetItem(new_column));
 }
 
-void MainWindow::deleteTable() {
+void MainWindow::deleteTable() { //TODO: REMOVE FROM LOCAL AND DB
 
     QModelIndex index = ui->listWidget_tables->currentIndex();
     QString tableName = index.data(Qt::DisplayRole).toString();
@@ -212,9 +216,9 @@ void MainWindow::deleteTable() {
             } else
                 qDebug() << q.lastError().text();
         } else {
-            int ind = MainWindow::table_list.indexOf(tableName);
-            MainWindow::table_list.removeAt(ind);
-            MainWindow::run_tables.removeAt(ind);
+            int ind = MainWindow::table_list_db.indexOf(tableName);
+            MainWindow::table_list_db.removeAt(ind);
+            MainWindow::run_tables_from_db.removeAt(ind);
         }
     }
     QSqlDatabase::removeDatabase(config::curr_database_name);
@@ -224,20 +228,7 @@ void MainWindow::deleteTable() {
 void MainWindow::prepare_window() {
     clearTable();
     this->setDisabled(false);
-    QSqlDatabase db = config::set_current_db();
-    if (db.open()) {
-        foreach(QString
-                curr_table, db.tables()){
-            QSqlQuery q;
-            if (q.exec(QString("SELECT * FROM %1").arg(curr_table))) {
-                append_table(q);
-            }
-        }
-        table_list.append(db.tables());
-        ui->listWidget_tables->addItems(table_list);
-    } else
-        qDebug() << db.lastError().text();
-    QSqlDatabase::removeDatabase(config::curr_database_name);
+    listview_refresh();
     this->setWindowTitle("Текущий пользователь: " + config::user.username);
 }
 
@@ -257,13 +248,17 @@ void MainWindow::on_listWidget_tables_doubleClicked(const QModelIndex &index) {
     clearTable();
     ui->listWidget_tables->setSelectionMode(QAbstractItemView::ExtendedSelection);
     QString tablename = index.data(Qt::DisplayRole).toString();
-    show_table(index.row());
+    if (table_list_local.contains(tablename))
+        show_table(run_table_local.at(table_list_local.indexOf(tablename)),true);
+    else
+        show_table(run_tables_from_db.at(table_list_db.indexOf(tablename)),false);
 }
 
 void MainWindow::clearTable() {
     ui->tableWidget->clear();
     ui->tableWidget->clearContents();
     ui->tableWidget->setRowCount(0);
+    ui->tableWidget->setColumnCount(0);
     column_names.clear();
 }
 
@@ -406,8 +401,8 @@ void MainWindow::on_toolButton_run_clicked() {
             q.clear();
             if (s.startsWith("select", Qt::CaseInsensitive)) {
                 if (q.exec(s)) {
-                    append_table(q);
-                    MainWindow::table_list.append("table_" + QString::number(table_list.count()));
+                    append_table(q,true);
+                    MainWindow::table_list_local.append("table_" + QString::number(table_list_local.count()+1));
                 } else {
                     errors_list.append("Line " + QString::number(curr_line) + ": " + q.lastError().text());
                 }
@@ -424,10 +419,13 @@ void MainWindow::on_toolButton_run_clicked() {
             textEdit1->document()->setPlainText(errors_list.join("\n"));
         }
     }
+    db.commit();
+    //clearTable();
+
     listview_refresh();
 }
 
-void MainWindow::append_table(QSqlQuery q) {
+void MainWindow::append_table(QSqlQuery q, bool local) {
     QStringList curr_table_query;
     QString tmp;
     for (int i = 0; i < q.record().count(); ++i) {
@@ -437,38 +435,60 @@ void MainWindow::append_table(QSqlQuery q) {
     while (q.next()) {
         tmp.clear();
         for (int i = 0; i < q.record().count(); ++i) {
-            tmp.append(q.value(i).toString() + ",");
+            if (q.value(i).isNull()){
+                tmp.append("NULL,");
+            } else {
+                tmp.append(q.value(i).toString() + ",");
+
+            }
         }
         curr_table_query.append(tmp);
     }
-
-    run_tables.append(curr_table_query);
+    if (local)
+        run_table_local.append(curr_table_query);
+    else
+        run_tables_from_db.append(curr_table_query);
 }
 
 void MainWindow::listview_refresh() {
-    table_list.clear();
+    table_list_db.clear();
+    run_tables_from_db.clear();
     ui->listWidget_tables->clear();
     QSqlDatabase db = config::set_current_db();
+
     if (db.open()) {
+        QStringList tables = db.tables();
         foreach(QString
-                curr_table, db.tables()){
+                curr_table, tables){
             QSqlQuery q;
             if (q.exec(QString("SELECT * FROM %1").arg(curr_table))) {
-                append_table(q);
-            }
+                append_table(q,false);
+                table_list_db.append(curr_table);
+                ui->listWidget_tables->addItem(curr_table);
+            } else {}
+            q.clear();
         }
-        table_list.append(db.tables());
-        ui->listWidget_tables->addItems(table_list);
+
     }
     QSqlDatabase::removeDatabase(config::curr_database_name);
 
+    ui->listWidget_tables->addItems(table_list_local);
 }
 
 void MainWindow::on_lineEdit_search_textChanged(const QString &arg1)
 {
     ui->listWidget_tables->clear();
-    for (int i = 0; i < table_list.count(); ++i) {
-        if (table_list.at(i).contains(arg1, Qt::CaseInsensitive))
-            ui->listWidget_tables->addItem(table_list.at(i));
+    for (int i = 0; i < table_list_db.count(); ++i) {
+        if (table_list_db.at(i).contains(arg1, Qt::CaseInsensitive))
+            ui->listWidget_tables->addItem(table_list_db.at(i));
     }
+    for (int i = 0; i < table_list_local.count(); ++i) {
+        if (table_list_local.at(i).contains(arg1, Qt::CaseInsensitive))
+            ui->listWidget_tables->addItem(table_list_local.at(i));
+    }
+}
+
+void MainWindow::on_toolButton_refresh_clicked()
+{
+    listview_refresh();
 }

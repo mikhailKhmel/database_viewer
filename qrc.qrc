@@ -17,5 +17,6 @@
         <file>src/icons8-воспроизведение-32.png</file>
         <file>light.css</file>
         <file>src/icons8-солнце-32.png</file>
+        <file>src/icons8-обновить-32.png</file>
     </qresource>
 </RCC>

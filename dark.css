@@ -4,23 +4,22 @@
 }
 
 QMainWindow, QUserDialog, QWidget {
-    border: 1px;
+    /*border: 1px;*/
     background: #292929;
 }
 
 
-QTableView, QListView {
-    border: 1px solid;
+QTableWidget, QListWidget {
     background: #292929;
     border-radius: 5px;
     gridline-color: #bababa;
 }
 
-QListView::item::selected {
+QListWidget::item::selected {
     background-color: #002633;
 }
 
-QTableView::item:selected {
+QTableWidget::item:selected {
     background-color: #de8e37;
 }
 
