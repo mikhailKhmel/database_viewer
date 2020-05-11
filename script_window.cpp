@@ -43,7 +43,9 @@ void script_window::on_textEdit_cursorPositionChanged() {
     QTextEdit::ExtraSelection selection;
 
     QColor lineColor = QColor(Qt::yellow).lighter(160);
+    QColor textColor = QColor(Qt::black);
 
+    selection.format.setForeground(textColor);
     selection.format.setBackground(lineColor);
     selection.format.setProperty(QTextFormat::FullWidthSelection, true);
     selection.cursor = ui->textEdit->textCursor();

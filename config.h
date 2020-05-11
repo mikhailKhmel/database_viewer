@@ -15,7 +15,6 @@ class config {
 public:
     struct current_user {
         QString username;
-        int lastused;
         QString db_driver;
         QString dir_db_sqlite;
         QString hostname;

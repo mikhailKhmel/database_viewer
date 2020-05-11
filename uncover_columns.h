@@ -38,6 +38,7 @@ private:
     Ui::uncover_columns *ui;
 
     QStringListModel *tables_list_model;
+    QStringList columns_in_curr_tablename;
 
     void mousePressEvent(QMouseEvent *event);
 

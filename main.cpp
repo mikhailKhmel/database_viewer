@@ -5,15 +5,14 @@
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
-    config::load_config();
+
+    config::load_config();  //выгрузка информации о всех пользователях
 
 
     UserDialog w;
-    w.show();
+    w.show();               //открываем окно выбора пользователя
     a.exec();
 
-    config::user.lastused = 1;
-    config::save_config();
-    //exit(1);
+    config::save_config();  //после завершения программы, выгруить данные из оперативной памяти в локальную бд
     return 0;
 }

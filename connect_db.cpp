@@ -4,6 +4,7 @@
 #include <QFileDialog>
 #include <QDebug>
 
+
 connect_db::connect_db(QWidget *parent) : QDialog(parent),
                                           ui(new Ui::connect_db) {
     ui->setupUi(this);
@@ -108,7 +109,11 @@ void connect_db::on_comboBox_driver_textActivated(const QString &arg1) {
 }
 
 void connect_db::on_select_file_sqlite_clicked() {
+#ifdef Q_OS_UNIX
+    QString dir = QFileDialog::getOpenFileName(0, "Выберите базу данных", "~//", "*.db *.sqlite *.sqlite3 *.dll");
+#else
     QString dir = QFileDialog::getOpenFileName(0, "Выберите базу данных", "C:\\", "*.db *.sqlite *.sqlite3 *.dll");
+#endif
     ui->lineEdit_sqlite->setText(dir);
 }
 

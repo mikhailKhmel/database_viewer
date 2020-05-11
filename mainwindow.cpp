@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(u_c, SIGNAL(closed(
                             const QString &)), this, SLOT(uncoverColumn1(
                                                               const QString &)));
-    /*перенос функций редактора скрипта в основное окно*/
+
     ui->listWidget_tables->setViewMode(QListView::ListMode);
     ui->splitter->setStretchFactor(0, 1);
     ui->splitter->setStretchFactor(1, 6);
@@ -40,7 +40,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->splitter_3->setStretchFactor(1, 1);
 
 
-    ui->tabWidget->addTab(new script_window, "Tab_1");
+    ui->tabWidget->addTab(new script_window, "Tab " + QString::number(count_tabs));
 }
 
 MainWindow::~MainWindow() {
@@ -71,19 +71,26 @@ void MainWindow::show_table(QStringList curr_table, bool local) {
     if (local)
         return;
 
-    qDebug() << config::user.column_renames;
-    QStringList renames = config::user.column_renames.split(";");
+    //qDebug() << config::user.column_renames;
+    QStringList renames = config::user.column_renames.split("!");
     foreach(QString
             s, renames){
-        QStringList params = s.split(",");
+        QStringList params = s.split("?");
         int ind = run_tables_from_db.indexOf(curr_table);
         if (table_list_db.at(ind) == params.at(0)) {
             ui->tableWidget->setHorizontalHeaderItem(params.at(1).toInt(), new QTableWidgetItem(params.at(2)));
         }
     }
 
-    qDebug() << config::user.column_hides;
-    //TODO COLUMN_HIDES
+    //qDebug() << config::user.column_hides;
+    QStringList hides = config::user.column_hides.split("!");
+    foreach(QString s, hides){
+        QStringList params = s.split("?");
+        int ind = run_tables_from_db.indexOf(curr_table);
+        if (table_list_db.at(ind) == params.at(0)){
+            ui->tableWidget->setColumnHidden(params.at(1).toInt(), true);
+        }
+    }
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event) {
@@ -163,18 +170,20 @@ void MainWindow::hideColumn() {
 
 
     int ind = ui->tableWidget->currentIndex().column();
+    if (ind == -1) return;
+
     ui->tableWidget->hideColumn(ind);
 
-    QStringList col_hid = config::user.column_hides.split(";");
+    QStringList col_hid = config::user.column_hides.split("!");
 
     foreach(QString
             s, col_hid) {
-        if (s.contains(tablename + "," + ind))
+        if (s.contains(tablename + "?" + ind))
             col_hid.removeOne(s);
     }
 
-    config::user.column_hides = col_hid.join(";");
-    config::user.column_hides.append(tablename + "," + QString::number(ind) + ";");
+    config::user.column_hides = col_hid.join("!");
+    config::user.column_hides.append(tablename + "?" + QString::number(ind) + "!");
 
 }
 
@@ -188,16 +197,16 @@ void MainWindow::renameColumn1(const QString &new_column) {
     QString tablename = index.data(Qt::DisplayRole).toString();
 
     QString ind = QString::number(ui->tableWidget->currentIndex().column());
-    QStringList col_ren = config::user.column_renames.split(";");
+    QStringList col_ren = config::user.column_renames.split("!");
 
     foreach(QString
             s, col_ren) {
-        if (s.contains(tablename + "," + ind))
+        if (s.contains(tablename + "?" + ind))
             col_ren.removeOne(s);
     }
 
-    config::user.column_renames = col_ren.join(";");
-    config::user.column_renames.append(tablename + "," + ind + "," + new_column + ";");
+    config::user.column_renames = col_ren.join("!");
+    config::user.column_renames.append(tablename + "?" + ind + "?" + new_column + "!");
 
     ui->tableWidget->setHorizontalHeaderItem(ind.toInt(), new QTableWidgetItem(new_column));
 }
@@ -207,21 +216,30 @@ void MainWindow::deleteTable() { //TODO: REMOVE FROM LOCAL AND DB
     QModelIndex index = ui->listWidget_tables->currentIndex();
     QString tableName = index.data(Qt::DisplayRole).toString();
 
-    QSqlDatabase db = config::set_current_db();
-    if (db.open()) {
-        if (db.tables().contains(tableName)) {
-            QSqlQuery q;
-            if (q.exec("DROP TABLE " + tableName)) {
-                MainWindow::prepare_window();
-            } else
-                qDebug() << q.lastError().text();
-        } else {
-            int ind = MainWindow::table_list_db.indexOf(tableName);
-            MainWindow::table_list_db.removeAt(ind);
-            MainWindow::run_tables_from_db.removeAt(ind);
+    if (table_list_db.contains(tableName)){
+
+        QSqlDatabase db = config::set_current_db();
+        if (db.open()) {
+            if (db.tables().contains(tableName)) {
+                QSqlQuery q;
+                if (q.exec("DROP TABLE " + tableName)) {
+                    MainWindow::prepare_window();
+                } else
+                    qDebug() << q.lastError().text();
+            } else {
+                int ind = MainWindow::table_list_db.indexOf(tableName);
+                MainWindow::table_list_db.removeAt(ind);
+                MainWindow::run_tables_from_db.removeAt(ind);
+            }
         }
+        QSqlDatabase::removeDatabase(config::curr_database_name);
+
+        run_tables_from_db.removeAt(table_list_db.indexOf(tableName));
+        table_list_db.removeOne(tableName);
+    } else {
+        run_table_local.removeAt(table_list_local.indexOf(tableName));
+        table_list_local.removeOne(tableName);
     }
-    QSqlDatabase::removeDatabase(config::curr_database_name);
     listview_refresh();
 }
 
@@ -274,10 +292,18 @@ void MainWindow::on_create_table_triggered() {
 }
 
 void MainWindow::on_exit_profile_triggered() {
-    config::user.lastused = 0;
     config::user.username = "";
     config::user.db_driver = "";
+    config::user.port = "";
+    config::user.hostname = "";
+    config::user.lightmode = 0;
+    config::user.db_password = "";
+    config::user.db_username = "";
+    config::user.column_hides = "";
+    config::user.column_renames = "";
+    config::user.databasename = "";
     config::user.dir_db_sqlite = "";
+
     emit closedd();
     this->close();
 }

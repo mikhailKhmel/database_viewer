@@ -11,28 +11,15 @@ QString config::LastError;
 QString config::curr_database_name;
 const QString config::local_db = QString("config.db");
 
-void config::set_lastused() {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName(local_db);
-    if (db.open()) {
-        QSqlQuery q;
-        q.prepare("UPDATE USERS SET LASTUSED = 0 WHERE USERNAME <> " + user.username);
-        if (q.exec())
-            user.lastused = 1;
-    }
-    QSqlDatabase::removeDatabase(local_db);
-
-}
 
 void config::load_config() {
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("config.db");
+    db.setDatabaseName("config.db"); //подключение к конфигурационной бд
     if (db.open()) {
         QSqlQuery check_query("SELECT * FROM 'USERS'");
-        if (!check_query.exec()) {
-            QSqlQuery query("CREATE TABLE USERS "
+        if (!check_query.exec()) { //если запрос не выполняется
+            QSqlQuery query("CREATE TABLE USERS "   //создать новую таблицу
                             "(USERNAME	TEXT UNIQUE,"
-                            "LASTUSED	INTEGER, "
                             "DB_DRIVER	TEXT, "
                             "DIR_DB_SQLITE TEXT,"
                             "HOSTNAME TEXT,"
@@ -47,11 +34,10 @@ void config::load_config() {
                 qDebug() << db.lastError().text();
         } else {
             QSqlQueryModel model;
-            model.setQuery("SELECT * FROM 'USERS'");
-            for (int i = 0; i < model.rowCount(); i++) {
+            model.setQuery("SELECT * FROM 'USERS'");        //иначе
+            for (int i = 0; i < model.rowCount(); i++) {    //выгрузить всю информацию о пользователях в оперативную память
                 current_user new_user;
                 new_user.username = model.record(i).value("USERNAME").toString();
-                new_user.lastused = 1;
                 new_user.db_driver = model.record(i).value("DB_DRIVER").toString();
                 new_user.dir_db_sqlite = model.record(i).value("DIR_DB_SQLITE").toString();
                 new_user.hostname = model.record(i).value("HOSTNAME").toString();
@@ -86,9 +72,8 @@ void config::save_config() {
             foreach(config::current_user
             u, config::users)
             {
-                if (q.exec("INSERT INTO USERS VALUES('" + u.username + "', " + QString::number(u.lastused) + ", '" +
-                           u.db_driver + "', '" + u.dir_db_sqlite + "', "
-                                                                    "'" + u.hostname + "', '" + u.port + "', '" +
+                if (q.exec("INSERT INTO USERS VALUES('" + u.username + "', '" +
+                           u.db_driver + "', '" + u.dir_db_sqlite + "', '" + u.hostname + "', '" + u.port + "', '" +
                            u.databasename + "', '" + u.db_username + "', '" + u.db_password + "', '" +
                            u.column_renames + "', '" + u.column_hides + "', '" + QString::number(u.lightmode) + "')"))
                     continue;
