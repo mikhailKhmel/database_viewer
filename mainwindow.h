@@ -93,6 +93,8 @@ private
 
     void on_toolButton_refresh_clicked();
 
+    void on_toolButton_exit_clicked();
+
 signals:
             void
 
