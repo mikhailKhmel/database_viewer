@@ -64,6 +64,8 @@ private
 
     void renameColumn1(const QString &new_column);
 
+    void undo_renameColumn();
+
     void hideColumn();
 
     void deleteTable();

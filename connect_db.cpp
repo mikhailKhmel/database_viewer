@@ -19,7 +19,7 @@ connect_db::~connect_db() {
     delete ui;
 }
 
-void connect_db::set_connection_data() {
+void connect_db::set_connection_data() {    //установка настроек подключения к бд
     if (ui->comboBox_driver->currentText() == "SQLITE")
         config::user.db_driver = "QSQLITE";
     else if (ui->comboBox_driver->currentText() == "MYSQL")
@@ -37,7 +37,7 @@ void connect_db::set_connection_data() {
     config::user.databasename = ui->db->text();
 }
 
-void connect_db::on_pushButton_clicked() {
+void connect_db::on_pushButton_clicked() {  //кнопка подключения к бд
     set_connection_data();
     QSqlDatabase db = config::set_current_db();
     if (db.open()) {
@@ -50,8 +50,9 @@ void connect_db::on_pushButton_clicked() {
     ui->connection_result->setVisible(true);
 }
 
-void connect_db::enable_layout(QString dr) {
-    if (dr == "SQLITE") {
+void connect_db::enable_layout(QString dr) {    //изменения внешнего вида окна в зависимости от выбранного драйвера
+    //так как для SQLITE требуется только путь к файлу бд
+    if (dr == "SQLITE") {   //то отображается элементы для выбора конкретного файла
         ui->select_file_sqlite->setVisible(true);
         ui->lineEdit_sqlite->setVisible(true);
 
@@ -70,7 +71,7 @@ void connect_db::enable_layout(QString dr) {
 
         ui->pushButton_test->setFixedSize(QSize(171, 31));
         ui->connection_result->setGeometry(10, 110, 201, 16);
-    } else {
+    } else {    //иначе отображаются элементы для подключения к бд
         ui->select_file_sqlite->setVisible(false);
         ui->lineEdit_sqlite->setVisible(false);
 
@@ -92,23 +93,7 @@ void connect_db::enable_layout(QString dr) {
     }
 }
 
-void connect_db::on_comboBox_driver_textActivated(const QString &arg1) {
-    enable_layout(arg1);
-    ui->connection_result->clear();
-
-    if (arg1 == "SQLITE")
-        config::user.db_driver = "QSQLITE";
-    else if (arg1 == "MYSQL")
-        config::user.db_driver = "QMYSQL";
-    else if (arg1 == "POSTGRESQL")
-        config::user.db_driver = "QPSQL";
-    else if (arg1 == "MICROSOFT SQL") {
-        config::user.db_driver = "QODBC3";
-        ui->connection_result->setText("Поддерживается только аутентификация Microsoft SQL Server");
-    }
-}
-
-void connect_db::on_select_file_sqlite_clicked() {
+void connect_db::on_select_file_sqlite_clicked() {  //выбор файла бд sqlite
 #ifdef Q_OS_UNIX
     QString dir = QFileDialog::getOpenFileName(0, "Выберите базу данных", "~//", "*.db *.sqlite *.sqlite3 *.dll");
 #else
@@ -117,7 +102,7 @@ void connect_db::on_select_file_sqlite_clicked() {
     ui->lineEdit_sqlite->setText(dir);
 }
 
-void connect_db::on_pushButton_test_clicked() {
+void connect_db::on_pushButton_test_clicked() { //кнопка тестового подключения к бд
     set_connection_data();
     QSqlDatabase db = config::set_current_db();
     if (db.open()) {

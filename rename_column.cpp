@@ -13,6 +13,7 @@ rename_column::~rename_column() {
     delete ui;
 }
 
+//метод перемещения окна
 void rename_column::mousePressEvent(QMouseEvent *event) {
     m_nMouseClick_X_Coordinate = event->x();
     m_nMouseClick_Y_Coordinate = event->y();
@@ -22,11 +23,14 @@ void rename_column::mouseMoveEvent(QMouseEvent *event) {
     move(event->globalX() - m_nMouseClick_X_Coordinate, event->globalY() - m_nMouseClick_Y_Coordinate);
 }
 
+//закрыть окно
 void rename_column::on_pushButton_back_clicked() {
     this->close();
 }
 
 void rename_column::on_pushButton_continue_clicked() {
-    emit closed(ui->lineEdit->text());
-    this->close();
+    if (!ui->lineEdit->text().isEmpty()) {
+        emit closed(ui->lineEdit->text()); //вызов сигнала и передача содержимого текстового поля, если не пустое
+        this->close();
+    }
 }

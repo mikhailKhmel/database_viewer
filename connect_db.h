@@ -26,8 +26,6 @@ private
 
     on_pushButton_clicked();
 
-    void on_comboBox_driver_textActivated(const QString &arg1);
-
     void on_select_file_sqlite_clicked();
 
     void on_pushButton_test_clicked();

@@ -57,7 +57,7 @@ void config::load_config() {
 }
 
 void config::save_config() {
-    for (int i = 0; i < config::users.size(); i++) {
+    for (int i = 0; i < config::users.size(); i++) {    //перенести все изменения текущего пользователя в список всех пользователей
         if (config::users.at(i).username == config::user.username) {
             users[i] = config::user;
         }
@@ -67,7 +67,7 @@ void config::save_config() {
     db.setDatabaseName("config.db");
     if (db.open()) {
         QSqlQuery q;
-        if (q.exec("DELETE FROM USERS")) {
+        if (q.exec("DELETE FROM USERS")) {  //очистка всей таблицы о пользователях
             q.clear();
             foreach(config::current_user
             u, config::users)
@@ -75,7 +75,7 @@ void config::save_config() {
                 if (q.exec("INSERT INTO USERS VALUES('" + u.username + "', '" +
                            u.db_driver + "', '" + u.dir_db_sqlite + "', '" + u.hostname + "', '" + u.port + "', '" +
                            u.databasename + "', '" + u.db_username + "', '" + u.db_password + "', '" +
-                           u.column_renames + "', '" + u.column_hides + "', '" + QString::number(u.lightmode) + "')"))
+                           u.column_renames + "', '" + u.column_hides + "', '" + QString::number(u.lightmode) + "')"))  //выгрузка данных из оперативной памяти в бд
                     continue;
                 else
                     qDebug() << q.lastError().text();
@@ -91,7 +91,7 @@ void config::save_config() {
 bool config::check_new_user(QString user) {
     bool ans = true;
     for (int i = 0; i < users.size(); i++) {
-        if (users.at(i).username == user) {
+        if (users.at(i).username == user) { //проверка на уникальность нового пользователя
             ans = false;
             break;
         }
@@ -99,7 +99,7 @@ bool config::check_new_user(QString user) {
     return ans;
 }
 
-bool config::set_new_user(QString user) {
+bool config::set_new_user(QString user) {   //добавление нового пользователя
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("config.db");
     if (db.open()) {
@@ -128,7 +128,7 @@ bool config::set_new_user(QString user) {
     }
 }
 
-void config::set_current_user(QString username) {
+void config::set_current_user(QString username) {   //установка текущего пользователя
     foreach(config::current_user
     u, config::users)
     {
@@ -139,7 +139,7 @@ void config::set_current_user(QString username) {
     }
 }
 
-QSqlDatabase config::set_current_db() {
+QSqlDatabase config::set_current_db() {     //установка соединения с бд пользователя
     QSqlDatabase db = QSqlDatabase::addDatabase(config::user.db_driver);
     if (config::user.db_driver == "QSQLITE") {
         db.setDatabaseName(config::user.dir_db_sqlite);
