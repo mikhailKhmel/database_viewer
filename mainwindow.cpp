@@ -1,5 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "xlsxdocument.h"
+#include "xlsxchartsheet.h"
+#include "xlsxcellrange.h"
+#include "xlsxchart.h"
+#include "xlsxrichstring.h"
+#include "xlsxworkbook.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -178,8 +184,33 @@ void MainWindow::showContextMenu(const QPoint &pos) {
     QMenu myMenu;
     myMenu.addAction("Создать таблицу", this, SLOT(on_create_table_triggered()));
     myMenu.addAction("Удалить таблицу", this, SLOT(deleteTable()));
+    myMenu.addAction("Экспортировать в формате Excel", this, SLOT(export_xlsx()));
 
     myMenu.exec(globalPos);
+}
+
+void MainWindow::export_xlsx()
+{
+    QModelIndex index = ui->listWidget_tables->currentIndex();
+    ui->listWidget_tables->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    QString tablename = index.data(Qt::DisplayRole).toString(); //получаем имя текущей стаблицы
+    QStringList table;
+    if (table_list_db.contains(tablename))  table = run_tables_from_db.at(table_list_db.indexOf(tablename));
+    else if (table_list_local.contains(tablename))  table = run_table_local.at(table_list_local.indexOf(tablename));
+
+    QXlsx::Document doc;
+    for (int row = 0; row < table.count(); ++row) {
+        QStringList elements = table.at(row).split(",");
+        for (int col = 0; col < elements.count(); ++col) {
+            doc.write(row+1,col+1,elements.at(col));
+        }
+    }
+    dir = QFileDialog::getSaveFileName(0, "Сохранить файл", "/", ".xlsx");
+    if (!dir.isEmpty()){
+        doc.saveAs(dir+".xlsx");
+    }
+
+    QMessageBox::information(this, "Таблица экспортирована", QString("Таблица %1 успешно экспортирована").arg(tablename));
 }
 
 //метод для скрытия текущего столбца

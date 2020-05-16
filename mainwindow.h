@@ -95,6 +95,7 @@ private
 
     void on_toolButton_exit_clicked();
 
+    void export_xlsx();
 signals:
             void
 
