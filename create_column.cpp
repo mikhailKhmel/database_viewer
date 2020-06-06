@@ -25,10 +25,6 @@ void create_column::mousePressEvent(QMouseEvent *event) {
     m_nMouseClick_Y_Coordinate = event->y();
 }
 
-void create_column::mouseMoveEvent(QMouseEvent *event) {
-    move(event->globalX() - m_nMouseClick_X_Coordinate, event->globalY() - m_nMouseClick_Y_Coordinate);
-}
-
 //раскрытие элементов для работы с внешними ключами
 void create_column::on_pushButton_2_clicked() {
     if (create_column::foreign_key_flag)
@@ -39,7 +35,10 @@ void create_column::on_pushButton_2_clicked() {
     ui->frame->setVisible(foreign_key_flag);
 	
     QSqlDatabase curr_db = config::set_current_db();
-    ui->comboBox_foreigntables->addItems(curr_db.tables());
+    if (curr_db.open()){
+        QStringList tables = curr_db.tables();
+        ui->comboBox_foreigntables->addItems(tables);
+    }
 }
 
 //
@@ -76,7 +75,7 @@ void create_column::on_pushButton_clicked() {
     query_str.clear();
 	
 	//сбор данных и добавление в конец результативной строки
-    if (!tablename.isEmpty()) {
+    if ((!tablename.isEmpty()) || (!type_column.isEmpty())) {
         query_str.append(tablename + " " + type_column + " ");
         if (pk)
             query_str.append("PRIMARY KEY ");
@@ -91,9 +90,9 @@ void create_column::on_pushButton_clicked() {
             query_str.append("UNIQUE ");
 
         if (!ui->default_value->text().isEmpty())
-            query_str.append("DEFAULT " + ui->default_value->text());
+            query_str.append("DEFAULT " + ui->default_value->text() + " ");
         else
-            query_str.append("DEFAULT NULL");
+            query_str.append("DEFAULT NULL ");
 
         if (create_column::foreign_key_flag)
             query_str.append(
@@ -106,7 +105,7 @@ void create_column::on_pushButton_clicked() {
         emit closed(query_str);	//вызов сигнала и передача результативной строки
         this->destroy(); //закрытие окна
     } else
-        QMessageBox::warning(this, "Ошибка", "Задайте имя поля");
+        QMessageBox::warning(this, "Ошибка", "Отсутствует имя столбца или его тип");
 }
 
 void create_column::on_pushButton_3_clicked() {	//закрытие окна

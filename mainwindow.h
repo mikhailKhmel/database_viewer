@@ -50,8 +50,6 @@ private
 
     void on_listWidget_tables_doubleClicked(const QModelIndex &index);
 
-    void on_create_table_triggered();
-
     void on_exit_profile_triggered();
 
     void on_save_profile_triggered();
@@ -96,6 +94,8 @@ private
     void on_toolButton_exit_clicked();
 
     void export_xlsx();
+
+    void create_table_triggered();
 signals:
             void
 
@@ -143,6 +143,7 @@ private:
     void append_table(QSqlQuery q, bool local);
 
     void show_table(QStringList curr_table, bool local);
+
 };
 
 #endif // MAINWINDOW_H

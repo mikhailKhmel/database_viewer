@@ -62,9 +62,7 @@ void uncover_columns::on_pushButton_back_clicked() {
 }
 
 void uncover_columns::on_pushButton_continue_clicked() {
-    QModelIndex index = ui->listView->currentIndex();
-    ui->listView->setSelectionMode(QAbstractItemView::ExtendedSelection);
-
-    emit closed(columns_in_curr_tablename.at(index.row())); //вызов сигнала и передача имени выбранного имени столбца
+    QString result = tables_list_model->data(ui->listView->currentIndex()).toString();
+    emit closed(result); //вызов сигнала и передача имени выбранного имени столбца
     this->close();  //закрыть окно
 }

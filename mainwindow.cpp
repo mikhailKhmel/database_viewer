@@ -91,7 +91,7 @@ void MainWindow::show_table(QStringList curr_table, bool local) {
         }
     }
 
-    //применение скрытия столбцов
+    //Применение скрытия столбцов
     QStringList hides = config::user.column_hides.split("!");
     foreach(QString s, hides){
         QStringList params = s.split("?");
@@ -162,18 +162,17 @@ void MainWindow::uncoverColumn1(const QString &column_name) {
     ui->tableWidget->setColumnHidden(ind, false);   //раскрываем столбец
 
     //запись изменений в данные пользователя
-    QStringList col_hid = config::user.column_hides.split(";");
-    col_hid.removeLast();
+    QStringList col_hid = config::user.column_hides.split("!");
+    //col_hid.removeLast();
     for (int i = 0; i < col_hid.count(); i++) {
-        QString test_str = tablename + "," + QString::number(ind);
+        QString test_str = tablename + "?" + QString::number(ind);
         if (col_hid.at(i) == test_str) {
             col_hid.removeAt(i);
         }
     }
 
     config::user.column_hides.clear();
-    config::user.column_hides.append(col_hid.join(";"));
-
+    config::user.column_hides.append(col_hid.join("!"));
 }
 
 //метод для отображения контекстного меню в списке таблиц
@@ -182,7 +181,7 @@ void MainWindow::showContextMenu(const QPoint &pos) {
     QPoint globalPos = ui->listWidget_tables->mapToGlobal(pos);
 
     QMenu myMenu;
-    myMenu.addAction("Создать таблицу", this, SLOT(on_create_table_triggered()));
+    myMenu.addAction("Создать таблицу", this, SLOT(create_table_triggered()));
     myMenu.addAction("Удалить таблицу", this, SLOT(deleteTable()));
     myMenu.addAction("Экспортировать в формате Excel", this, SLOT(export_xlsx()));
 
@@ -367,7 +366,7 @@ void MainWindow::clearTable() {
 }
 
 //метод для отображение окна создания новой таблицы
-void MainWindow::on_create_table_triggered() {
+void MainWindow::create_table_triggered() {
     QSqlDatabase db = config::set_current_db(); //установить соединение
     if (db.open()) {
         clearTable();   //очистить виджет таблицы
@@ -518,6 +517,7 @@ void MainWindow::on_toolButton_run_clicked() {
         query_str.remove("\n"); //удаляем все переносы строк
         QStringList query_list = query_str.split(";");  //собираем список запросов по сепаратору ;
         query_list.removeLast();
+        query_list.removeAll(QString(""));
         QSqlQuery q;
         QStringList errors_list;    //список ошибок
         int curr_line = 1;  //счетчик строки
@@ -542,7 +542,11 @@ void MainWindow::on_toolButton_run_clicked() {
             ui->tabWidget->setCurrentIndex(ui->tabWidget->count() - 1);
             QTextEdit *textEdit1 = ui->tabWidget->currentWidget()->findChild<QTextEdit *>("textEdit");
             textEdit1->document()->setPlainText(errors_list.join("\n"));
+        } else {
+            QMessageBox::information(this, "Успех", "Запрос успешно выполнен");
         }
+    } else {
+        QMessageBox::critical(this, "Ошибка", "Отсутствует подключение к базе данных");
     }
     db.commit();    //подтвердить изменения в бд
 
@@ -595,7 +599,7 @@ void MainWindow::listview_refresh() {
             q.clear();
         }
 
-    }
+    } else QMessageBox::critical(this, "Ошибка", "Ошибка подключения к базе данных");
     QSqlDatabase::removeDatabase(config::curr_database_name);
 
     ui->listWidget_tables->addItems(table_list_local);  //добавить имена локальных таблиц в список

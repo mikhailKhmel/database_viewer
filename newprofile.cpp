@@ -36,7 +36,7 @@ void newprofile::on_pushButton_clicked() {
             emit closed();  //закрыть окно
             this->destroy();
         } else {
-            ui->error_label->setText(config::LastError);    //вывести ошибку
+            ui->error_label->setText("Пользователь уже существует");    //вывести ошибку
             ui->error_label->setVisible(true);
         }
     }

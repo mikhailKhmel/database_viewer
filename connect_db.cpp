@@ -20,13 +20,13 @@ connect_db::~connect_db() {
 }
 
 void connect_db::set_connection_data() {    //установка настроек подключения к бд
-    if (ui->comboBox_driver->currentText() == "SQLITE")
+    if (ui->comboBox_driver->currentText() == "SQLite3")
         config::user.db_driver = "QSQLITE";
-    else if (ui->comboBox_driver->currentText() == "MYSQL")
+    else if (ui->comboBox_driver->currentText() == "Oracle MySQL")
         config::user.db_driver = "QMYSQL";
-    else if (ui->comboBox_driver->currentText() == "POSTGRESQL")
+    else if (ui->comboBox_driver->currentText() == "PostgreSQL")
         config::user.db_driver = "QPSQL";
-    else if (ui->comboBox_driver->currentText() == "MICROSOFT SQL") {
+    else if (ui->comboBox_driver->currentText() == "Microsoft SQL Server") {
         config::user.db_driver = "QODBC3";
     }
     config::user.hostname = ui->hostname_edit->text();
@@ -52,7 +52,7 @@ void connect_db::on_pushButton_clicked() {  //кнопка подключени�
 
 void connect_db::enable_layout(QString dr) {    //изменения внешнего вида окна в зависимости от выбранного драйвера
     //так как для SQLITE требуется только путь к файлу бд
-    if (dr == "SQLITE") {   //то отображается элементы для выбора конкретного файла
+    if (dr == "SQLite3") {   //то отображается элементы для выбора конкретного файла
         ui->select_file_sqlite->setVisible(true);
         ui->lineEdit_sqlite->setVisible(true);
 
@@ -60,21 +60,17 @@ void connect_db::enable_layout(QString dr) {    //изменения внешн�
         ui->label_2->setVisible(false);
         ui->label_3->setVisible(false);
         ui->label_5->setVisible(false);
+        ui->label_6->setVisible(false);
         ui->username->setVisible(false);
         ui->password->setVisible(false);
         ui->hostname_edit->setVisible(false);
         ui->lineEdit_port->setVisible(false);
         ui->db->setVisible(false);
-
-        QSize size(516, 144);
-        this->setFixedSize(size);
-
-        ui->pushButton_test->setFixedSize(QSize(171, 31));
-        ui->connection_result->setGeometry(10, 110, 201, 16);
     } else {    //иначе отображаются элементы для подключения к бд
         ui->select_file_sqlite->setVisible(false);
         ui->lineEdit_sqlite->setVisible(false);
 
+        ui->label_6->setVisible(true);
         ui->label_5->setVisible(true);
         ui->label_2->setVisible(true);
         ui->label_3->setVisible(true);
@@ -84,13 +80,10 @@ void connect_db::enable_layout(QString dr) {    //изменения внешн�
         ui->hostname_edit->setVisible(true);
         ui->lineEdit_port->setVisible(true);
         ui->db->setVisible(true);
-
-        QSize size(516, 295);
-        this->setFixedSize(size);
-
-        ui->pushButton_test->setFixedSize(QSize(171, 141));
-        ui->connection_result->setGeometry(10, 270, 201, 16);
     }
+
+    ui->connection_result->setVisible(false);
+    this->resize(ui->verticalLayout_3->minimumSize());
 }
 
 void connect_db::on_select_file_sqlite_clicked() {  //выбор файла бд sqlite
@@ -116,4 +109,9 @@ void connect_db::on_pushButton_test_clicked() { //кнопка тестовог�
 
 void connect_db::on_pushButton_2_clicked() {
     this->close();
+}
+
+void connect_db::on_comboBox_driver_currentIndexChanged(const QString &arg1)
+{
+    enable_layout(arg1);
 }

@@ -33,7 +33,7 @@ void UserDialog::mousePressEvent(QMouseEvent *event) {  //метод для об
 }
 
 void UserDialog::mouseMoveEvent(QMouseEvent *event) {   //метод передвижения окна
-    move(event->globalX() - m_nMouseClick_X_Coordinate, event->globalY() - m_nMouseClick_Y_Coordinate);
+    //move(event->globalX() - m_nMouseClick_X_Coordinate, event->globalY() - m_nMouseClick_Y_Coordinate);
 }
 
 void UserDialog::showd() {  //слот обработки закрытие дочерних окон

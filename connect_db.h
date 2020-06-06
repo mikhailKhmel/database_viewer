@@ -33,7 +33,9 @@ private
     void on_pushButton_2_clicked();
 
 
-    signals:
+    void on_comboBox_driver_currentIndexChanged(const QString &arg1);
+
+signals:
             void
 
     closed();

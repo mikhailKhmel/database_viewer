@@ -44,8 +44,6 @@ private:
     bool foreign_key_flag; //false-выкл. true-вкл
     void mousePressEvent(QMouseEvent *event);
 
-    void mouseMoveEvent(QMouseEvent *event);
-
     int m_nMouseClick_X_Coordinate;
     int m_nMouseClick_Y_Coordinate;
 

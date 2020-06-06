@@ -3,11 +3,8 @@
 #include <QMessageBox>
 
 QSqlDatabase config::db = QSqlDatabase::addDatabase("QSQLITE");
-QSqlDatabase config::work_db;
-
 QVector <config::current_user> config::users;
 config::current_user config::user;
-QString config::LastError;
 QString config::curr_database_name;
 const QString config::local_db = QString("config.db");
 
@@ -107,10 +104,10 @@ bool config::set_new_user(QString user) {   //добавление нового 
             QString username = user;
             current_user new_user;
             new_user.username = user;
+            new_user.lightmode = 1;
             users.append(new_user);
-            QSqlQuery qry("INSERT INTO USERS (USERNAME) VALUES ('" + username + "')");
+            QSqlQuery qry("INSERT INTO USERS (USERNAME, LIGHTMODE) VALUES ('" + username + "', 1)");
             if (!qry.exec()) {
-                LastError = qry.lastError().text();
                 qDebug() << qry.lastError().text();
                 QSqlDatabase::removeDatabase(local_db);
                 return true;
